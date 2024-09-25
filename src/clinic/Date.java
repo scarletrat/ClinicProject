@@ -18,7 +18,7 @@ public class Date implements Comparable<Date> {
 
     /**
      * No-argument constructor/default constructor.
-     * Set the date to the current year, month, and day.
+     * Set the date to the current month, day, and year.
      */
     public Date(){
         Calendar today = Calendar.getInstance();
@@ -37,6 +37,17 @@ public class Date implements Comparable<Date> {
         this.year = year;
         this.month = month;
         this.day = day;
+    }
+
+    /**
+     * Constructor with a string input format mm/dd/yy
+     * @param date the date input mm/dd/yyyy
+     */
+    public Date(String date){
+        String[] datePart = date.split("/");
+        this.year = Integer.parseInt(datePart[2]);
+        this.day = Integer.parseInt(datePart[1]);
+        this.month = Integer.parseInt(datePart[0]);
     }
 
     /**
@@ -147,9 +158,6 @@ public class Date implements Comparable<Date> {
      * return false if not a valid calendar date and before 1900.
      */
     public boolean isValid(){
-        if(year < 1900){
-            return false;
-        }
         int whatMonth = isWhatMonth(month);
         if(whatMonth == -1){
             return false;
@@ -161,6 +169,85 @@ public class Date implements Comparable<Date> {
         }else{
             return day <= 28 && day > 0;
         }
+    }
+
+    /**
+     * Checking if the current date is a weekday or not.
+     * @return return true if it is a weekday;
+     * return 0 otherwise.
+     */
+    public boolean isWeekDay(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month-1);
+        calendar.set(Calendar.DAY_OF_MONTH,day);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek >= Calendar.MONDAY && dayOfWeek <= Calendar.FRIDAY;
+
+    }
+
+    /**
+     * Check if the date is in the past.
+     * @return return true if the date is in the past;
+     * return false otherwise
+     */
+    public boolean isPast(){
+        Calendar today = Calendar.getInstance();
+        int todayYear = today.get(Calendar.YEAR);
+        int todayMonth = today.get(Calendar.MONTH) + 1;
+        int todayDay = today.get(Calendar.DATE);
+        if(year <= todayYear)
+            if(month <= todayMonth)
+                return day < todayDay;
+        return false;
+    }
+
+    /**
+     * Checking if the date is today.
+     * @return return true if it is today;
+     * return false otherwise.
+     */
+    public boolean isToday(){
+        Calendar today = Calendar.getInstance();
+        int year = today.get(Calendar.YEAR);
+        int month = today.get(Calendar.MONTH) + 1;
+        int day = today.get(Calendar.DATE);
+        return this.year == year && this.month == month && this.day == day;
+    }
+
+    /**
+     * Checking if the date is in the future.
+     * @return return true if the date is in the future;
+     * return false otherwise.
+     */
+    public boolean isFuture(){
+        Calendar today = Calendar.getInstance();
+        int todayYear = today.get(Calendar.YEAR);
+        int todayMonth = today.get(Calendar.MONTH) + 1;
+        int todayDay = today.get(Calendar.DATE);
+        if(year >= todayYear)
+            if(month >= todayMonth)
+                return day > todayDay;
+        return false;
+    }
+
+    /**
+     *Check if the date is within 6 months from today. Don't take date in the past.
+     * @return return true if the date is within 6 months from today;
+     * return false otherwise including date in the past.
+     */
+    public boolean within6MonthFromToday(){
+        Calendar sixMonth = Calendar.getInstance();
+        sixMonth.add(Calendar.MONTH,6);
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.YEAR,year);
+        today.set(Calendar.MONTH,month-1);
+        today.set(Calendar.DAY_OF_MONTH,day);
+        if(isPast()){
+            return false;
+        }
+        int sixMonthFromToday = today.compareTo(sixMonth);
+        return sixMonthFromToday <= 0;
     }
 
     /**
@@ -214,12 +301,81 @@ public class Date implements Comparable<Date> {
      * @param args command line arguments
      */
     public static void main(String[] args){
-        /**
-         * testDaysInFeb_NonLeap(); testDaysInFeb_Leap(); testMonth_OutOfRange();
-         * testDay_OutOfRange();
-         * 4 invalid: day,month out of range. Day exceed non leap and leap year in feb
-         * 2 valid: First of janurary, Last day of december
-         */
+        testDaysInFeb_NonLeap();
+        testDaysInFeb_Leap();
+        test30DayMonth_OutOfRange();
+        testMonth_OutOfRange();
+        test31DayMonth_InRange();
+        testValidFeb_Leap();
+    }
+
+    /** Test Case #1 */
+    private static void testDaysInFeb_NonLeap(){
+        Date date = new Date("2/29/2018");
+        boolean expectedOutput = false;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #1: # of days in Feb. in a non-leap year is 28");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Test Case #2 */
+    private static void testDaysInFeb_Leap(){
+        Date date = new Date("2/30/2020");
+        boolean expectedOutput = false;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #2: # of days in Feb. in a leap year is 29");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Test Case #3 */
+    private static void test30DayMonth_OutOfRange(){
+        Date date = new Date("4/31/2020");
+        boolean expectedOutput = false;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #3: # of days in 30 Day Month is 1 to 30");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Test Case #4 */
+    private static void testMonth_OutOfRange(){
+        Date date = new Date("0/20/2010");
+        boolean expectedOutput = false;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #4: Range of months are from 1 to 12");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Test Case #5 */
+    private static void test31DayMonth_InRange(){
+        Date date = new Date("12/31/2000");
+        boolean expectedOutput = true;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #5: # of days in 31 Day Month is 1 to 31");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Test Case #6 */
+    private static void testValidFeb_Leap(){
+        Date date = new Date("2/29/2020");
+        boolean expectedOutput = true;
+        boolean actualOutput = date.isValid();
+        System.out.println("**Test case #6: # of days in Feb. in a leap year is 29");
+        testResult(date, expectedOutput, actualOutput);
+    }
+
+    /** Check if a given test case PASS or FAIL.
+     *Print out FAIL if the output does not match
+     * Print out PASS otherwise.
+     */
+    private static void testResult(Date date, boolean expectedOutput, boolean actualOutput){
+        System.out.println("Test input: " + date.toString());
+        System.out.println("Expected output: " + expectedOutput);
+        System.out.println("Actual output: " + actualOutput);
+        if(expectedOutput != actualOutput){
+            System.out.println(" (FAIL) ");
+        }else{
+            System.out.println(" (PASS) ");
+        }
     }
 }
 
