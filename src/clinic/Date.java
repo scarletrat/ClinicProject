@@ -371,9 +371,12 @@ public class Date implements Comparable<Date> {
         testResult(date, expectedOutput, actualOutput);
     }
 
-    /** Check if a given test case PASS or FAIL.
-     *Print out FAIL if the output does not match
-     * Print out PASS otherwise.
+    /** Check if a given test case and isValid method works PASS or FAIL.
+     *Print out FAIL if the output does not match.
+     *Print out PASS otherwise.
+     * @param date the date being tested.
+     * @param actualOutput the actual output of the test/isValid method.
+     * @param expectedOutput the expected output of the test.
      */
     private static void testResult(Date date, boolean expectedOutput, boolean actualOutput){
         System.out.println("Test input: " + date.toString());
