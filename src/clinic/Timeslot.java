@@ -1,8 +1,9 @@
 package clinic;
 
 /**
- * This class defines the time slots of a day in the format HH:MM
- *
+ * This class defines the time slots of a day in the format HH:MM.
+ * It is an enum class and have only 6 slots specified by the clinic.
+ * @author Gordon Lin, modified 9/27/2024.
  */
 public enum Timeslot {
     SLOT1 (9, 0),
@@ -12,7 +13,6 @@ public enum Timeslot {
     SLOT5 (15, 0),
     SLOT6 (16, 15);
 
-    public static final int NOON = 12;
     private final int hour;
     private final int minute;
 
