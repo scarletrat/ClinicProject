@@ -3,7 +3,7 @@ package clinic;
 /**
  * @author Christopher Lee, modified Sept. 24, 2024
  */
-public class Appointment {
+public class Appointment implements Comparable<Appointment>{
         private Date date;
         private Timeslot timeslot;
         private Profile profile;
@@ -14,9 +14,9 @@ public class Appointment {
      */
     public Appointment() {
         this.date = new Date();
-        this.timeslot = new Timeslot();
+        //this.timeslot = new Timeslot();
         this.profile = new Profile();
-        this.provider = new Provider();
+        //this.provider = new Provider();
     }
 
     /**
@@ -52,11 +52,10 @@ public class Appointment {
 
     /**
      * Compares this appointment to another appointment object.
-     * If this appointment is greater, return 1.
-     * If this appointment is lesser, return -1.
-     * If this appointment is equal to, return 0.
      * @param appointment object to be compared to
-     * @return
+     * @return return 1 ff this appointment is after input "appointment;
+     * return -1 if this appointment is before input "appointment";
+     * return 0 if equal.
      */
     @Override
     public int compareTo(Appointment appointment){

@@ -3,9 +3,9 @@ import java.util.Calendar;
 
 /**
  * This class models the date of the real world.
- * It will account for leap year. It implements Java Interface Comparable.
- * And uses the java Calendar class to get today's date
- * @author Gordon Lin, modified Sept. 23, 2024
+ * It will account for leap year. It implements Java Comparable Interface.
+ * And uses the Java Calendar class to get today's date
+ * @author Gordon Lin, modified Sept. 27, 2024.
  */
 public class Date implements Comparable<Date> {
     public static final int QUADRENNIAL = 4;
@@ -51,9 +51,9 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Compare to see if two dates are equal
-     * @param obj the object to be compared to
-     * @return return true if two date objects are equal; return false otherwise
+     * Compare to see if two dates are equal.
+     * @param obj the object to be compared to.
+     * @return return true if two date objects are equal; return false otherwise.
      */
     @Override
     public boolean equals(Object obj){
@@ -78,7 +78,7 @@ public class Date implements Comparable<Date> {
     /**
      * Compare two Date objects.
      * @param date the Date object being compared to.
-     * @return return 1 if this date object is greater than "date" or after "date",
+     * @return return 1 if this date object is greater than "date" or after "date";
      * return -1 if smaller or before "date";
      * return 0 if they are equal.
      */
@@ -102,6 +102,14 @@ public class Date implements Comparable<Date> {
             }
         }
         return 0;
+    }
+
+    public String getDate(){
+        // return mm/dd/yyyy format
+        String month = Integer.toString(this.getMonth());
+        String day = Integer.toString(this.getDay());
+        String year = Integer.toString(this.getYear());
+        return(month +"/" + day +"/" + year);
     }
 
     /**
