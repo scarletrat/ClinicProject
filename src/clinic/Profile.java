@@ -61,6 +61,10 @@ public class Profile implements Comparable<Profile>{
         return false;
     }
 
+    /**
+     * A textual representation of the Profile object.
+     * @return return a string containing first nam, last name, and date of birth.
+     */
     @Override
     public String toString(){
         return(fname + " " + lname + " " + dob);
@@ -69,17 +73,25 @@ public class Profile implements Comparable<Profile>{
     /**
      * Compare two Profile objects.
      * @param profile the object to be compared.
-     * @return return >0 or positive if either lname, fname, dob in this order of this profile is after input "profile" dob;
-     * return <0 or negative if either lname, fname, dob in this order of this profile is before input "profile" dob;
-     * return 0 otherwise or equal.
+     * @return return 1 if either lname, fname, dob in this order of this profile is after input "profile" dob;
+     * return -1 if either lname, fname, dob in this order of this profile is before input "profile" dob;
+     * return 0 if equal.
      */
     @Override
     public int compareTo(Profile profile){
         if(this.lname.compareTo(profile.lname) != 0){
-            return this.lname.compareTo(profile.lname);
+            if(this.lname.compareTo(profile.lname)<0)
+                return -1;
+            else{
+                return 1;
+            }
         }
         if(this.fname.compareTo(profile.fname) != 0){
-            return this.fname.compareTo(profile.fname);
+            if(this.fname.compareTo(profile.fname)<0)
+                return -1;
+            else{
+                return 1;
+            }
         }
         if(this.dob.compareTo(profile.dob) != 0){
             return this.dob.compareTo(profile.dob);
@@ -225,8 +237,6 @@ public class Profile implements Comparable<Profile>{
     /** Check if a given test case and compareTo method works PASS or FAIL.
      * Print out FAIL if the output does not match.
      * Print out PASS otherwise.
-     * For string comparison, since it can return something other than -1 or 1 or 0,
-     * if they have the same sign it is considered passed.
      * @param profile the date being tested.
      * @param actualOutput the actual output of the test/isValid method.
      * @param expectedOutput the expected output of the test.
@@ -236,7 +246,7 @@ public class Profile implements Comparable<Profile>{
         System.out.println("Test to be compared to: " + compare.toString());
         System.out.println("Expected output: " + expectedOutput);
         System.out.println("Actual output: " + actualOutput);
-        if(expectedOutput * actualOutput <0){
+        if(expectedOutput != actualOutput){
             System.out.println(" (FAIL) ");
         }else{
             System.out.println(" (PASS) ");

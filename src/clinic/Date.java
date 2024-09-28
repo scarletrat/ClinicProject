@@ -37,6 +37,7 @@ public class Date implements Comparable<Date> {
         this.year = year;
         this.month = month;
         this.day = day;
+        this.isValid();
     }
 
     /**
@@ -48,6 +49,7 @@ public class Date implements Comparable<Date> {
         this.year = Integer.parseInt(datePart[2]);
         this.day = Integer.parseInt(datePart[1]);
         this.month = Integer.parseInt(datePart[0]);
+        this.isValid();
     }
 
     /**
