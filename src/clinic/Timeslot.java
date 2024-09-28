@@ -12,7 +12,48 @@ public enum Timeslot {
     SLOT5 (15, 0),
     SLOT6 (16, 15);
 
+    public static final int NOON = 12;
+    private final int hour;
+    private final int minute;
+
     private Timeslot(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
+
+    /**
+     * Get the timeslot given the input, 1-6
+     * @param time the number 1 to 6
+     * @return the timeslot that corresponds with each number;
+     * return null if it's not a valid timeslot.
+     */
+    public static Timeslot getTime(String time){
+        int timeSlot = Integer.parseInt(time);
+        if(timeSlot == 1){
+            return SLOT1;
+        } else if(timeSlot == 2){
+            return SLOT2;
+        } else if (timeSlot == 3) {
+            return SLOT3;
+        } else if (timeSlot == 4) {
+            return SLOT4;
+        } else if (timeSlot == 5){
+            return SLOT5;
+        } else if (timeSlot == 6){
+            return SLOT6;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * Return a textual representation of the timeslot.
+     * @return return a string containing the hour:minute.
+     */
+    @Override
+    public String toString(){
+        return(this.hour + ":" + this.minute );
+    }
+
 
 }
