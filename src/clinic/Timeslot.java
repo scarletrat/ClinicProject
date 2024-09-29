@@ -13,6 +13,7 @@ public enum Timeslot {
     SLOT5 (15, 0),
     SLOT6 (16, 15);
 
+    public static final int NOON = 12;
     private final int hour;
     private final int minute;
 
@@ -47,13 +48,34 @@ public enum Timeslot {
     }
 
     /**
+     * Get the hour of the timeslot.
+     * @return return the hour of the timeslot.
+     */
+    public int getHour(){
+        return hour;
+    }
+
+    /**
+     * Get the minute of the timeslot.
+     * @return return the minute of the timeslot.
+     */
+    public int getMinute(){
+        return minute;
+    }
+
+    /**
      * Return a textual representation of the timeslot.
      * @return return a string containing the hour:minute.
      */
     @Override
     public String toString(){
-        return(this.hour + ":" + this.minute );
+        String time;
+        if(hour>NOON){
+            time = "PM";
+        }else{
+            time = "AM";
+        }
+        return(this.hour + ":" + this.minute + " " + time);
     }
-
 
 }

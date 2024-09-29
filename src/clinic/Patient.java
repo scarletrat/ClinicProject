@@ -142,7 +142,7 @@ public class Patient implements Comparable<Patient> {
             return 0;
         }
         while(ptr.getAppointment() != null) {
-            int ptrCost = ptr.getAppointment().getProvider().getSpecialty();
+            int ptrCost = ptr.getAppointment().getProvider().getSpecialty().getCharge();
             charge += ptrCost;
             ptr = ptr.getNext();
         }
