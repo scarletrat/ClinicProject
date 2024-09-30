@@ -192,11 +192,11 @@ public class List {
         for (int i = 0; i < size-1; i++) {
             int min = i;
             for(int j = i+1; j<size; j++) {
-                if(appointments[j].compareTo(appointments[i]) < 0) {
+                if(appointments[j].compareTo(appointments[min]) < 0) {
                     min = j;
                 }
-                else if(appointments[j].getProvider().compareTo(appointments[i].getProvider())<0 &&
-                        appointments[j].compareTo(appointments[i]) == 0){
+                else if(appointments[j].getProvider().compareTo(appointments[min].getProvider())<0 &&
+                        appointments[j].compareTo(appointments[min]) == 0){
                     min =j;
                 }
             }
