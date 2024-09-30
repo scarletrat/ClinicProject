@@ -4,7 +4,7 @@ package clinic;
  * @author Christopher Lee, modified Sept. 28, 2024.
  */
 public class List {
-    private Appointment[] appointments; //array of appointment objects
+    private Appointment[] appointments = new Appointment[0]; //array of appointment objects
     private int size = 0; //number of appointments
 
     /**
@@ -85,6 +85,9 @@ public class List {
         return true;
     }
 
+    /**
+     * sorts array by profile, date, then timeslot
+     */
     //public void printByPatient(){
 
     //}
