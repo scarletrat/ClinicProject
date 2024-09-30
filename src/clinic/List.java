@@ -73,11 +73,12 @@ public class List {
     public void remove(Appointment appointment) {
         if (contains(appointment)) {
             Appointment[] updatedArray = new Appointment[appointments.length];
+            int target = find(appointment);
             for (int i = 0; i < size; i++) {
-                if (i == find(appointment)) {
+                if (i == target) {
                    appointments[i] = null;
                 }
-                else if(i>find(appointment)){
+                else if(i>target){
                     updatedArray[i-1] = appointments[i];
                 }
                 else{
