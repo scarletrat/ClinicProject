@@ -29,18 +29,17 @@ public enum Timeslot {
      * return null if it's not a valid timeslot.
      */
     public static Timeslot getTime(String time){
-        int timeSlot = Integer.parseInt(time);
-        if(timeSlot == 1){
+        if(time.equals("1")){
             return SLOT1;
-        } else if(timeSlot == 2){
+        } else if(time.equals("2")){
             return SLOT2;
-        } else if (timeSlot == 3) {
+        } else if (time.equals("3")) {
             return SLOT3;
-        } else if (timeSlot == 4) {
+        } else if (time.equals("4")) {
             return SLOT4;
-        } else if (timeSlot == 5){
+        } else if (time.equals("5")){
             return SLOT5;
-        } else if (timeSlot == 6){
+        } else if (time.equals("6")){
             return SLOT6;
         }else{
             return null;
@@ -70,12 +69,18 @@ public enum Timeslot {
     @Override
     public String toString(){
         String time;
-        if(hour>NOON){
+        int hour;
+        if(this.hour>NOON){
+            hour = this.hour -12;
             time = "PM";
         }else{
+            hour = this.hour;
             time = "AM";
         }
-        return(this.hour + ":" + this.minute + " " + time);
+        if(this.minute == 0){
+            return(hour + ":00" + " " + time);
+        }
+        return(hour + ":" + this.minute + " " + time);
     }
 
 }

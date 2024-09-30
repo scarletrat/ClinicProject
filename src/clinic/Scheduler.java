@@ -32,15 +32,22 @@ public class Scheduler {
      * @return return a string of whether it's valid or why it's not valid.
      */
     public String isValidDob(Appointment appointment){
-        boolean validDate = appointment.getDate().isValid();
+        boolean validDate = appointment.getProfile().getDob_inDate().isValid();
         if(!validDate){
-            return ("Patient dob: " + appointment.getDate() + " is not a valid calendar date.");
+            return ("Patient dob: " + appointment.getProfile().getDob_inString() + " is not a valid calendar date.");
         }
-        if(appointment.getDate().isFuture() || appointment.getDate().isToday()){
-            return("Patient dob: " + appointment.getDate() + " is today or a date after today.");
+        if(appointment.getProfile().getDob_inDate().isFuture() || appointment.getProfile().getDob_inDate().isToday()){
+            return("Patient dob: " + appointment.getProfile().getDob_inString() + " is today or a date after today.");
         }
         return "valid";
     }
+
+    /**
+     * This method does the S command. Add the appointment to clinic.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of the command outcome.
+     */
     public String sCommand(String[] inputPart,List clinic){
         Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],inputPart[4],inputPart[5],inputPart[6]);
         String validAppointmentDate = isValidAppointmentDate(appointment);
@@ -55,13 +62,12 @@ public class Scheduler {
         if(!validDob.equalsIgnoreCase("valid")){
             return validDob;
         }
+        if(clinic.contains(appointment)){
+            return(appointment.getProfile() + " has an existing appointment at the same timeslot.");
+        }
         Provider provider = appointment.getProvider();
         if(provider == null){
             return(inputPart[6] + " - provider doesn't exist.");
-        }
-        //check if provider is not avaiable
-        if(clinic.contains(appointment){
-            return(appointment.getProfile() + " has an existing appointment at the same timeslot.");
         }
         if(!clinic.isProviderFree(appointment)){
             return(appointment.getProvider() + " is not available at slot " + inputPart[2]);
@@ -71,6 +77,13 @@ public class Scheduler {
                 + " " + appointment.getProfile() + " " + appointment.getProvider().toString() + " booked.");
     }
 
+    /**
+     * This method does the command of the command line input.
+     * @param input the input command line.
+     * @param clinic the clinic.
+     * @return return true if the command to keep running.
+     * return false if terminated.
+     */
     public boolean command(String input,List clinic) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
@@ -105,6 +118,7 @@ public class Scheduler {
                 return true;
         }
     }
+
     public void run() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Scheduler is running.");

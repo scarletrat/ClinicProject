@@ -198,10 +198,12 @@ public class Date implements Comparable<Date> {
         int todayYear = today.get(Calendar.YEAR);
         int todayMonth = today.get(Calendar.MONTH) + 1;
         int todayDay = today.get(Calendar.DATE);
-        if(year <= todayYear)
-            if(month <= todayMonth)
+        if(year == todayYear) {
+            if (month == todayMonth) {
                 return day < todayDay;
-        return false;
+            } else return month < todayMonth;
+        }
+        return year < todayYear;
     }
 
     /**
@@ -227,10 +229,12 @@ public class Date implements Comparable<Date> {
         int todayYear = today.get(Calendar.YEAR);
         int todayMonth = today.get(Calendar.MONTH) + 1;
         int todayDay = today.get(Calendar.DATE);
-        if(year >= todayYear)
-            if(month >= todayMonth)
+        if(year == todayYear) {
+            if (month == todayMonth) {
                 return day > todayDay;
-        return false;
+            } else return month > todayMonth;
+        }
+        return year > todayYear;
     }
 
     /**
@@ -303,6 +307,8 @@ public class Date implements Comparable<Date> {
      * @param args command line arguments
      */
     public static void main(String[] args){
+        Date past = new Date("2/29/2024");
+        System.out.println(past.isPast());
         testDaysInFeb_NonLeap();
         testDaysInFeb_Leap();
         test30DayMonth_OutOfRange();
