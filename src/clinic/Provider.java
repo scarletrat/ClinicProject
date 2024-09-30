@@ -49,6 +49,11 @@ public enum Provider {
     public Specialty getSpecialty(){
         return specialty;
     }
+
+    public Location getLocation(){
+        return location;
+    }
+
     /**
      * Return a textual representation of Provider.
      * @return return [name, location, specialty]

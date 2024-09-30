@@ -106,14 +106,6 @@ public class Date implements Comparable<Date> {
         return 0;
     }
 
-    public String getDate(){
-        // return mm/dd/yyyy format
-        String month = Integer.toString(this.getMonth());
-        String day = Integer.toString(this.getDay());
-        String year = Integer.toString(this.getYear());
-        return(month +"/" + day +"/" + year);
-    }
-
     /**
      * Get the year of the date.
      * @return return year of the date.
@@ -164,8 +156,8 @@ public class Date implements Comparable<Date> {
 
     /**
      * Testing if the date is a valid calendar date.
-     * @return return true if a valid calendar date and after 1900;
-     * return false if not a valid calendar date and before 1900.
+     * @return return true if a valid calendar date;
+     * return false if not a valid calendar date.
      */
     public boolean isValid(){
         int whatMonth = isWhatMonth(month);
