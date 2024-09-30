@@ -49,7 +49,8 @@ public class Scheduler {
      * @return return a string representation of the command outcome.
      */
     public String sCommand(String[] inputPart,List clinic){
-        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],inputPart[4],inputPart[5],inputPart[6]);
+        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
+                inputPart[4],inputPart[5],inputPart[6]);
         String validAppointmentDate = isValidAppointmentDate(appointment);
         if(!validAppointmentDate.equalsIgnoreCase("valid")){
             return validAppointmentDate;
@@ -63,18 +64,79 @@ public class Scheduler {
             return validDob;
         }
         if(clinic.contains(appointment)){
-            return(appointment.getProfile() + " has an existing appointment at the same timeslot.");
+            return(appointment.getProfile() + " has an existing appointment at the same time slot.");
         }
         Provider provider = appointment.getProvider();
         if(provider == null){
             return(inputPart[6] + " - provider doesn't exist.");
         }
         if(!clinic.isProviderFree(appointment)){
-            return(appointment.getProvider() + " is not available at slot " + inputPart[2]);
+            return(appointment.getProvider() + " is not available at slot " + inputPart[2] + ".");
         }
         clinic.add(appointment);
-        return(appointment.getDate() + " " + appointment.getTimeslot().toString()
-                + " " + appointment.getProfile() + " " + appointment.getProvider().toString() + " booked.");
+        return(appointment + " booked.");
+    }
+
+    /**
+     * This method does the C command. Cancel an existing appointment.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of whether the appointment have or haven't been cancelled.
+     */
+    public String cCommand(String[] inputPart, List clinic){
+        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
+                inputPart[4],inputPart[5],inputPart[6]);
+        if(clinic.contains(appointment)){
+            clinic.remove(appointment);
+            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
+                    + appointment.getProfile() + " has been canceled.");
+        }else{
+            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
+                    + appointment.getProfile() + " does not exist.");
+        }
+    }
+
+    /**
+     * This method does the R command. Reschedule an existing appointment.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of the result.
+     */
+    public String rCommand(String[] inputPart, List clinic){
+        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
+                inputPart[4],inputPart[5],inputPart[6]);
+        if(!clinic.contains(appointment)){
+            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
+                    + appointment.getProfile() + " does not exist.");
+        }else{
+            String newTime = inputPart[7];
+            Timeslot newTimeSlot = Timeslot.getTime(newTime);
+            if(newTimeSlot == null){
+                return(newTime + " is not a valid timeslot.");
+            }
+            Appointment newAppointment = new Appointment(inputPart[1],newTime,inputPart[3],
+                    inputPart[4],inputPart[5],inputPart[6]);
+            if(!clinic.isProviderFree(appointment)){
+                return(appointment.getProvider() + " is not available at slot " + inputPart[2] + ".");
+            }
+            clinic.remove(appointment);
+            clinic.add(newAppointment);
+        }
+        return("Rescheduled to " + appointment);
+    }
+
+    public void PS_Command(List clinic, MedicalRecord medicalRecord){
+        medicalRecord.add(clinic);
+        int charge;
+        Patient[] record = medicalRecord.getPatients();
+        System.out.println(("** Billing statement ordered by patient **"));
+        clinic.sortPatient();
+        for (int i = 0;i<medicalRecord.getSize(); i++){
+            Patient current = record[i];
+            charge = current.charge();
+            System.out.println("(" + i+1 +")" + current.getProfile() +" [amount due: $" + charge + ".00]");
+        }
+        System.out.println("** end of list **");
     }
 
     /**
@@ -84,7 +146,7 @@ public class Scheduler {
      * @return return true if the command to keep running.
      * return false if terminated.
      */
-    public boolean command(String input,List clinic) {
+    public boolean command(String input,List clinic, MedicalRecord medicalRecord) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
         switch (command) {
@@ -93,22 +155,22 @@ public class Scheduler {
                 System.out.println(sCommand(inputPart,clinic));
                 return true;
             case "C":
-                System.out.println("Cancel appointment");
+                System.out.println(cCommand(inputPart,clinic));
                 return true;
             case "R":
-                System.out.println("Reschedule appointment");
+                System.out.println(rCommand(inputPart,clinic));
                 return true;
             case "PA":
-                System.out.println("Display appointment sorted by dates");
+                System.out.println(clinic.printByAppointment());
                 return true;
             case "PP":
-                System.out.println("Display appointment by patient");
+                System.out.println(clinic.printByPatient());
                 return true;
             case "PL":
-                System.out.println("Display appointment sorted by location");
+                System.out.println(clinic.printByLocation());
                 return true;
             case "PS":
-                System.out.println("Display billing info and move all appointments to medicalRecord");
+                PS_Command(clinic,medicalRecord);
                 return true;
             case "Q":
                 System.out.println("Scheduler Terminated.");
@@ -124,6 +186,7 @@ public class Scheduler {
         System.out.println("Scheduler is running.");
         String input;
         List clinic = new List();
+        MedicalRecord medicalRecord = new MedicalRecord();
         while (true) {
             input = scanner.nextLine();
             //If the user enters an empty line, continue the while loop
@@ -131,10 +194,10 @@ public class Scheduler {
                 continue;
             }
             //input command
-            boolean terminate = command(input,clinic);
+            boolean terminate = command(input,clinic,medicalRecord);
             if(!terminate){
                 return;
             }
         }
     }
-    }
+}
