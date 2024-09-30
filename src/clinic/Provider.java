@@ -24,6 +24,28 @@ public enum Provider {
         this.specialty = specialty;
     }
 
+    public static Provider getProvider(String provider){
+        if(provider.equalsIgnoreCase("PATEL")){
+            return PATEL;
+        } else if(provider.equalsIgnoreCase("LIM")){
+            return LIM;
+        } else if (provider.equalsIgnoreCase("ZIMES")) {
+            return ZIMNES;
+        } else if (provider.equalsIgnoreCase("HARPER")) {
+            return HARPER;
+        } else if (provider.equalsIgnoreCase("KAUR")){
+            return KAUR;
+        } else if (provider.equalsIgnoreCase("TAYLOR")){
+            return TAYLOR;
+        }else if (provider.equalsIgnoreCase("RAMESH")){
+            return RAMESH;
+        }else if (provider.equalsIgnoreCase("CERAVOLO")){
+            return CERAVOLO;
+        }else{
+            return null;
+        }
+    }
+
     public Specialty getSpecialty(){
         return specialty;
     }
