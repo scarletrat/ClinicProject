@@ -1,6 +1,8 @@
 package clinic;
 
 /**
+ * This class represents an appointment object, containing the date of the appointment,
+ * the user's profile, the user's provider, and the time of the appointment.
  * @author Christopher Lee, modified Sept. 24, 2024
  */
 public class Appointment implements Comparable<Appointment>{

@@ -1,7 +1,8 @@
 package clinic;
 
 /**
- * Manages array of appointments.
+ * Manages array of appointments by sorting, adding elements, removing elements,
+ * and adjusting the size of the array.
  * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024.
  */
 public class List {
@@ -66,7 +67,7 @@ public class List {
     }
 
     /**
-     * remove appointment from array and replace with null
+     * remove appointment from array and shifts all elements by 1 index
      *
      * @param appointment element to be removed
      */
@@ -215,6 +216,9 @@ public class List {
         appointments[i] = temp;
     }
 
+    /**
+     * helper method for the printBy... methods to list all the appointments in a list format
+     */
     private void printAppointments(){
             for(int i = 0; i<size; i++){
                 System.out.println(appointments[i].toString());
@@ -229,6 +233,9 @@ public class List {
         return size;
     }
 
+    /**
+     * removes all appointments from the array and resetting the size to 0
+     */
     public void removeAll(){
         this.appointments = new Appointment[0];
         this.size =0;
