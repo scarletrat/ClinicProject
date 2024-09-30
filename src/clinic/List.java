@@ -88,8 +88,10 @@ public class List {
     /**
      * sorts array by profile, date, then timeslot
      */
-    //public void printByPatient(){
-
-    //}
-
+    /*public void printByPatient(){
+        for(int i = 0; i<size; i++){
+            for(int j = i; j>0; j--){
+                if()
+        }
+    }*/
 }
