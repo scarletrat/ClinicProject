@@ -42,7 +42,7 @@ public class MedicalRecord {
      */
     public void add(List clinic){
         int size = clinic.getSize();
-        Appointment[] appointments = clinic.getAppointment();
+        Appointment[] appointments = clinic.getAppointments();
         for(int i = 0; i<size; i++){
             Profile profile = appointments[i].getProfile();
             if(contains(profile)){

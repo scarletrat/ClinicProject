@@ -161,13 +161,13 @@ public class Scheduler {
                 System.out.println(rCommand(inputPart,clinic));
                 return true;
             case "PA":
-                System.out.println(clinic.printByAppointment());
+                clinic.printByAppointment();
                 return true;
             case "PP":
-                System.out.println(clinic.printByPatient());
+                clinic.printByPatient();
                 return true;
             case "PL":
-                System.out.println(clinic.printByLocation());
+                clinic.printByLocation();
                 return true;
             case "PS":
                 PS_Command(clinic,medicalRecord);
