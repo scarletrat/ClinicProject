@@ -197,7 +197,7 @@ public class List {
                     min = j;
                 }
                 else if(appointments[j].getProvider().compareTo(appointments[i].getProvider())<0 &&
-                        appointments[j].compareTo(appointments[i]) == 0){
+                        appointments[j].equals(appointments[i])){
                     min =j;
                 }
             }

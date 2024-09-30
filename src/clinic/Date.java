@@ -307,8 +307,9 @@ public class Date implements Comparable<Date> {
      * @param args command line arguments
      */
     public static void main(String[] args){
-        Date past = new Date("2/29/2024");
-        System.out.println(past.isPast());
+        Date past = new Date("11/5/2024");
+        Date past1 = new Date("10/30/2024");
+        System.out.println(past.compareTo(past1));
         testDaysInFeb_NonLeap();
         testDaysInFeb_Leap();
         test30DayMonth_OutOfRange();
