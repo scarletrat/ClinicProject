@@ -115,7 +115,7 @@ public class Profile implements Comparable<Profile>{
      * Get the date of birth of the profile in String.
      * @return return the date of birth of the profile in string.
      */
-    public String getDob_inString(){ return dob.getDate();}
+    public String getDob_inString(){ return dob.toString();}
 
     /**
      * Get the date of birth of the profile in Date object.
