@@ -3,7 +3,7 @@ package clinic;
 /**
  * This is an array-based implementation to hold a list of Patient objects.
  * It models a clinic's medical record with the the Patient object.
- * @author Gordon Lin, modified 9/29/2024
+ * @author Gordon Lin, modified 9/30/2024
  */
 public class MedicalRecord {
     private Patient[] patients;
@@ -37,19 +37,20 @@ public class MedicalRecord {
     }
 
     /**
-     * Add a patient to the medical record.
+     * Add the clinic's appointment to the medical record.
      * @param clinic the clinic containing all the appointments.
      */
     public void add(List clinic){
-        int size = clinic.getSize();
+        int clinicSize = clinic.getSize();
         Appointment[] appointments = clinic.getAppointments();
-        for(int i = 0; i<size; i++){
+        for(int i = 0; i<clinicSize; i++){
             Profile profile = appointments[i].getProfile();
             if(contains(profile)){
                 Patient patient = findPatient(profile);
                 updatePatient(patient,appointments[i]);
             }else{
                 addNewPatient(appointments[i]);
+                size++;
             }
         }
     }

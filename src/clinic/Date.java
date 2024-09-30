@@ -5,7 +5,7 @@ import java.util.Calendar;
  * This class models the date of the real world.
  * It will account for leap year. It implements Java Comparable Interface.
  * And uses the Java Calendar class to get today's date
- * @author Gordon Lin, modified Sept. 27, 2024.
+ * @author Gordon Lin, modified Sept. 30, 2024.
  */
 public class Date implements Comparable<Date> {
     public static final int QUADRENNIAL = 4;

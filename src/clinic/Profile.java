@@ -4,7 +4,7 @@ package clinic;
  * This class models a patient's profile.
  * It will include their first and last name and date of birth.
  * It implements Java Comparable Interface.
- * @author Gordon Lin modified Sept. 27, 2024.
+ * @author Gordon Lin modified Sept. 28, 2024.
  */
 public class Profile implements Comparable<Profile>{
     private String fname;

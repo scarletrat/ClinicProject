@@ -2,7 +2,7 @@ package clinic;
 
 /**
  * Manages array of appointments.
- * @author Christopher Lee, modified Sept. 28, 2024.
+ * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024.
  */
 public class List {
     private Appointment[] appointments = new Appointment[0]; //array of appointment objects
@@ -215,7 +215,7 @@ public class List {
         appointments[i] = temp;
     }
 
-    public void printAppointments(){
+    private void printAppointments(){
             for(int i = 0; i<size; i++){
                 System.out.println(appointments[i].toString());
             }
@@ -229,11 +229,35 @@ public class List {
         return size;
     }
 
+    public void removeAll(){
+        this.appointments = new Appointment[0];
+        this.size =0;
+    }
     /**
      * returns appointments array
      * @return appointments instance variable
      */
     public Appointment[] getAppointments(){
         return appointments;
+    }
+
+    /**
+     * Get the appointments from the list without the provider information.
+     * @param date the date of the appointment.
+     * @param tempSlot the timeslot of the appointment.
+     * @param profile the profile of the appointment.
+     * @return return the appointment or null if not found.
+     */
+    public Appointment getAppointment(Date date, Timeslot tempSlot, Profile profile){
+        for(int i = 0; i<size; i++){
+            if(appointments[i].getProfile().equals(profile)){
+                if(appointments[i].getDate().equals(date)){
+                    if(appointments[i].getTimeslot().equals(tempSlot)){
+                        return appointments[i];
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

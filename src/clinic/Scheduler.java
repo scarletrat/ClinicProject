@@ -1,7 +1,12 @@
 package clinic;
 import java.util.Scanner;
+import java.text.DecimalFormat;
 
-
+/**
+ * This class is the user interface of the clinic project.
+ * The user inputs the commands to create, cancel, reschedule, and print appointments.
+ * @author Gordon Lin, modified 9/30/2024.
+ */
 public class Scheduler {
 
     /**
@@ -84,16 +89,17 @@ public class Scheduler {
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
     public String cCommand(String[] inputPart, List clinic){
-        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
-                inputPart[4],inputPart[5],inputPart[6]);
-        if(clinic.contains(appointment)){
-            clinic.remove(appointment);
-            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
-                    + appointment.getProfile() + " has been canceled.");
-        }else{
-            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
-                    + appointment.getProfile() + " does not exist.");
+        Date date = new Date(inputPart[1]);
+        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
+        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
+        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
+        if(appointment ==null){
+            return(date + " " + tempSlot+ " "
+                    + profile + " does not exist.");
         }
+        clinic.remove(appointment);
+        return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
+                    + appointment.getProfile() + " has been canceled.");
     }
 
     /**
@@ -103,29 +109,31 @@ public class Scheduler {
      * @return return a string representation of the result.
      */
     public String rCommand(String[] inputPart, List clinic){
-        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
-                inputPart[4],inputPart[5],inputPart[6]);
-        if(!clinic.contains(appointment)){
-            return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
-                    + appointment.getProfile() + " does not exist.");
-        }else{
-            String newTime = inputPart[7];
-            Timeslot newTimeSlot = Timeslot.getTime(newTime);
-            if(newTimeSlot == null){
-                return(newTime + " is not a valid timeslot.");
-            }
-            Appointment newAppointment = new Appointment(inputPart[1],newTime,inputPart[3],
-                    inputPart[4],inputPart[5],inputPart[6]);
-            if(!clinic.isProviderFree(appointment)){
-                return(appointment.getProvider() + " is not available at slot " + inputPart[2] + ".");
-            }
-            clinic.remove(appointment);
-            clinic.add(newAppointment);
+        Date date = new Date(inputPart[1]);
+        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
+        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
+        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
+        Timeslot newTimeSlot = Timeslot.getTime(inputPart[6]);
+        if(appointment ==null){
+            return(date + " " + tempSlot+ " "
+                    + profile + " does not exist.");
         }
-        return("Rescheduled to " + appointment);
+        if(newTimeSlot == null){
+            return(inputPart[6] + " is not a valid timeslot.");
+        }
+        String provider = appointment.getProvider().name();
+        Appointment newAppointment = new Appointment(inputPart[1],inputPart[6],inputPart[3],
+                    inputPart[4],inputPart[5],provider);
+        if(!clinic.isProviderFree(newAppointment)){
+            return(appointment.getProvider() + " is not available at slot " + inputPart[6] + ".");
+        }
+        clinic.remove(appointment);
+        clinic.add(newAppointment);
+        return("Rescheduled to " + newAppointment);
     }
 
     public void PS_Command(List clinic, MedicalRecord medicalRecord){
+        clinic.sortPatient();
         medicalRecord.add(clinic);
         int charge;
         Patient[] record = medicalRecord.getPatients();
@@ -134,9 +142,12 @@ public class Scheduler {
         for (int i = 0;i<medicalRecord.getSize(); i++){
             Patient current = record[i];
             charge = current.charge();
-            System.out.println("(" + i+1 +")" + current.getProfile() +" [amount due: $" + charge + ".00]");
+            DecimalFormat format = new DecimalFormat("#,###.00");
+            String formatCharge = format.format(charge);
+            System.out.println("(" + (i+1) +")" + current.getProfile() +" [amount due: $" + formatCharge + "]");
         }
         System.out.println("** end of list **");
+        clinic.removeAll();
     }
 
     /**
