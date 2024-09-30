@@ -7,14 +7,15 @@ package clinic;
  * @author Gordon Lin, modified 9/28/2024
  */
 public enum Provider {
-    PATEL(Location.BRIDGEWATER, Specialty.FAMILY),
-    LIM(Location.BRIDGEWATER, Specialty.PEDIATRICIAN),
-    ZIMNES(Location.CLARK, Specialty.FAMILY),
+    CERAVOLO(Location.EDISON, Specialty.PEDIATRICIAN),
     HARPER(Location.CLARK, Specialty.FAMILY),
     KAUR(Location.PRINCETON, Specialty.ALLERGIST),
-    TAYLOR(Location.PISCATAWAY, Specialty.PEDIATRICIAN),
+    LIM(Location.BRIDGEWATER, Specialty.PEDIATRICIAN),
+    PATEL(Location.BRIDGEWATER, Specialty.FAMILY),
     RAMESH(Location.MORRISTOWN, Specialty.ALLERGIST),
-    CERAVOLO(Location.EDISON, Specialty.PEDIATRICIAN);
+    TAYLOR(Location.PISCATAWAY, Specialty.PEDIATRICIAN),
+    ZIMNES(Location.CLARK, Specialty.FAMILY);
+
 
     private final Location location;
     private final Specialty specialty;

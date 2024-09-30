@@ -72,7 +72,13 @@ public class Appointment implements Comparable<Appointment>{
           return -1;
         }
         else{
-            return 0;
+            if(this.timeslot.compareTo(appointment.timeslot)>0){
+                return 1;
+            }
+            else if(this.timeslot.compareTo(appointment.timeslot)<0){
+                return -1;
+            }
+            else return 0;
         }
     }
 
