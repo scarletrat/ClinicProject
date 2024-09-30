@@ -130,12 +130,13 @@ public class Scheduler {
         int charge;
         Patient[] record = medicalRecord.getPatients();
         System.out.println(("** Billing statement ordered by patient **"));
-        clinic.sortByPatient();
+        clinic.sortPatient();
         for (int i = 0;i<medicalRecord.getSize(); i++){
             Patient current = record[i];
             charge = current.charge();
             System.out.println("(" + i+1 +")" + current.getProfile() +" [amount due: $" + charge + ".00]");
         }
+        System.out.println("** end of list **");
     }
 
     /**
