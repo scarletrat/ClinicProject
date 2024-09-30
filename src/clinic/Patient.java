@@ -3,7 +3,7 @@ package clinic;
 /**
  * This class contains the patient's information.
  * It includes the profile object and visits.
- * @author Gordon Lin, modified 9/28/2024
+ * @author Gordon Lin, modified 9/29/2024
  */
 
 public class Patient implements Comparable<Patient> {
@@ -79,6 +79,14 @@ public class Patient implements Comparable<Patient> {
     }
 
     /**
+     * Get the profile of the patient.
+     * @return return the patient's profile.
+     */
+    public Profile getProfile(){
+        return this.profile;
+    }
+
+    /**
      * Add an appointment visit to the Patient's visits.
      * @param appointment the appointment.
      */
@@ -142,7 +150,7 @@ public class Patient implements Comparable<Patient> {
             return 0;
         }
         while(ptr.getAppointment() != null) {
-            int ptrCost = ptr.getAppointment().getProvider().getSpecialty();
+            int ptrCost = ptr.getAppointment().getProvider().getSpecialty().getCharge();
             charge += ptrCost;
             ptr = ptr.getNext();
         }
