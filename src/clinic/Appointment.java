@@ -154,4 +154,10 @@ public class Appointment implements Comparable<Appointment>{
     public void setProvider(Provider provider) {
         this.provider = provider;
     }
+    public static void main(String[] args){
+        Appointment one = new Appointment("10/29/2024","5", "joe", "joe", "5/1/2000", "HARPER");
+        Appointment two = new Appointment("10/30/2024","5", "joe", "joe", "1/20/2023", "HARPER");
+        System.out.println(one.compareTo(two));
+    }
 }
+
