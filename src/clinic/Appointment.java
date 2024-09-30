@@ -33,8 +33,11 @@ public class Appointment implements Comparable<Appointment>{
         this.provider = provider;
     }
 
-    public Appointment(String date, String timeslot, String patient){
-
+    public Appointment(String date, String timeslot, String firstName, String lastName, String dob, String provider){
+        this.date = new Date(date);
+        this.timeslot = Timeslot.getTime(timeslot);
+        this.profile = new Profile(firstName, lastName, dob);
+        this.provider = Provider.getProvider(provider);
     }
     /**
      * Compares obj to this appointment. returns true if equal, false otherwise.
