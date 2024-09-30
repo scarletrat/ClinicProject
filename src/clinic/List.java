@@ -10,8 +10,7 @@ public class List {
     private int size = 0; //number of appointments
 
     /**
-     * traverses array until it finds an element equal to the appointment parameter
-     *
+     * Traverses array until it finds an element equal to the appointment parameter
      * @param appointment element to find in array
      * @return -1 if element is not in array and the index if in the array
      */
@@ -25,7 +24,7 @@ public class List {
     }
 
     /**
-     * increases the size of appointments by 4
+     * Increases the size of appointments by 4
      */
     private void grow() {
         Appointment[] updatedSize = new Appointment[size + 4 - 1]; //creates array to update appointments size
@@ -36,8 +35,7 @@ public class List {
     }
 
     /**
-     * checks to see if array contains the appointment parameter
-     *
+     * Checks to see if array contains the appointment parameter
      * @param appointment element to look for
      * @return -1 if element is not in array and the index if in the array
      */
@@ -51,8 +49,7 @@ public class List {
     }
 
     /**
-     * adds appointment to end of array if not already in array
-     *
+     * Adds appointment to end of array if not already in array
      * @param appointment element to be added
      */
     public void add(Appointment appointment) {
@@ -67,8 +64,7 @@ public class List {
     }
 
     /**
-     * remove appointment from array and shifts all elements by 1 index
-     *
+     * Remove appointment from array and shifts all elements by 1 index
      * @param appointment element to be removed
      */
     public void remove(Appointment appointment) {
@@ -92,8 +88,7 @@ public class List {
     }
 
     /**
-     * checks to see if provider is already booked for another profile
-     *
+     * Checks to see if provider is already booked for another profile
      * @return false if date, timeslot, and provider are all equal, true otherwise
      */
     public boolean isProviderFree(Appointment appointment) {
@@ -108,11 +103,11 @@ public class List {
     }
 
     /**
-     * sorts array by profile, date, then timeslot and prints the array
+     * Sorts array by profile, date, then timeslot and prints the array
      */
     public void printByPatient() {
         if(size > 0) {
-            System.out.println("** Appointments ordered by patient/date/time **");
+            System.out.println("\n** Appointments ordered by patient/date/time **");
             sortPatient();
             printAppointments();
 
@@ -123,11 +118,11 @@ public class List {
     }
 
     /**
-     * sorts array by profile, date, then timeslot and prints the array
+     * Sorts array by profile, date, then timeslot and prints the array
      */
     public void printByLocation() {
         if(size > 0) {
-            System.out.println("** Appointments ordered by county/date/time **");
+            System.out.println("\n** Appointments ordered by county/date/time **");
             sortLocation();
             printAppointments();
         }
@@ -137,11 +132,11 @@ public class List {
     }
 
     /**
-     * sorts array by profile, date, then timeslot and prints the array
+     * Sorts array by profile, date, then timeslot and prints the array
      */
     public void printByAppointment() {
         if(size > 0) {
-            System.out.println("** Appointments ordered by date/time/provider **");
+            System.out.println("\n** Appointments ordered by date/time/provider **");
             sortAppointment();
             printAppointments();
         }
@@ -149,7 +144,6 @@ public class List {
             System.out.println("The schedule calendar is empty");
         }
     }
-
 
     /**
      * Uses selection sort to sort the appointments by profile, date, then timeslot.
@@ -169,6 +163,7 @@ public class List {
             swap(i,min);
         }
     }
+
     /**
      * Uses selection sort to sort the appointments by county, date, then timeslot.
      */
@@ -206,6 +201,7 @@ public class List {
             swap(i,min);
         }
     }
+
     /**
      * creates temporary appointment to swap two appointments next to each other
      * @param i i and j are indexes of elements being swapped
@@ -225,8 +221,9 @@ public class List {
             }
             System.out.println("** end of list **");
     }
+
     /**
-     * gives the number of appointments in appointments array
+     * Gives the number of appointments in appointments array
      * @return size instance variable
      */
     public int getSize() {
@@ -234,14 +231,15 @@ public class List {
     }
 
     /**
-     * removes all appointments from the array and resetting the size to 0
+     * Removes all appointments from the array and resetting the size to 0
      */
     public void removeAll(){
         this.appointments = new Appointment[0];
         this.size =0;
     }
+
     /**
-     * returns appointments array
+     * Returns appointments array
      * @return appointments instance variable
      */
     public Appointment[] getAppointments(){

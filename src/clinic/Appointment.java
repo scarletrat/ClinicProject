@@ -12,7 +12,7 @@ public class Appointment implements Comparable<Appointment>{
         private Provider provider;
 
     /**
-     * default constructor creating new objects for date, timeslot, profile, and provider
+     * Default constructor creating new objects for date, timeslot, profile, and provider
      */
     public Appointment() {
         this.date = new Date();
@@ -44,7 +44,8 @@ public class Appointment implements Comparable<Appointment>{
     /**
      * Compares obj to this appointment. returns true if equal, false otherwise.
      * @param obj object to be compared to
-     * @return
+     * @return return true if the appointment is equal;
+     * return false otherwise.
      */
     @Override
     public boolean equals(Object obj){
@@ -85,7 +86,7 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * creates a textual representation of the appointment object
+     * Creates a textual representation of the appointment object
      * @return this appointments textual representation
      */
     public String toString(){
@@ -94,39 +95,39 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * returns date object
-     * @return date object
+     * Returns date object
+     * @return return date object
      */
     public Date getDate(){
         return this.date;
     }
 
     /**
-     * returns timeslot object
-     * @return timeslot object
+     * Returns timeslot object
+     * @return return timeslot object
      */
     public Timeslot getTimeslot(){
         return this.timeslot;
     }
 
     /**
-     * returns profile object
-     * @return profile object
+     * Returns profile object
+     * @return return profile object
      */
     public Profile getProfile(){
         return this.profile;
     }
 
     /**
-     * returns provider object
-     * @return provider object
+     * Returns provider object
+     * @return return provider object
      */
     public Provider getProvider(){
         return this.provider;
     }
 
     /**
-     * sets this appointment's date to parameter
+     * Sets this appointment's date to parameter
      * @param date date to set appointment to
      */
     public void setDate(Date date) {
@@ -134,7 +135,7 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * sets this appointment's timeslot to parameter
+     * Sets this appointment's timeslot to parameter
      * @param timeslot timeslot to set appointment to
      */
     public void setTimeslot(Timeslot timeslot) {
@@ -142,7 +143,7 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * sets this appointment's profile to parameter
+     * Sets this appointment's profile to parameter
      * @param profile profile to set appointment to
      */
     public void setProfile(Profile profile) {
@@ -150,16 +151,12 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * sets this appointments provider to parameter
+     * Sets this appointments provider to parameter
      * @param provider provider to set appointment to
      */
     public void setProvider(Provider provider) {
         this.provider = provider;
     }
-    public static void main(String[] args){
-        Appointment one = new Appointment("10/29/2024","5", "joe", "joe", "5/1/2000", "HARPER");
-        Appointment two = new Appointment("10/30/2024","5", "joe", "joe", "1/20/2023", "HARPER");
-        System.out.println(one.compareTo(two));
-    }
+
 }
 

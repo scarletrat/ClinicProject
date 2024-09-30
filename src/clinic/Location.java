@@ -14,7 +14,6 @@ public enum Location {
     MORRISTOWN("Morris", "07960"),
     CLARK("Union", "07066");
 
-
     private final String county;
     private final String zip;
 

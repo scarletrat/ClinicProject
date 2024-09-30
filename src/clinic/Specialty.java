@@ -19,6 +19,7 @@ public enum Specialty {
     public int getCharge(){
         return charge;
     }
+
     /**
      * Return a textual representation of Specialty.
      * @return return the name.

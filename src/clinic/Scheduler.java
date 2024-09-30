@@ -132,6 +132,11 @@ public class Scheduler {
         return("Rescheduled to " + newAppointment);
     }
 
+    /**
+     * This method does the PS command. Print the bill of the patients.
+     * @param clinic the clinic.
+     * @param medicalRecord the medicalRecord/bill.
+     */
     public void PS_Command(List clinic, MedicalRecord medicalRecord){
         clinic.sortPatient();
         medicalRecord.add(clinic);
@@ -192,6 +197,9 @@ public class Scheduler {
         }
     }
 
+    /**
+     * This method runs the user interface.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Scheduler is running.");

@@ -16,7 +16,6 @@ public enum Provider {
     TAYLOR(Location.PISCATAWAY, Specialty.PEDIATRICIAN),
     ZIMNES(Location.CLARK, Specialty.FAMILY);
 
-
     private final Location location;
     private final Specialty specialty;
 
