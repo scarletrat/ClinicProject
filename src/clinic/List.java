@@ -155,11 +155,11 @@ public class List {
         for (int i = 0; i < size-1; i++) {
             int min = i;
             for(int j = i+1; j<size; j++) {
-                if(appointments[j].getProfile().compareTo(appointments[i].getProfile()) < 0) {
+                if(appointments[j].getProfile().compareTo(appointments[min].getProfile()) < 0) {
                     min = j;
                 }
-                else if(appointments[j].compareTo(appointments[i])<0 &&
-                        appointments[j].getProfile().compareTo(appointments[i].getProfile()) == 0){
+                else if(appointments[j].compareTo(appointments[min])<0 &&
+                        appointments[j].getProfile().compareTo(appointments[min].getProfile()) == 0){
                     min =j;
                 }
             }
@@ -173,11 +173,11 @@ public class List {
         for (int i = 0; i < size-1; i++) {
             int min = i;
             for(int j = i+1; j<size; j++) {
-                if(appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[i].getProvider().getLocation().getCounty()) < 0) {
+                if(appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[min].getProvider().getLocation().getCounty()) < 0) {
                     min = j;
                 }
-                else if(appointments[j].compareTo(appointments[i])<0 &&
-                        appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[i].getProvider().getLocation().getCounty()) == 0){
+                else if(appointments[j].compareTo(appointments[min])<0 &&
+                        appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[min].getProvider().getLocation().getCounty()) == 0){
                     min =j;
                 }
             }
