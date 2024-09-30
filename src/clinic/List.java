@@ -37,7 +37,7 @@ public class List {
      * @param appointment element to look for
      * @return -1 if element is not in array and the index if in the array
      */
-    private boolean contains(Appointment appointment) {
+    public boolean contains(Appointment appointment) {
         for(int i = 0; i < size; i++){
             if(appointments[i].equals(appointment)){
                 return true;
@@ -70,9 +70,23 @@ public class List {
             appointments[find(appointment)] = null;
         }
     }
-
-    public void printByPatient(){
-
+    /**
+     * checks to see if provider is already booked for another profile
+     * @return false if date, timeslot, and provider are all equal, true otherwise
+     */
+    public boolean isProviderFree(Appointment appointment){
+        for(int i = 0; i<size; i++) {
+            if (appointments[i].getTimeslot() == appointment.getTimeslot() &&
+                    appointments[i].getDate().equals(appointment.getDate())
+                    && appointments[i].getProvider().equals(appointment.getProvider())) {
+                return false;
+            }
+        }
+        return true;
     }
+
+    //public void printByPatient(){
+
+    //}
 
 }
