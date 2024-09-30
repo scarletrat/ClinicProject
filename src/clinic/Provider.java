@@ -29,7 +29,7 @@ public enum Provider {
             return PATEL;
         } else if(provider.equalsIgnoreCase("LIM")){
             return LIM;
-        } else if (provider.equalsIgnoreCase("ZIMES")) {
+        } else if (provider.equalsIgnoreCase("ZIMNES")) {
             return ZIMNES;
         } else if (provider.equalsIgnoreCase("HARPER")) {
             return HARPER;
