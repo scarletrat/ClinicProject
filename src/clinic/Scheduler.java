@@ -17,16 +17,16 @@ public class Scheduler {
     public String isValidAppointmentDate(Appointment appointment){
         boolean validDate = appointment.getDate().isValid();
         if(!validDate){
-            return ("Appointment Date: " + appointment.getDate() + " is not a valid calendar date.");
+            return ("Appointment date: " + appointment.getDate() + " is not a valid calendar date.");
         }
         if(appointment.getDate().isPast() || appointment.getDate().isToday()){
-            return ("Appointment Date: " + appointment.getDate() + " is today or a date before today.");
+            return ("Appointment date: " + appointment.getDate() + " is today or a date before today.");
         }
         if(!appointment.getDate().isWeekDay()){
-            return("Appointment Date: " + appointment.getDate() + " is Saturday or Sunday.");
+            return("Appointment date: " + appointment.getDate() + " is Saturday or Sunday.");
         }
         if(!appointment.getDate().within6MonthFromToday()){
-            return("Appointment Date: " + appointment.getDate() + " is not within six months.");
+            return("Appointment date: " + appointment.getDate() + " is not within six months.");
         }
         return "valid";
     }
@@ -62,7 +62,7 @@ public class Scheduler {
         }
         Timeslot timeslot = appointment.getTimeslot();
         if(timeslot == null){
-            return(inputPart[2] + " is not a valid timeslot.");
+            return(inputPart[2] + " is not a valid time slot.");
         }
         String validDob = isValidDob(appointment);
         if(!validDob.equalsIgnoreCase("valid")){
@@ -119,7 +119,7 @@ public class Scheduler {
                     + profile + " does not exist.");
         }
         if(newTimeSlot == null){
-            return(inputPart[6] + " is not a valid timeslot.");
+            return(inputPart[6] + " is not a valid time slot.");
         }
         String provider = appointment.getProvider().name();
         Appointment newAppointment = new Appointment(inputPart[1],inputPart[6],inputPart[3],
@@ -149,7 +149,7 @@ public class Scheduler {
             charge = current.charge();
             DecimalFormat format = new DecimalFormat("#,###.00");
             String formatCharge = format.format(charge);
-            System.out.println("(" + (i+1) +")" + current.getProfile() +" [amount due: $" + formatCharge + "]");
+            System.out.println("(" + (i+1) +") " + current.getProfile() +" [amount due: $" + formatCharge + "]");
         }
         System.out.println("** end of list **");
         clinic.removeAll();
@@ -189,7 +189,7 @@ public class Scheduler {
                 PS_Command(clinic,medicalRecord);
                 return true;
             case "Q":
-                System.out.println("Scheduler Terminated.");
+                System.out.println("Scheduler is terminated.");
                 return false;
             default:
                 System.out.println("Invalid command!");

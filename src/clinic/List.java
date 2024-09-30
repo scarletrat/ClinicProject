@@ -113,7 +113,7 @@ public class List {
 
         }
         else{
-            System.out.println("The schedule calendar is empty");
+            System.out.println("The schedule calendar is empty.");
         }
     }
 
@@ -127,7 +127,7 @@ public class List {
             printAppointments();
         }
         else{
-            System.out.println("The schedule calendar is empty");
+            System.out.println("The schedule calendar is empty.");
         }
     }
 
@@ -141,7 +141,7 @@ public class List {
             printAppointments();
         }
         else{
-            System.out.println("The schedule calendar is empty");
+            System.out.println("The schedule calendar is empty.");
         }
     }
 
