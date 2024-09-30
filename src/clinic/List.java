@@ -114,6 +114,7 @@ public class List {
             System.out.println("** Appointments ordered by patient/date/time **");
             sortPatient();
             printAppointments();
+
         }
         else{
             System.out.println("The schedule calendar is empty");
@@ -218,6 +219,7 @@ public class List {
             for(int i = 0; i<size; i++){
                 System.out.println(appointments[i].toString());
             }
+            System.out.println("** end of list **");
     }
     /**
      * gives the number of appointments in appointments array
