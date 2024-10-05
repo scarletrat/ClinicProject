@@ -8,7 +8,7 @@ package clinic;
 public class List {
     private Appointment[] appointments = new Appointment[0]; //array of appointment objects
     private int size = 0; //number of appointments
-
+    private static final int NOT_FOUND = -1;
     /**
      * Traverses array until it finds an element equal to the appointment parameter
      * @param appointment element to find in array
@@ -20,7 +20,7 @@ public class List {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     /**
