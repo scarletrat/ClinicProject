@@ -1,5 +1,7 @@
 package clinic;
 
+import util.Date;
+
 /**
  * This class models a patient's profile.
  * It will include their first and last name and date of birth.

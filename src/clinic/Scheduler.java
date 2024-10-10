@@ -1,4 +1,7 @@
 package clinic;
+import util.Date;
+import util.List;
+
 import java.util.Scanner;
 import java.text.DecimalFormat;
 
@@ -53,7 +56,7 @@ public class Scheduler {
      * @param clinic the clinic.
      * @return return a string representation of the command outcome.
      */
-    public String sCommand(String[] inputPart,List clinic){
+    public String sCommand(String[] inputPart, List clinic){
         Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
                 inputPart[4],inputPart[5],inputPart[6]);
         String validAppointmentDate = isValidAppointmentDate(appointment);

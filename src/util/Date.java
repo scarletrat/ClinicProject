@@ -1,4 +1,4 @@
-package clinic;
+package util;
 import java.util.Calendar;
 
 /**

@@ -1,5 +1,7 @@
 package clinic;
 
+import util.Date;
+
 /**
  * This class represents an appointment object, containing the date of the appointment,
  * the user's profile, the user's provider, and the time of the appointment.

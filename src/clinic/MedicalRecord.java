@@ -1,5 +1,7 @@
 package clinic;
 
+import util.List;
+
 /**
  * This is an array-based implementation to hold a list of Patient objects.
  * It models a clinic's medical record with the the Patient object.

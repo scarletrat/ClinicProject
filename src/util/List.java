@@ -1,4 +1,8 @@
-package clinic;
+package util;
+
+import clinic.Appointment;
+import clinic.Profile;
+import clinic.Timeslot;
 
 /**
  * Manages array of appointments by sorting, adding elements, removing elements,
