@@ -10,10 +10,48 @@ public class Timeslot implements Comparable<Timeslot> {
     private int hour;
     private int minute;
 
+    public Timeslot(String timeslot){
+        hour = 0;
+        minute = 0;
+        switch (timeslot) {
+            case "1" -> hour = 9;
+            case "2" -> {
+                hour = 9;
+                minute = 30;
+            }
+            case "3" -> hour = 10;
+            case "4" -> {
+                hour = 10;
+                minute = 30;
+            }
+            case "5" -> hour = 11;
+            case "6" -> {
+                hour = 11;
+                minute = 30;
+            }
+            case "7" -> hour = 14;
+            case "8" -> {
+                hour = 14;
+                minute = 30;
+            }
+            case "9" -> hour = 15;
+            case "10" -> {
+                hour = 15;
+                minute = 30;
+            }
+            case "11" -> hour = 16;
+            case "12" -> {
+                hour = 16;
+                minute = 30;
+            }
+        }
+    }
+
     @Override
     public int compareTo(Timeslot o) {
         return 0;
     }
+
 
     /**
     private Timeslot(int hour, int minute) {

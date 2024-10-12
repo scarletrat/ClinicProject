@@ -1,0 +1,588 @@
+/**
+LIST CLASS
+**/
+
+private Appointment[] appointments = new Appointment[0]; //array of appointment objects
+    private int size = 0; //number of appointments
+    private static final int NOT_FOUND = -1;
+    /**
+     * Traverses array until it finds an element equal to the appointment parameter
+     * @param appointment element to find in array
+     * @return -1 if element is not in array and the index if in the array
+     */
+    private int find(Appointment appointment) {
+        for (int i = 0; i < size; i++) {
+            if (appointments[i].equals(appointment)) {
+                return i;
+            }
+        }
+        return NOT_FOUND;
+    }
+
+    /**
+     * Increases the size of appointments by 4
+     */
+    private void grow() {
+        Appointment[] updatedSize = new Appointment[size + 4 - 1]; //creates array to update appointments size
+        for (int i = 0; i < size; i++) {
+            updatedSize[i] = appointments[i];
+        }
+        appointments = updatedSize;
+    }
+
+    /**
+     * Checks to see if array contains the appointment parameter
+     * @param appointment element to look for
+     * @return -1 if element is not in array and the index if in the array
+     */
+    public boolean contains(Appointment appointment) {
+        for (int i = 0; i < size; i++) {
+            if (appointments[i].equals(appointment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Adds appointment to end of array if not already in array
+     * @param appointment element to be added
+     */
+    public void add(Appointment appointment) {
+        if (!contains(appointment)) {
+            if (size == appointments.length) {
+                grow();
+
+            }
+            appointments[size] = appointment;
+            size++;
+        }
+    }
+
+    /**
+     * Remove appointment from array and shifts all elements by 1 index
+     * @param appointment element to be removed
+     */
+    public void remove(Appointment appointment) {
+        if (contains(appointment)) {
+            Appointment[] updatedArray = new Appointment[appointments.length];
+            int target = find(appointment);
+            for (int i = 0; i < size; i++) {
+                if (i == target) {
+                   appointments[i] = null;
+                }
+                else if(i>target){
+                    updatedArray[i-1] = appointments[i];
+                }
+                else{
+                    updatedArray[i] = appointments[i];
+                }
+            }
+            appointments = updatedArray;
+            size--;
+        }
+    }
+
+    /**
+     * Checks to see if provider is already booked for another profile
+     * @return false if date, timeslot, and provider are all equal, true otherwise
+     */
+    public boolean isProviderFree(Appointment appointment) {
+        for (int i = 0; i < size; i++) {
+            if (appointments[i].getTimeslot() == appointment.getTimeslot() &&
+                    appointments[i].getDate().equals(appointment.getDate())
+                    && appointments[i].getProvider().equals(appointment.getProvider())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Sorts array by profile, date, then timeslot and prints the array
+     */
+    public void printByPatient() {
+        if(size > 0) {
+            System.out.println("\n** Appointments ordered by patient/date/time **");
+            sortPatient();
+            printAppointments();
+
+        }
+        else{
+            System.out.println("The schedule calendar is empty.");
+        }
+    }
+
+    /**
+     * Sorts array by profile, date, then timeslot and prints the array
+     */
+    public void printByLocation() {
+        if(size > 0) {
+            System.out.println("\n** Appointments ordered by county/date/time **");
+            sortLocation();
+            printAppointments();
+        }
+        else{
+            System.out.println("The schedule calendar is empty.");
+        }
+    }
+
+    /**
+     * Sorts array by profile, date, then timeslot and prints the array
+     */
+    public void printByAppointment() {
+        if(size > 0) {
+            System.out.println("\n** Appointments ordered by date/time/provider **");
+            sortAppointment();
+            printAppointments();
+        }
+        else{
+            System.out.println("The schedule calendar is empty.");
+        }
+    }
+
+    /**
+     * Uses selection sort to sort the appointments by profile, date, then timeslot.
+     */
+    public void sortPatient(){
+        for (int i = 0; i < size-1; i++) {
+            int min = i;
+            for(int j = i+1; j<size; j++) {
+                if(appointments[j].getProfile().compareTo(appointments[min].getProfile()) < 0) {
+                    min = j;
+                }
+                else if(appointments[j].compareTo(appointments[min])<0 &&
+                        appointments[j].getProfile().compareTo(appointments[min].getProfile()) == 0){
+                    min =j;
+                }
+            }
+            swap(i,min);
+        }
+    }
+
+    /**
+     * Uses selection sort to sort the appointments by county, date, then timeslot.
+     */
+    public void sortLocation(){
+        for (int i = 0; i < size-1; i++) {
+            int min = i;
+            for(int j = i+1; j<size; j++) {
+                if(appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[min].getProvider().getLocation().getCounty()) < 0) {
+                    min = j;
+                }
+                else if(appointments[j].compareTo(appointments[min])<0 &&
+                        appointments[j].getProvider().getLocation().getCounty().compareTo(appointments[min].getProvider().getLocation().getCounty()) == 0){
+                    min =j;
+                }
+            }
+            swap(i,min);
+        }
+    }
+
+    /**
+     * Uses selection sort to sort the appointments by date, timeslot, then provider.
+     */
+    public void sortAppointment(){
+        for (int i = 0; i < size-1; i++) {
+            int min = i;
+            for(int j = i+1; j<size; j++) {
+                if(appointments[j].compareTo(appointments[min]) < 0) {
+                    min = j;
+                }
+                else if(appointments[j].getProvider().compareTo(appointments[min].getProvider())<0 &&
+                        appointments[j].compareTo(appointments[min]) == 0){
+                    min =j;
+                }
+            }
+            swap(i,min);
+        }
+    }
+
+    /**
+     * creates temporary appointment to swap two appointments next to each other
+     * @param i i and j are indexes of elements being swapped
+     */
+    public void swap(int i, int j){
+        Appointment temp = appointments[j];
+        appointments[j] = appointments[i];
+        appointments[i] = temp;
+    }
+
+    /**
+     * helper method for the printBy... methods to list all the appointments in a list format
+     */
+    private void printAppointments(){
+            for(int i = 0; i<size; i++){
+                System.out.println(appointments[i].toString());
+            }
+            System.out.println("** end of list **");
+    }
+
+    /**
+     * Gives the number of appointments in appointments array
+     * @return size instance variable
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Removes all appointments from the array and resetting the size to 0
+     */
+    public void removeAll(){
+        this.appointments = new Appointment[0];
+        this.size =0;
+    }
+
+    /**
+     * Returns appointments array
+     * @return appointments instance variable
+     */
+    public Appointment[] getAppointments(){
+        return appointments;
+    }
+
+    /**
+     * Get the appointments from the list without the provider information.
+     * @param date the date of the appointment.
+     * @param tempSlot the timeslot of the appointment.
+     * @param profile the profile of the appointment.
+     * @return return the appointment or null if not found.
+     */
+    public Appointment getAppointment(Date date, Timeslot tempSlot, Profile profile){
+        for(int i = 0; i<size; i++){
+            if(appointments[i].getProfile().equals(profile)){
+                if(appointments[i].getDate().equals(date)){
+                    if(appointments[i].getTimeslot().equals(tempSlot)){
+                        return appointments[i];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+/***********************************************************************
+scheduler class
+**************************************************/
+ /**
+     * Checks if the appointment date is valid.
+     * @param appointment the appointment to be checked.
+     * @return return a string of whether it's valid or why it's not valid.
+     */
+    public String isValidAppointmentDate(Appointment appointment){
+        boolean validDate = appointment.getDate().isValid();
+        if(!validDate){
+            return ("Appointment date: " + appointment.getDate() + " is not a valid calendar date.");
+        }
+        if(appointment.getDate().isPast() || appointment.getDate().isToday()){
+            return ("Appointment date: " + appointment.getDate() + " is today or a date before today.");
+        }
+        if(!appointment.getDate().isWeekDay()){
+            return("Appointment date: " + appointment.getDate() + " is Saturday or Sunday.");
+        }
+        if(!appointment.getDate().within6MonthFromToday()){
+            return("Appointment date: " + appointment.getDate() + " is not within six months.");
+        }
+        return "valid";
+    }
+
+    /**
+     * Check if the date of birth is valid.
+     * @param appointment the appointment to be checked.
+     * @return return a string of whether it's valid or why it's not valid.
+     */
+    public String isValidDob(Appointment appointment){
+        boolean validDate = appointment.getProfile().getDob_inDate().isValid();
+        if(!validDate){
+            return ("Patient dob: " + appointment.getProfile().getDob_inString() + " is not a valid calendar date.");
+        }
+        if(appointment.getProfile().getDob_inDate().isFuture() || appointment.getProfile().getDob_inDate().isToday()){
+            return("Patient dob: " + appointment.getProfile().getDob_inString() + " is today or a date after today.");
+        }
+        return "valid";
+    }
+
+    /**
+     * This method does the S command. Add the appointment to clinic.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of the command outcome.
+     */
+    public String sCommand(String[] inputPart, List clinic){
+        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
+                inputPart[4],inputPart[5],inputPart[6]);
+        String validAppointmentDate = isValidAppointmentDate(appointment);
+        if(!validAppointmentDate.equalsIgnoreCase("valid")){
+            return validAppointmentDate;
+        }
+        Timeslot timeslot = appointment.getTimeslot();
+        if(timeslot == null){
+            return(inputPart[2] + " is not a valid time slot.");
+        }
+        String validDob = isValidDob(appointment);
+        if(!validDob.equalsIgnoreCase("valid")){
+            return validDob;
+        }
+        if(clinic.contains(appointment)){
+            return(appointment.getProfile() + " has an existing appointment at the same time slot.");
+        }
+        Provider provider = appointment.getProvider();
+        if(provider == null){
+            return(inputPart[6] + " - provider doesn't exist.");
+        }
+        if(!clinic.isProviderFree(appointment)){
+            return(appointment.getProvider() + " is not available at slot " + inputPart[2] + ".");
+        }
+        clinic.add(appointment);
+        return(appointment + " booked.");
+    }
+
+    /**
+     * This method does the C command. Cancel an existing appointment.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of whether the appointment have or haven't been cancelled.
+     */
+    public String cCommand(String[] inputPart, List clinic){
+        Date date = new Date(inputPart[1]);
+        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
+        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
+        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
+        if(appointment ==null){
+            return(date + " " + tempSlot+ " "
+                    + profile + " does not exist.");
+        }
+        clinic.remove(appointment);
+        return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
+                    + appointment.getProfile() + " has been canceled.");
+    }
+
+    /**
+     * This method does the R command. Reschedule an existing appointment.
+     * @param inputPart the input of the command line.
+     * @param clinic the clinic.
+     * @return return a string representation of the result.
+     */
+    public String rCommand(String[] inputPart, List clinic){
+        Date date = new Date(inputPart[1]);
+        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
+        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
+        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
+        Timeslot newTimeSlot = Timeslot.getTime(inputPart[6]);
+        if(appointment ==null){
+            return(date + " " + tempSlot+ " "
+                    + profile + " does not exist.");
+        }
+        if(newTimeSlot == null){
+            return(inputPart[6] + " is not a valid time slot.");
+        }
+        String provider = appointment.getProvider().name();
+        Appointment newAppointment = new Appointment(inputPart[1],inputPart[6],inputPart[3],
+                    inputPart[4],inputPart[5],provider);
+        if(!clinic.isProviderFree(newAppointment)){
+            return(appointment.getProvider() + " is not available at slot " + inputPart[6] + ".");
+        }
+        clinic.remove(appointment);
+        clinic.add(newAppointment);
+        return("Rescheduled to " + newAppointment);
+    }
+
+    /**
+     * This method does the PS command. Print the bill of the patients.
+     * @param clinic the clinic.
+     * @param medicalRecord the medicalRecord/bill.
+     */
+    public void PS_Command(List clinic, MedicalRecord medicalRecord){
+        clinic.sortPatient();
+        medicalRecord.add(clinic);
+        int charge;
+        Patient[] record = medicalRecord.getPatients();
+        System.out.println(("** Billing statement ordered by patient **"));
+        clinic.sortPatient();
+        for (int i = 0;i<medicalRecord.getSize(); i++){
+            Patient current = record[i];
+            charge = current.charge();
+            DecimalFormat format = new DecimalFormat("#,###.00");
+            String formatCharge = format.format(charge);
+            System.out.println("(" + (i+1) +") " + current.getProfile() +" [amount due: $" + formatCharge + "]");
+        }
+        System.out.println("** end of list **");
+        clinic.removeAll();
+    }
+
+    /**
+     * This method does the command of the command line input.
+     * @param input the input command line.
+     * @param clinic the clinic.
+     * @return return true if the command to keep running.
+     * return false if terminated.
+     */
+    public boolean command(String input,List clinic, MedicalRecord medicalRecord) {
+        String[] inputPart = input.split(",");
+        String command = inputPart[0];
+        switch (command) {
+            case "S":
+                //Create a schedule
+                System.out.println(sCommand(inputPart,clinic));
+                return true;
+            case "C":
+                System.out.println(cCommand(inputPart,clinic));
+                return true;
+            case "R":
+                System.out.println(rCommand(inputPart,clinic));
+                return true;
+            case "PA":
+                clinic.printByAppointment();
+                return true;
+            case "PP":
+                clinic.printByPatient();
+                return true;
+            case "PL":
+                clinic.printByLocation();
+                return true;
+            case "PS":
+                PS_Command(clinic,medicalRecord);
+                return true;
+            case "Q":
+                System.out.println("Scheduler is terminated.");
+                return false;
+            default:
+                System.out.println("Invalid command!");
+                return true;
+        }
+    }
+
+    /**
+     * This method runs the user interface.
+     */
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Clinic Manager is running.");
+        String input;
+        List clinic = new List();
+        MedicalRecord medicalRecord = new MedicalRecord();
+        while (true) {
+            input = scanner.nextLine();
+            //If the user enters an empty line, continue the while loop
+            if (input.isEmpty()) {
+                continue;
+            }
+            //input command
+            boolean terminate = command(input,clinic,medicalRecord);
+            if(!terminate){
+                return;
+            }
+        }
+    }
+
+
+/*****************************************************
+MEDICAL RECORD CLASS
+************************/
+package clinic;
+
+import util.List;
+
+/**
+ * This is an array-based implementation to hold a list of Patient objects.
+ * It models a clinic's medical record with the the Patient object.
+ * @author Gordon Lin, modified 9/30/2024
+ */
+public class MedicalRecord {
+    private Patient[] patients;
+    private int size;
+
+    public MedicalRecord(){
+        patients = null;
+        size = 0;
+    }
+
+    /**
+     * Add a new patient to medical record.
+     * @param appointment the patient's appointment.
+     */
+    public void addNewPatient(Appointment appointment){
+        Patient newPatient = new Patient(appointment.getProfile(), appointment);
+        Patient [] temp = new Patient[size+1];
+        for(int i =0; i<size; i++){
+            temp[i] = patients[i];
+        }
+        temp[size] = newPatient;
+        patients = temp;
+    }
+
+    /**
+     * Get the size of medical record.
+     * @return return the size of medical record.
+     */
+    public int getSize(){
+        return size;
+    }
+
+    /**
+     * Add the clinic's appointment to the medical record.
+     * @param clinic the clinic containing all the appointments.
+     */
+    public void add(List clinic){
+        int clinicSize = clinic.getSize();
+        Appointment[] appointments = clinic.getAppointments();
+        for(int i = 0; i<clinicSize; i++){
+            Profile profile = appointments[i].getProfile();
+            if(contains(profile)){
+                Patient patient = findPatient(profile);
+                updatePatient(patient,appointments[i]);
+            }else{
+                addNewPatient(appointments[i]);
+                size++;
+            }
+        }
+    }
+
+    /**
+     * Find the patient in medical record.
+     * @param profile the patient's profile
+     * @return return the patient.
+     */
+    public Patient findPatient(Profile profile){
+        for(int i = 0; i< size; i++){
+            if(patients[i].getProfile().equals(profile)){
+                return patients[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check if the medical record contains the profile.
+     * @param profile the profile to be checked.
+     * @return return true if there's a record of the profile.
+     * return false otherwise.
+     */
+    public boolean contains(Profile profile){
+        for(int i = 0; i< size; i++){
+            if(patients[i].getProfile().equals(profile)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the patients array of medical record.
+     * @return return the patients array.
+     */
+    public Patient[] getPatients(){
+        return patients;
+    }
+
+    /**
+     * Updates the patient's profile.
+     * @param appointment the patient's profile to be updated.
+     */
+    public void updatePatient(Patient patient,Appointment appointment){
+        patient.addVisit(appointment);
+    }
+
+}

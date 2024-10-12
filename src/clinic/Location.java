@@ -17,7 +17,7 @@ public enum Location {
     private final String county;
     private final String zip;
 
-    private Location(String county, String zip){
+    Location(String county, String zip){
         this.county = county;
         this.zip = zip;
     }

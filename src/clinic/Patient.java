@@ -7,14 +7,13 @@ package clinic;
  */
 
 public class Patient extends Person implements Comparable<Patient> {
-    private Profile profile;
     private Visit visits; //a linked list of visits
 
     /**
      * Default constructor.
      */
     public Patient() {
-        this.profile = null;
+        super();
     }
 
     /**
@@ -23,10 +22,13 @@ public class Patient extends Person implements Comparable<Patient> {
      * @param appointment the appointment of the patient.
      */
     public Patient(Profile profile, Appointment appointment){
-        this.profile = profile;
+        super(profile);
         this.visits = new Visit(appointment);
     }
-
+    public Patient(String fname, String lname, String dob){
+        super(fname, lname, dob);
+        this.visits = null;
+    }
     /**
      * Four argument constructor
      * @param fname       the first name of the patient.
@@ -35,7 +37,7 @@ public class Patient extends Person implements Comparable<Patient> {
      * @param appointment the appointment of the patient.
      */
     public Patient(String fname, String lname, String dob, Appointment appointment) {
-        this.profile = new Profile(fname, lname, dob);
+        super(fname,lname,dob);
         this.visits = new Visit(appointment);
     }
 
@@ -61,11 +63,7 @@ public class Patient extends Person implements Comparable<Patient> {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Patient) {
-            Patient patient = (Patient) obj;
-            return this.profile.equals(patient.profile);
-        }
-        return false;
+        return super.equals(obj);
     }
 
     /**
@@ -150,7 +148,12 @@ public class Patient extends Person implements Comparable<Patient> {
             return 0;
         }
         while(ptr != null) {
-            int ptrCost = ptr.getAppointment().getProvider().getSpecialty().getCharge();
+            int ptrCost = 0;
+            if(ptr.getAppointment().getProvider() instanceof Doctor){
+                ptrCost = ((Doctor) ptr.getAppointment().getProvider()).rate();
+            } else if (ptr.getAppointment().getProvider() instanceof Technician) {
+                ptrCost = ((Technician) ptr.getAppointment().getProvider()).rate();
+            }
             charge += ptrCost;
             ptr = ptr.getNext();
         }

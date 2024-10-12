@@ -6,8 +6,7 @@ package clinic;
  * It is an enum class and so far have 8 providers.
  * @author Gordon Lin,Christopher Lee modified 9/30/2024
  */
-abstract class Provider extends Person {
-
+public abstract class Provider extends Person {
     private Location location;
     public abstract int rate();
 
@@ -29,13 +28,7 @@ abstract class Provider extends Person {
         this.specialty = specialty;
     }
 
-    /**
-     * Get the provider given the input string.
-     * @param provider the string input.
-     * @return return provider enum given the string input.
-     * return null if it doesn't match any providers listed.
-     */
-    /**
+
     public static Provider getProvider(String provider){
         if(provider.equalsIgnoreCase("PATEL")){
             return PATEL;
@@ -58,32 +51,34 @@ abstract class Provider extends Person {
         }
     }
 
-    /**
-     * Get the Specialty enum.
-     * @return return the Specialty enum.
-     */
-    /**
     public Specialty getSpecialty(){
         return specialty;
     }
 
-    /**
-     * Get the Location enum.
-     * @return return the Location enum.
-     */
-    /**
     public Location getLocation(){
         return location;
     }
+     */
+    public Provider(String fname, String lname, String dob, Location location){
+        super(fname,lname,dob);
+        this.location = location;
+    }
+    public Provider(Profile profile,Location location){
+        super(profile);
+        this.location = location;
+    }
 
+    public Location getLocation(){
+        return this.location;
+    }
     /**
      * Return a textual representation of Provider.
      * @return return [name, location, specialty]
      */
-    /**
     @Override
     public String toString(){
-        return "[" + name() + ", " + location + ", " + specialty + "]";
+        return super.getProfile() + " " + location;
     }
-    */
+
+
 }

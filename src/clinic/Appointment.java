@@ -8,10 +8,10 @@ import util.Date;
  * @author Christopher Lee, modified Sept. 24, 2024
  */
 public class Appointment implements Comparable<Appointment>{
-        private Date date;
-        private Timeslot timeslot;
-        private Profile profile;
-        private Provider provider;
+        protected Date date;
+        protected Timeslot timeslot;
+        protected Person patient;
+        protected Person provider;
 
     /**
      * Default constructor creating new objects for date, timeslot, profile, and provider
@@ -19,7 +19,7 @@ public class Appointment implements Comparable<Appointment>{
     public Appointment() {
         this.date = new Date();
         //this.timeslot = new Timeslot();
-        this.profile = new Profile();
+        this.patient = new Person();
         //this.provider = new Provider();
     }
 
@@ -28,21 +28,29 @@ public class Appointment implements Comparable<Appointment>{
      * @param date date object
      * @param timeslot timeslot object
      * @param profile profile object
-     * @param provider provider object
+     * @param doc provider object
      */
-    public Appointment(Date date, Timeslot timeslot, Profile profile, Provider provider){
+    public Appointment(Date date, Timeslot timeslot, Person profile, Doctor doc){
         this.date = date;
         this.timeslot = timeslot;
-        this.profile = profile;
-        this.provider = provider;
+        this.patient = profile;
+        this.provider = doc;
     }
 
-    public Appointment(String date, String timeslot, String firstName, String lastName, String dob, String provider){
+    public Appointment(String date, String timeslot, String firstName, String lastName, String dob, Doctor doc){
         this.date = new Date(date);
-        this.timeslot = Timeslot.getTime(timeslot);
-        this.profile = new Profile(firstName, lastName, dob);
-        this.provider = Provider.getProvider(provider);
+        this.timeslot = new Timeslot(timeslot);
+        this.patient = new Patient(firstName, lastName, dob);
+        this.provider = doc;
     }
+
+    public Appointment(String date, String timeslot, String firstName, String lastName, String dob, Technician technician){
+        this.date = new Date(date);
+        this.timeslot = new Timeslot(timeslot);
+        this.patient = new Patient(firstName, lastName, dob);
+        this.provider = technician;
+    }
+
     /**
      * Compares obj to this appointment. returns true if equal, false otherwise.
      * @param obj object to be compared to
@@ -55,7 +63,7 @@ public class Appointment implements Comparable<Appointment>{
             Appointment appointment = (Appointment) obj;
             return this.date.equals(appointment.date)
                     &&this.timeslot == appointment.timeslot
-                    &&this.profile.equals(appointment.profile)
+                    &&this.patient.equals(appointment.patient)
                     &&this.provider == appointment.provider;
         }
         return false;
@@ -89,11 +97,11 @@ public class Appointment implements Comparable<Appointment>{
 
     /**
      * Creates a textual representation of the appointment object
-     * @return this appointments textual representation
+     * @return this appointment's textual representation
      */
     public String toString(){
         return this.date + " " + this.timeslot + " " +
-                this.profile + " " + this.provider;
+                this.patient + " " + this.provider;
     }
 
     /**
@@ -116,15 +124,15 @@ public class Appointment implements Comparable<Appointment>{
      * Returns profile object
      * @return return profile object
      */
-    public Profile getProfile(){
-        return this.profile;
+    public Person getPatient(){
+        return this.patient;
     }
 
     /**
      * Returns provider object
      * @return return provider object
      */
-    public Provider getProvider(){
+    public Person getProvider(){
         return this.provider;
     }
 
@@ -148,15 +156,15 @@ public class Appointment implements Comparable<Appointment>{
      * Sets this appointment's profile to parameter
      * @param profile profile to set appointment to
      */
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setPatient(Person profile) {
+        this.patient = profile;
     }
 
     /**
      * Sets this appointments provider to parameter
      * @param provider provider to set appointment to
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(Person provider) {
         this.provider = provider;
     }
 

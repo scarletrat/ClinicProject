@@ -12,7 +12,7 @@ public enum Specialty {
 
     private final int charge;
 
-    private Specialty(int charge){
+    Specialty(int charge){
         this.charge = charge;
     }
 
