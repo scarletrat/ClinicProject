@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
  * The user inputs the commands to create, cancel, reschedule, and print appointments.
  * @author Gordon Lin, modified 9/30/2024.
  */
-public class Scheduler {
+public class ClinicManager {
 
     /**
      * Checks if the appointment date is valid.
@@ -205,7 +205,7 @@ public class Scheduler {
      */
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Scheduler is running.");
+        System.out.println("Clinic Manager is running.");
         String input;
         List clinic = new List();
         MedicalRecord medicalRecord = new MedicalRecord();

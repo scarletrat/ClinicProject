@@ -6,7 +6,7 @@ package clinic;
  * @author Gordon Lin, modified 9/30/2024
  */
 
-public class Patient implements Comparable<Patient> {
+public class Patient extends Person implements Comparable<Patient> {
     private Profile profile;
     private Visit visits; //a linked list of visits
 

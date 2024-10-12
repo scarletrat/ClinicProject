@@ -6,7 +6,12 @@ package clinic;
  * It is an enum class and so far have 8 providers.
  * @author Gordon Lin,Christopher Lee modified 9/30/2024
  */
-public enum Provider {
+abstract class Provider extends Person {
+
+    private Location location;
+    public abstract int rate();
+
+    /**
     CERAVOLO(Location.EDISON, Specialty.PEDIATRICIAN),
     HARPER(Location.CLARK, Specialty.FAMILY),
     KAUR(Location.PRINCETON, Specialty.ALLERGIST),
@@ -30,6 +35,7 @@ public enum Provider {
      * @return return provider enum given the string input.
      * return null if it doesn't match any providers listed.
      */
+    /**
     public static Provider getProvider(String provider){
         if(provider.equalsIgnoreCase("PATEL")){
             return PATEL;
@@ -56,6 +62,7 @@ public enum Provider {
      * Get the Specialty enum.
      * @return return the Specialty enum.
      */
+    /**
     public Specialty getSpecialty(){
         return specialty;
     }
@@ -64,6 +71,7 @@ public enum Provider {
      * Get the Location enum.
      * @return return the Location enum.
      */
+    /**
     public Location getLocation(){
         return location;
     }
@@ -72,8 +80,10 @@ public enum Provider {
      * Return a textual representation of Provider.
      * @return return [name, location, specialty]
      */
+    /**
     @Override
     public String toString(){
         return "[" + name() + ", " + location + ", " + specialty + "]";
     }
+    */
 }
