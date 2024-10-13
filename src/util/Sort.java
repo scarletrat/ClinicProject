@@ -104,6 +104,25 @@ public class Sort {
         }
     }
 
-    public static void provider(List<Provider> list) {}
+    public static void provider(List<Provider> list) {
+        if(list.isEmpty()){
+            return;
+        }
+        int size = list.size();
+        for (int i = 0; i < size-1; i++) {
+            int min = i;
+            for(int j = i+1; j<size; j++) {
+                if(list.get(j).getProfile().compareTo(list.get(min).getProfile()) < 0) {
+                    min = j;
+                }
+            }
+            Provider temp = list.get(min);
+            Provider mininum = list.get(min);
+            mininum = list.get(i);
+            Provider ii = list.get(i);
+            ii = temp;
+        }
+
+    }
 
 }
