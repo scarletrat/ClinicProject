@@ -18,6 +18,11 @@ public class Technician extends Provider{
 
     @Override
     public boolean equals(Object obj){
-        return super.equals(obj);
+        if(!super.equals(obj)) return false;
+        if(obj instanceof Technician){
+            Technician technician = (Technician) obj;
+            return this.ratePerVisit == technician.ratePerVisit;
+        }
+        return false;
     }
 }

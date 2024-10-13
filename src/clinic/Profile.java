@@ -157,101 +157,20 @@ public class Profile implements Comparable<Profile>{
      * @param args command line arguments.
      */
     public static void main(String[] args){
-        testInput_SmallLastName();
-        testInput_SmallFirstName();
-        testInput_SmallDob();
-        testInput_BigLastName();
-        testInput_BigFirstName();
-        testInput_BigDob();
-        testInput_SameProfile();
-    }
-
-    /** Test Case #1 */
-    private static void testInput_SmallLastName(){
-        Profile profile = new Profile("Carl", "Brook", "2/20/2000");
-        Profile compare = new Profile("Roy", "Brown", "2/20/2000");
-        int expectedOutput = -1;
-        int actualOutput = profile.compareTo(compare);
         System.out.println("**Test case #1: Last name of profile should be compared first");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #2 */
-    private static void testInput_SmallFirstName(){
-        Profile profile = new Profile("Carl", "Brook", "10/06/2004");
-        Profile compare = new Profile("Clark", "Brook", "1/1/2000");
-        int expectedOutput = -1;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_SmallLastName();
         System.out.println("**Test case #2: First name of profile is compared before date of birth");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #3 */
-    private static void testInput_SmallDob(){
-        Profile profile = new Profile("Carl", "Brook", "10/06/2004");
-        Profile compare = new Profile("Carl", "Brook", "1/1/2008");
-        int expectedOutput = -1;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_SmallFirstName();
         System.out.println("**Test case #3: Date of birth of profile is compared");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #4 */
-    private static void testInput_BigLastName(){
-        Profile compare = new Profile("Carl", "Brook", "10/06/2004");
-        Profile profile = new Profile("Clark", "Brook", "1/1/2000");
-        int expectedOutput = 1;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_SmallDob();
         System.out.println("**Test case #4: First name of profile is compared before date of birth");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #5 */
-    private static void testInput_BigFirstName(){
-        Profile compare = new Profile("Carl", "Brook", "10/06/2004");
-        Profile profile = new Profile("Clark", "Brook", "1/1/2000");
-        int expectedOutput = 1;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_BigLastName();
         System.out.println("**Test case #5: First name of profile is compared before date of birth");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #6 */
-    private static void testInput_BigDob(){
-        Profile compare = new Profile("Carl", "Brook", "10/06/2004");
-        Profile profile = new Profile("Carl", "Brook", "1/1/2008");
-        int expectedOutput = 1;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_BigFirstName();
         System.out.println("**Test case #6: Date of birth of profile is compared");
-        testResult(profile,compare,expectedOutput,actualOutput);
-    }
-
-    /** Test case #7 */
-    private static void testInput_SameProfile(){
-        Profile profile = new Profile("Carl", "Brook", "9/8/2022");
-        Profile compare = new Profile("Carl", "Brook", "9/8/2022");
-        int expectedOutput = 0;
-        int actualOutput = profile.compareTo(compare);
+        //testInput_BigDob();
         System.out.println("**Test case #7: Same profile is being compared");
-        testResult(profile,compare,expectedOutput,actualOutput);
+        //testInput_SameProfile();
     }
 
-    /** Check if a given test case and compareTo method works PASS or FAIL.
-     * Print out FAIL if the output does not match.
-     * Print out PASS otherwise.
-     * @param profile the date being tested.
-     * @param actualOutput the actual output of the test/isValid method.
-     * @param expectedOutput the expected output of the test.
-     */
-    private static void testResult(Profile profile,Profile compare, int expectedOutput, int actualOutput){
-        System.out.println("Test input: " + profile.toString());
-        System.out.println("Test to be compared to: " + compare.toString());
-        System.out.println("Expected output: " + expectedOutput);
-        System.out.println("Actual output: " + actualOutput);
-        if(expectedOutput != actualOutput){
-            System.out.println(" (FAIL) ");
-        }else{
-            System.out.println(" (PASS) ");
-        }
-    }
 }

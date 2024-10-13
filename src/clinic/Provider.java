@@ -77,7 +77,7 @@ public abstract class Provider extends Person {
      */
     @Override
     public String toString(){
-        return super.getProfile() + " " + location;
+        return super.getProfile() + ", " + location;
     }
 
 

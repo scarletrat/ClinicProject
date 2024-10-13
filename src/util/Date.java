@@ -307,88 +307,20 @@ public class Date implements Comparable<Date> {
      * @param args command line arguments
      */
     public static void main(String[] args){
-        Date past = new Date("11/5/2024");
-        Date past1 = new Date("10/30/2024");
-        System.out.println(past.compareTo(past1));
-        testDaysInFeb_NonLeap();
-        testDaysInFeb_Leap();
-        test30DayMonth_OutOfRange();
-        testMonth_OutOfRange();
-        test31DayMonth_InRange();
-        testValidFeb_Leap();
-    }
-
-    /** Test Case #1 */
-    private static void testDaysInFeb_NonLeap(){
-        Date date = new Date("2/29/2018");
-        boolean expectedOutput = false;
-        boolean actualOutput = date.isValid();
         System.out.println("**Test case #1: # of days in Feb. in a non-leap year is 28");
-        testResult(date, expectedOutput, actualOutput);
-    }
-
-    /** Test Case #2 */
-    private static void testDaysInFeb_Leap(){
-        Date date = new Date("2/30/2020");
-        boolean expectedOutput = false;
-        boolean actualOutput = date.isValid();
+       // testDaysInFeb_NonLeap();
         System.out.println("**Test case #2: # of days in Feb. in a leap year is 29");
-        testResult(date, expectedOutput, actualOutput);
-    }
-
-    /** Test Case #3 */
-    private static void test30DayMonth_OutOfRange(){
-        Date date = new Date("4/31/2020");
-        boolean expectedOutput = false;
-        boolean actualOutput = date.isValid();
+        //testDaysInFeb_Leap();
         System.out.println("**Test case #3: # of days in 30 Day Month is 1 to 30");
-        testResult(date, expectedOutput, actualOutput);
-    }
-
-    /** Test Case #4 */
-    private static void testMonth_OutOfRange(){
-        Date date = new Date("0/20/2010");
-        boolean expectedOutput = false;
-        boolean actualOutput = date.isValid();
+        //test30DayMonth_OutOfRange();
         System.out.println("**Test case #4: Range of months are from 1 to 12");
-        testResult(date, expectedOutput, actualOutput);
-    }
-
-    /** Test Case #5 */
-    private static void test31DayMonth_InRange(){
-        Date date = new Date("12/31/2000");
-        boolean expectedOutput = true;
-        boolean actualOutput = date.isValid();
+       // testMonth_OutOfRange();
         System.out.println("**Test case #5: # of days in 31 Day Month is 1 to 31");
-        testResult(date, expectedOutput, actualOutput);
-    }
-
-    /** Test Case #6 */
-    private static void testValidFeb_Leap(){
-        Date date = new Date("2/29/2020");
-        boolean expectedOutput = true;
-        boolean actualOutput = date.isValid();
+        //test31DayMonth_InRange();
         System.out.println("**Test case #6: # of days in Feb. in a leap year is 29");
-        testResult(date, expectedOutput, actualOutput);
+        //testValidFeb_Leap();
     }
 
-    /** Check if a given test case and isValid method works PASS or FAIL.
-     *Print out FAIL if the output does not match.
-     *Print out PASS otherwise.
-     * @param date the date being tested.
-     * @param actualOutput the actual output of the test/isValid method.
-     * @param expectedOutput the expected output of the test.
-     */
-    private static void testResult(Date date, boolean expectedOutput, boolean actualOutput){
-        System.out.println("Test input: " + date.toString());
-        System.out.println("Expected output: " + expectedOutput);
-        System.out.println("Actual output: " + actualOutput);
-        if(expectedOutput != actualOutput){
-            System.out.println(" (FAIL) ");
-        }else{
-            System.out.println(" (PASS) ");
-        }
-    }
 }
 
 

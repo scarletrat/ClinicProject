@@ -24,8 +24,13 @@ public class Doctor extends Provider{
         if(!super.equals(obj)) return false;
         if(obj instanceof Doctor){
             Doctor doctor = (Doctor) obj;
-            return this.specialty.equals(doctor.specialty);
+            return this.npi.equals(doctor.npi);
         }
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return "[" + super.toString() + "] [" + this.specialty + ", #" + this.npi +"]";
     }
 }
