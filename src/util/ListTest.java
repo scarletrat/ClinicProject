@@ -15,7 +15,7 @@ public class ListTest {
     public void setUp() throws Exception {
         Profile profile = new Profile("Gordon", "Lin", "10/06/2004");
         doctor = new Doctor(profile,Location.BRIDGEWATER,Specialty.FAMILY,"120");
-        technician = new Technician(profile,Location.BRIDGEWATER);
+        technician = new Technician(profile,Location.BRIDGEWATER,125);
         providerList = new List<>();
     }
 

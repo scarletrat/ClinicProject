@@ -5,6 +5,7 @@ public class Technician extends Provider{
 
     public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
+        this.ratePerVisit = ratePerVisit;
     }
 
     public void setRatePerVisit(int ratePerVisit){
