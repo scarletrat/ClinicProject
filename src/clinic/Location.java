@@ -22,6 +22,23 @@ public enum Location {
         this.zip = zip;
     }
 
+    public static Location getLocation(String location){
+        if(location.equalsIgnoreCase("BRIDGEWATER")){
+            return BRIDGEWATER;
+        } else if(location.equalsIgnoreCase("EDISON")){
+            return EDISON;
+        } else if(location.equalsIgnoreCase("PISCATAWAY")){
+            return PISCATAWAY;
+        } else if (location.equalsIgnoreCase("PRINCETON")) {
+            return PRINCETON;
+        }else if(location.equalsIgnoreCase("MORRISTOWN")){
+                return MORRISTOWN;
+        } else if (location.equalsIgnoreCase("CLARK")) {
+                return CLARK;
+        }else{
+            return null;
+        }
+    }
     /**
      * Get the county of the location.
      * @return return the county.

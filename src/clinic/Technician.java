@@ -3,7 +3,7 @@ package clinic;
 public class Technician extends Provider{
     private int ratePerVisit;
 
-    public Technician(Profile profile, Location location) {
+    public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
     }
 

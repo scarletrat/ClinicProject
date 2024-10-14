@@ -99,6 +99,7 @@ public class Appointment implements Comparable<Appointment>{
      * Creates a textual representation of the appointment object
      * @return this appointment's textual representation
      */
+    @Override
     public String toString(){
         return this.date + " " + this.timeslot + " " +
                 this.patient + " " + this.provider;
