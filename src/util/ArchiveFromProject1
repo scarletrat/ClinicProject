@@ -586,3 +586,69 @@ public class MedicalRecord {
     }
 
 }
+
+
+/*********************************
+Timeslot
+******************/
+/**
+    private Timeslot(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    /**
+     * Get the timeslot given the input, 1-6
+     * @param time the number 1 to 6
+     * @return the timeslot that corresponds with each number;
+     * return null if it's not a valid timeslot.
+     */
+    /**
+    public static Timeslot getTime(String time){
+        if(time.equals("1")){
+            return SLOT1;
+        } else if(time.equals("2")){
+            return SLOT2;
+        } else if (time.equals("3")) {
+            return SLOT3;
+        } else if (time.equals("4")) {
+            return SLOT4;
+        } else if (time.equals("5")){
+            return SLOT5;
+        } else if (time.equals("6")){
+            return SLOT6;
+        }else{
+            return null;
+        }
+    }
+/**
+    private Timeslot(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    /**
+     * Get the timeslot given the input, 1-6
+     * @param time the number 1 to 6
+     * @return the timeslot that corresponds with each number;
+     * return null if it's not a valid timeslot.
+     */
+    /**
+    public static Timeslot getTime(String time){
+        if(time.equals("1")){
+            return SLOT1;
+        } else if(time.equals("2")){
+            return SLOT2;
+        } else if (time.equals("3")) {
+            return SLOT3;
+        } else if (time.equals("4")) {
+            return SLOT4;
+        } else if (time.equals("5")){
+            return SLOT5;
+        } else if (time.equals("6")){
+            return SLOT6;
+        }else{
+            return null;
+        }
+    }
+

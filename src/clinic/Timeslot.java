@@ -6,7 +6,7 @@ package clinic;
  * @author Gordon Lin, modified 9/28/2024.
  */
 public class Timeslot implements Comparable<Timeslot> {
-    //public static final int NOON = 12;
+    public static final int NOON = 12;
     private int hour;
     private int minute;
 
@@ -52,42 +52,10 @@ public class Timeslot implements Comparable<Timeslot> {
         return 0;
     }
 
-
-    /**
-    private Timeslot(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
-    }
-
-    /**
-     * Get the timeslot given the input, 1-6
-     * @param time the number 1 to 6
-     * @return the timeslot that corresponds with each number;
-     * return null if it's not a valid timeslot.
-     */
-    /**
-    public static Timeslot getTime(String time){
-        if(time.equals("1")){
-            return SLOT1;
-        } else if(time.equals("2")){
-            return SLOT2;
-        } else if (time.equals("3")) {
-            return SLOT3;
-        } else if (time.equals("4")) {
-            return SLOT4;
-        } else if (time.equals("5")){
-            return SLOT5;
-        } else if (time.equals("6")){
-            return SLOT6;
-        }else{
-            return null;
-        }
-    }
-
     /**
      * Get the hour of the timeslot.
      * @return return the hour of the timeslot.
-     *
+     */
     public int getHour(){
         return hour;
     }
@@ -95,7 +63,7 @@ public class Timeslot implements Comparable<Timeslot> {
     /**
      * Get the minute of the timeslot.
      * @return return the minute of the timeslot.
-     *
+     */
     public int getMinute(){
         return minute;
     }
@@ -103,7 +71,7 @@ public class Timeslot implements Comparable<Timeslot> {
     /**
      * Return a textual representation of the timeslot.
      * @return return a string containing the hour:minute.
-     *
+     */
     @Override
     public String toString(){
         String time;
@@ -120,5 +88,5 @@ public class Timeslot implements Comparable<Timeslot> {
         }
         return(hour + ":" + this.minute + " " + time);
     }
-*/
+
 }

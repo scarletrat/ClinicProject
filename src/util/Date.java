@@ -11,6 +11,11 @@ public class Date implements Comparable<Date> {
     public static final int QUADRENNIAL = 4;
     public static final int CENTENNIAL = 100;
     public static final int QUATERCENTENNIAL = 400;
+    private static final int MONTH_31DAY = 2;
+    private static final int MONTH_30DAY = 1;
+    private static final int MONTH_FEBRUARY = 0;
+    private static final int INVALID_MONTH = -1;
+
 
     private int year;
     private int month;
@@ -37,7 +42,6 @@ public class Date implements Comparable<Date> {
         this.year = year;
         this.month = month;
         this.day = day;
-        this.isValid();
     }
 
     /**
@@ -49,7 +53,6 @@ public class Date implements Comparable<Date> {
         this.year = Integer.parseInt(datePart[2]);
         this.day = Integer.parseInt(datePart[1]);
         this.month = Integer.parseInt(datePart[0]);
-        this.isValid();
     }
 
     /**
@@ -161,12 +164,12 @@ public class Date implements Comparable<Date> {
      */
     public boolean isValid(){
         int whatMonth = isWhatMonth(month);
-        if(whatMonth == -1){
+        if(whatMonth == INVALID_MONTH){
             return false;
         }
-        if(whatMonth == 2) return day <= 31 && day > 0;
-        if(whatMonth == 1) return day <= 30 && day > 0;
-        if(whatMonth == 0 &&isLeapYear(year)){
+        if(whatMonth == MONTH_31DAY) return day <= 31 && day > 0;
+        if(whatMonth == MONTH_30DAY) return day <= 30 && day > 0;
+        if(whatMonth == MONTH_FEBRUARY &&isLeapYear(year)){
             return day <= 29 && day > 0;
         }else{
             return day <= 28 && day > 0;
@@ -268,19 +271,19 @@ public class Date implements Comparable<Date> {
         int[] month_31Days = {1,3,5,7,8,10,12};
         int[] month_30Days = {4,6,9,11};
         if(month == 2){
-            return 0;
+            return MONTH_FEBRUARY;
         }
         for (int month30Day : month_30Days) {
             if (month == month30Day) {
-                return 1;
+                return MONTH_30DAY;
             }
         }
         for (int month31Day : month_31Days){
             if (month == month31Day){
-                return 2;
+                return MONTH_31DAY;
             }
         }
-        return -1;
+        return INVALID_MONTH;
     }
 
     /**
