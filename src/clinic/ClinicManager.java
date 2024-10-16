@@ -211,6 +211,9 @@ public class ClinicManager {
         }
     }
 
+    /**
+     * This method creates a circular linked list in order by location and prints out the rotation list.
+     */
     public void createRotation(){
         for(Provider provider : providers){
             if(provider instanceof Technician){
