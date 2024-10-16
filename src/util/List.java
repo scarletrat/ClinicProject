@@ -8,7 +8,7 @@ import java.util.Iterator;
  * and adjusting the size of the array.
  * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024.
  */
-public final class List<E> implements Iterable<E> {
+public class List<E> implements Iterable<E> {
     private E[] objects;
     private int size;
     private static final int NOT_FOUND = -1;
@@ -43,7 +43,8 @@ public final class List<E> implements Iterable<E> {
         if(size == objects.length){
             grow();
         }
-        objects[size++] = e;
+        objects[size] = e;
+        size++;
     }
 
     public void remove(E e){
@@ -81,10 +82,11 @@ public final class List<E> implements Iterable<E> {
 
     //put object e on the index
     public void set(int index, E e){
-        if(index < size){
-            return;
+        if (index >= 0 && index < size) {
+            objects[index] = e; // Set the element at the specified index
+        } else {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        objects[index] = e;
     }
 
     public int indexOf(E e){
