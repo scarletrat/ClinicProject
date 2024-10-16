@@ -1,6 +1,7 @@
 package clinic;
 import util.*;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import static util.Sort.provider;
@@ -302,62 +303,147 @@ public class ClinicManager {
             appointments.add(newApp);
             return "Rescheduled to " + date + " " + newTimeslot + " " + doc;
         }
-        return doc + " is not avaiable at slot " + inputPart[6];
+        return doc + " is not available at slot " + inputPart[6];
 
     }
 
-
-    private void PA_Command(){
-        Sort.appointment(appointments,'A');
-        System.out.println("\n** List of appointments, ordered by date/time/provider.");
-        for(int i = 0; i<appointments.size(); i++){
-            System.out.println(appointments.get(i).toString());
+    /**
+     * This method does the PA command. Print the list of appointments;
+     * ordered by date/time/provider.
+     */
+    private void PA_Command() {
+        if (!appointments.isEmpty()) {
+            Sort.appointment(appointments, 'A');
+            System.out.println("\n** List of appointments, ordered by date/time/provider.");
+            for (int i = 0; i < appointments.size(); i++) {
+                System.out.println(appointments.get(i).toString());
+            }
+            System.out.println("** end of list **");
+        }else{
+            Sort.appointment(appointments, 'L');
         }
-        System.out.println("** end of list **");
     }
 
-
-    private void PP_Command(){
-        Sort.appointment(appointments,'P');
-        System.out.println("\n** List of appointments, ordered by patient/date/time.");
-        for(int i = 0; i<appointments.size(); i++){
-            System.out.println(appointments.get(i).toString());
+    /**
+     * This method does the PP command. Print the list of appointments;
+     * ordered by patient/date/time.
+     */
+    private void PP_Command() {
+        if (!appointments.isEmpty()) {
+            Sort.appointment(appointments, 'P');
+            System.out.println("\n** List of appointments, ordered by patient/date/time.");
+            for (int i = 0; i < appointments.size(); i++) {
+                System.out.println(appointments.get(i).toString());
+            }
+            System.out.println("** end of list **");
+        }else{
+            System.out.println("The schedule calendar is empty.");
         }
-        System.out.println("** end of list **");
     }
 
-    private void PL_Command(){
-        Sort.appointment(appointments,'L');
-        System.out.println("\n** List of appointments, ordered by county/date/time.");
-        for(int i = 0; i<appointments.size(); i++){
-            System.out.println(appointments.get(i).toString());
+    /**
+     * This method does the PL command. Print the list of appointments;
+     * ordered by patient/date/time.
+     */
+    private void PL_Command() {
+        if (!appointments.isEmpty()) {
+            Sort.appointment(appointments, 'L');
+            System.out.println("\n** List of appointments, ordered by county/date/time.");
+            for (int i = 0; i < appointments.size(); i++) {
+                System.out.println(appointments.get(i).toString());
+            }
+            System.out.println("** end of list **");
+        }else{
+            System.out.println("The schedule calendar is empty.");
         }
-        System.out.println("** end of list **");
+    }
+
+    /**
+     * This print out the bill of each patient.
+     * @param patients the patients list.
+     */
+    private void printChargePerPatient(List<Patient> patients){
+        int[] charge = new int[patients.size()];
+        for(int i =0; i< patients.size(); i++){
+            Patient current = patients.get(i);
+            charge[i] = current.charge();
+        }
+        for (int i = 0;i<charge.length; i++){
+            DecimalFormat format = new DecimalFormat("#,###.00");
+            String formatCharge = format.format(charge[i]);
+            System.out.println("(" + (i+1) +") " + patients.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
+        }
     }
 
     /**
      * This method does the PS command. Print the bill of the patients.
-     * @param clinic the clinic.
-     * @param medicalRecord the medicalRecord/bill.
      */
-  /**  public void PS_Command(List clinic, MedicalRecord medicalRecord){
-        clinic.sortPatient();
-        medicalRecord.add(clinic);
-        int charge;
-        Patient[] record = medicalRecord.getPatients();
-        System.out.println(("** Billing statement ordered by patient **"));
-        clinic.sortPatient();
-        for (int i = 0;i<medicalRecord.getSize(); i++){
-            Patient current = record[i];
-            charge = current.charge();
-            DecimalFormat format = new DecimalFormat("#,###.00");
-            String formatCharge = format.format(charge);
-            System.out.println("(" + (i+1) +") " + current.getProfile() +" [amount due: $" + formatCharge + "]");
+    private void PS_Command(){
+        Sort.appointment(appointments,'P');
+        List<Patient> patients = new List<>();
+        for(int i =0; i< appointments.size(); i++){
+            Appointment appointment = appointments.get(i);
+            Patient patient = new Patient(appointment.getPatient().getProfile(), appointment);
+            if(patients.isEmpty()){
+                patients.add(patient);
+            }else{
+                if(patients.contains(patient)){
+                    int index = patients.indexOf(patient);
+                    patients.get(index).addVisit(appointment);
+                }else{
+                    patients.add(patient);
+                }
+            }
         }
+        System.out.println(("** Billing statement ordered by patient **"));
+        printChargePerPatient(patients);
         System.out.println("** end of list **");
-        clinic.removeAll();
+        for(int i =0; i< appointments.size(); i++){
+            appointments.remove(appointments.get(appointments.size()-1));
+        }
     }
 
+    /**
+     * This method does the PO command. Print the list of Office type appointments;
+     * ordered by county/date/time.
+     */
+    private void PO_Command(){
+       if (!appointments.isEmpty()) {
+           Sort.appointment(appointments, 'O');
+           System.out.println("\n** List of office appointments ordered by county/date/time.");
+           for (int i = 0; i < appointments.size(); i++) {
+               if(appointments.get(i) instanceof Imaging) break;
+               System.out.println(appointments.get(i).toString());
+           }
+           System.out.println("** end of list **");
+       }else{
+           System.out.println("The schedule calendar is empty.");
+       }
+    }
+
+    /**
+     * This method does the PI command. Print the list of imaging appointments;
+     * ordered by county/date/time.
+     */
+    private void PI_Command(){
+        if (!appointments.isEmpty()) {
+            Sort.appointment(appointments, 'I');
+            System.out.println("\n** List of radiology appointments ordered by county/date/time.");
+            for (int i = 0; i < appointments.size(); i++) {
+                if(appointments.get(i) instanceof Imaging) {
+                    System.out.println(appointments.get(i).toString());
+                }
+            }
+            System.out.println("** end of list **");
+        }else{
+            System.out.println("The schedule calendar is empty.");
+        }
+    }
+
+    private void PC_Command(){
+        int[] providerCharge = new int[providers.size()];
+
+    }
     /**
      * This method does the command of the command line input.
      * @param input the input command line.
@@ -391,10 +477,13 @@ public class ClinicManager {
                 PL_Command();
                 return true;
             case "PS":
+                PS_Command();
                 return true;
             case "PO":
+                PO_Command();
                 return true;
             case "PI":
+                PI_Command();
                 return true;
             case "PC":
                 return true;
