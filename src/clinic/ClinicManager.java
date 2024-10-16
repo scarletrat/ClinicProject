@@ -2,10 +2,8 @@ package clinic;
 import util.*;
 import java.io.File;
 import java.util.Scanner;
-import java.text.DecimalFormat;
 import java.io.FileNotFoundException;
 import static util.Sort.provider;
-import static util.Sort.technician;
 
 
 /**
@@ -26,7 +24,7 @@ public class ClinicManager {
     public String isValidAppointmentDate(Appointment appointment){
         boolean validDate = appointment.getDate().isValid();
         if(!validDate){
-            return ("Appointment date: " + appointment.getDate() + " is not a valid calendar date.");
+            return ("Appointment date: " + appointment.getDate() + " is not a valid calendar date");
         }
         if(appointment.getDate().isPast() || appointment.getDate().isToday()){
             return ("Appointment date: " + appointment.getDate() + " is today or a date before today.");
@@ -48,7 +46,7 @@ public class ClinicManager {
     public String isValidDob(Appointment appointment){
         boolean validDate = appointment.getPatient().getProfile().getDob_inDate().isValid();
         if(!validDate){
-            return ("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is not a valid calendar date.");
+            return ("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is not a valid calendar date");
         }
         if(appointment.getPatient().getProfile().getDob_inDate().isFuture() || appointment.getPatient().getProfile().getDob_inDate().isToday()){
             return("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is today or a date after today.");
@@ -56,15 +54,21 @@ public class ClinicManager {
         return "valid";
     }
 
+    public String dCommand(String[] inputPart){
+        return null;
+    }
 
-    public
+    public String tCommand(String[] inputPart){
+        return null;
+    }
+
     /**
      * This method does the C command. Cancel an existing appointment.
      * @param inputPart the input of the command line.
      * @param clinic the clinic.
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
-    public String cCommand(String[] inputPart, List clinic){
+  /**  public String cCommand(String[] inputPart, List clinic){
         Date date = new Date(inputPart[1]);
         Timeslot tempSlot = new Timeslot(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
@@ -85,7 +89,7 @@ public class ClinicManager {
      * @param clinic the clinic.
      * @return return a string representation of the result.
      */
-    public String rCommand(String[] inputPart, List clinic){
+  /**  public String rCommand(String[] inputPart, List clinic){
         Date date = new Date(inputPart[1]);
         Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
@@ -114,7 +118,7 @@ public class ClinicManager {
      * @param clinic the clinic.
      * @param medicalRecord the medicalRecord/bill.
      */
-    public void PS_Command(List clinic, MedicalRecord medicalRecord){
+  /**  public void PS_Command(List clinic, MedicalRecord medicalRecord){
         clinic.sortPatient();
         medicalRecord.add(clinic);
         int charge;
@@ -135,35 +139,42 @@ public class ClinicManager {
     /**
      * This method does the command of the command line input.
      * @param input the input command line.
-     * @param clinic the clinic.
      * @return return true if the command to keep running.
      * return false if terminated.
      */
-    public boolean command(String input,List clinic, MedicalRecord medicalRecord) {
+   public boolean command(String input) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
         switch (command) {
-            case "S":
+            case "D":
                 //Create a schedule
-                System.out.println(sCommand(inputPart,clinic));
+                System.out.println(dCommand(inputPart));
+                return true;
+            case "T":
+                System.out.println(tCommand(inputPart));
                 return true;
             case "C":
-                System.out.println(cCommand(inputPart,clinic));
+                //System.out.println(rCommand(inputPart));
                 return true;
             case "R":
-                System.out.println(rCommand(inputPart,clinic));
+                //clinic.printByAppointment();
                 return true;
             case "PA":
-                clinic.printByAppointment();
+                //clinic.printByPatient();
                 return true;
             case "PP":
-                clinic.printByPatient();
+                //clinic.printByLocation();
                 return true;
             case "PL":
-                clinic.printByLocation();
+                //PS_Command(clinic,medicalRecord);
                 return true;
             case "PS":
-                PS_Command(clinic,medicalRecord);
+                return true;
+            case "PO":
+                return true;
+            case "PI":
+                return true;
+            case "PC":
                 return true;
             case "Q":
                 System.out.println("Scheduler is terminated.");
@@ -174,13 +185,14 @@ public class ClinicManager {
         }
     }
 
+
     public void loadProviderList(){
         try {
-            File file = new File("providers.txt");
+            File file = new File("src/clinic/providers.txt");
             Scanner fileRead = new Scanner(file);
             while (fileRead.hasNextLine()) {
                 String provider = fileRead.nextLine();
-                String[] providerData = provider.split(" ");
+                String[] providerData = provider.split("\\s+");
                 Provider temp;
                 if(providerData[0].equals("D")){
                     Profile profile = new Profile(providerData[1], providerData[2], providerData[3]);
@@ -201,15 +213,16 @@ public class ClinicManager {
             fileRead.close();
         }
         catch (FileNotFoundException e) {
-            System.out.println("File not found.");
-            e.printStackTrace();
+            System.out.println("File not found: " + e.getMessage());
         }
     }
 
     public void displayProviderList(){
+        Sort.provider(providers);
         for (int i = 0; i<providers.size(); i++){
             System.out.println(providers.get(i).toString());
         }
+        System.out.println();
     }
 
     /**
@@ -218,33 +231,39 @@ public class ClinicManager {
     public void createRotation(){
         CircularLinkedList rotation = new CircularLinkedList();
         int size = technicians.size();
-        for(int i = size-1; i >= 0; i--){
+        for(int i = size-1; i >= 1; i--){
             rotation.insert(technicians.get(i));
             System.out.print(technicians.get(i).getProfile().getFname() + " " +
                     technicians.get(i).getProfile().getLname() + " (" +
-                    technicians.get(i).getLocation().getName() + ") -->");
+                    technicians.get(i).getLocation().getName() + ") --> ");
         }
+        System.out.print(technicians.get(0).getProfile().getFname() + " " +
+                        technicians.get(0).getProfile().getLname() + " (" +
+                        technicians.get(0).getLocation().getName() + ")");
+        System.out.println();
     }
 
     /**
      * This method runs the user interface.
      */
     public void run() {
+        providers = new List<>();
+        technicians = new List<>();
         loadProviderList();
         displayProviderList();
         System.out.println("Rotation list for technicians.");
         createRotation();
+        System.out.println("Clinic Manager is running...");
         Scanner commandLine = new Scanner(System.in);
-        System.out.println("Clinic Manager is running.");
         String input;
         while (true) {
             input = commandLine.nextLine();
             //If the user enters an empty line, continue the while loop
-            if (input.isEmpty()) { n5
+            if (input.isEmpty()) {
                 continue;
             }
             //input commandm
-            boolean terminate = command(input,clinic,medicalRecord);
+            boolean terminate = command(input);
             if(!terminate){
                 return;
             }

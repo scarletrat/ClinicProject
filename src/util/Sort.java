@@ -13,11 +13,6 @@ public class Sort {
      * @param j the minimum element to swap with i.
      */
     private static void swap(List<Appointment> list,int i, int j){
-        /**
-        Appointment temp = list.get(j);
-        list.get(j) = list.get(i);
-        list.get(i) = temp;
-        */
         Appointment iAppointment = list.get(i);
         Appointment jAppointment = list.get(j);
         int indexOfi = list.indexOf(iAppointment);
