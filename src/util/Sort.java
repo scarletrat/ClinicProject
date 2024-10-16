@@ -53,7 +53,7 @@ public class Sort {
      * Uses selection sort to sort the appointments by county, date, then timeslot.
      * @param list the appointment list to be sorted.
      */
-    public static void sortLocation(List<Appointment> list) {
+    private static void sortLocation(List<Appointment> list) {
         if (list.isEmpty()) {
             return;
         }
@@ -76,7 +76,7 @@ public class Sort {
      * Uses selection sort to sort the appointments by date, timeslot, then provider.
      * @param list the appointment list to be sorted.
      */
-    public static void sortAppointment(List<Appointment> list){
+    private static void sortAppointment(List<Appointment> list){
         if (list.isEmpty()) {
             return;
         }
@@ -170,7 +170,7 @@ public class Sort {
      * Use selection sort to sort the Office type appointment by county, date, then timeslot.
      * @param list the appointment list to be sorted.
      */
-    public static void sortOffice(List<Appointment> list){
+    private static void sortOffice(List<Appointment> list){
         if (list.isEmpty()) {
             return;
         }
@@ -194,7 +194,7 @@ public class Sort {
      * Use selection sort to sort the Imaging type appointment by county, date, then timeslot.
      * @param list the appointment list to be sorted.
      */
-    public static void sortImaging(List<Appointment> list){
+    private static void sortImaging(List<Appointment> list){
         if (list.isEmpty()) {
             return;
         }

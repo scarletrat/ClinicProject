@@ -7,6 +7,7 @@ package clinic;
  */
 public class Timeslot implements Comparable<Timeslot> {
     public static final int NOON = 12;
+
     private int hour;
     private int minute;
 
@@ -47,9 +48,22 @@ public class Timeslot implements Comparable<Timeslot> {
         }
     }
 
+    /**
+     * Comparing two timeslot object.
+     * @param o the object to be compared.
+     * @return 1 if the timeslot is later than Timeslot o,
+     * return -1 if the timeslot is earlier than Timeslot o,
+     * return 0 if the same.
+     */
     @Override
     public int compareTo(Timeslot o) {
-        return 0;
+        if(this.getHour() > o.getHour()){
+            return 1;
+        }else if(this.getHour()<o.getHour()){
+            return -1;
+        }else{
+            return Integer.compare(this.getMinute(), o.getMinute());
+        }
     }
 
     /**

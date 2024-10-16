@@ -155,10 +155,10 @@ public class Appointment implements Comparable<Appointment>{
 
     /**
      * Sets this appointment's profile to parameter
-     * @param profile profile to set appointment to
+     * @param patient profile to set appointment to
      */
-    public void setPatient(Person profile) {
-        this.patient = profile;
+    public void setPatient(Person patient) {
+        this.patient = patient;
     }
 
     /**

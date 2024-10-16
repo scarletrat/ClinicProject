@@ -151,26 +151,4 @@ public class Profile implements Comparable<Profile>{
         this.dob = new Date(dob);
     }
 
-    /**
-     * Testbed main() is a driver to test the code within this class, specifically,
-     * test the public method.
-     * @param args command line arguments.
-     */
-    public static void main(String[] args){
-        System.out.println("**Test case #1: Last name of profile should be compared first");
-        //testInput_SmallLastName();
-        System.out.println("**Test case #2: First name of profile is compared before date of birth");
-        //testInput_SmallFirstName();
-        System.out.println("**Test case #3: Date of birth of profile is compared");
-        //testInput_SmallDob();
-        System.out.println("**Test case #4: First name of profile is compared before date of birth");
-        //testInput_BigLastName();
-        System.out.println("**Test case #5: First name of profile is compared before date of birth");
-        //testInput_BigFirstName();
-        System.out.println("**Test case #6: Date of birth of profile is compared");
-        //testInput_BigDob();
-        System.out.println("**Test case #7: Same profile is being compared");
-        //testInput_SameProfile();
-    }
-
 }

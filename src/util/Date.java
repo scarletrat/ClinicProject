@@ -304,25 +304,7 @@ public class Date implements Comparable<Date> {
         }
     }
 
-    /**
-     * Testbed main() is a driver to test the code within this class, specifically,
-     * test the public method
-     * @param args command line arguments
-     */
-    public static void main(String[] args){
-        System.out.println("**Test case #1: # of days in Feb. in a non-leap year is 28");
-       // testDaysInFeb_NonLeap();
-        System.out.println("**Test case #2: # of days in Feb. in a leap year is 29");
-        //testDaysInFeb_Leap();
-        System.out.println("**Test case #3: # of days in 30 Day Month is 1 to 30");
-        //test30DayMonth_OutOfRange();
-        System.out.println("**Test case #4: Range of months are from 1 to 12");
-       // testMonth_OutOfRange();
-        System.out.println("**Test case #5: # of days in 31 Day Month is 1 to 31");
-        //test31DayMonth_InRange();
-        System.out.println("**Test case #6: # of days in Feb. in a leap year is 29");
-        //testValidFeb_Leap();
-    }
+
 
 }
 
