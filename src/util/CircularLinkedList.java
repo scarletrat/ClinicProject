@@ -15,10 +15,10 @@ public class CircularLinkedList {
 
         if (last == null) {
             last = newNode;
-            last.next = last;
+            last.setNext(last);
         } else {
-            newNode.next = last.next;
-            last.next = newNode;
+            newNode.setNext(last.getNext());
+            last.setNext(newNode);
             last = newNode;
         }
         size++;
@@ -29,8 +29,8 @@ public class CircularLinkedList {
             return null;
         }
 
-        Node current = last.next;
-        current = current.next;
+        Node current = last.getNext();
+        current = current.getNext();
 
         return current;
     }
@@ -38,5 +38,9 @@ public class CircularLinkedList {
     // Check if the list is empty
     public boolean isEmpty() {
         return last == null;
+    }
+
+    public int getSize(){
+        return size;
     }
 }

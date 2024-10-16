@@ -268,24 +268,5 @@ public class Sort {
         }
 
     }
-    public static void technician(List<Technician> list) {
-        if (list.isEmpty()) {
-            return;
-        }
-        int size = list.size();
-        for (int i = 0; i < size - 1; i++) {
-            int min = i;
-            for (int j = i + 1; j < size; j++) {
-                if (list.get(j).getLocation().compareTo(list.get(min).getLocation()) < 0) {
-                    min = j;
-                }
-            }
-            Provider temp = list.get(min);
-            Provider mininum = list.get(min);
-            mininum = list.get(i);
-            Provider ii = list.get(i);
-            ii = temp;
-        }
-    }
 
 }

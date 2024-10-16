@@ -56,8 +56,7 @@ public class ClinicManager {
         return "valid";
     }
 
-
-    public
+    public String dCommand
     /**
      * This method does the C command. Cancel an existing appointment.
      * @param inputPart the input of the command line.
@@ -193,6 +192,7 @@ public class ClinicManager {
                     Location location = Location.getLocation(providerData[4]);
                     int rate = Integer.parseInt(providerData[5]);
                     temp = new Technician(profile, location, rate);
+                    technicians.add((Technician) temp);
                 }
                 providers.add(temp);
                 provider(providers);
@@ -215,17 +215,13 @@ public class ClinicManager {
      * This method creates a circular linked list in order by location and prints out the rotation list.
      */
     public void createRotation(){
-        for(Provider provider : providers){
-            if(provider instanceof Technician){
-                technicians.add((Technician) provider);
-            }
-        }
-        technician(technicians);
         CircularLinkedList rotation = new CircularLinkedList();
-        for(Technician technician : technicians){
-            rotation.insert(technician);
-            System.out.println(technician.getProfile().getFname() + " " +
-                    technician.getProfile().getLname() + " (" + technician.getLocation().getName() + ") -->");
+        int size = rotation.getSize();
+        for(int i = size-1; i>=0; i--){
+            rotation.insert(technicians.get(i));
+            System.out.print(technicians.get(i).getProfile().getFname() + " " +
+                    technicians.get(i).getProfile().getLname() + " (" +
+                    technicians.get(i).getLocation().getName() + ") -->");
         }
     }
 
