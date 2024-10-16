@@ -9,7 +9,6 @@ package clinic;
 public abstract class Provider extends Person {
     private Location location;
     public abstract int rate();
-
     /**
     CERAVOLO(Location.EDISON, Specialty.PEDIATRICIAN),
     HARPER(Location.CLARK, Specialty.FAMILY),
@@ -78,7 +77,6 @@ public abstract class Provider extends Person {
     @Override
     public String toString(){
         return "[" + super.getProfile() + ", " + location + "] ";
-
     }
 
 

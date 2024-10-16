@@ -2,10 +2,16 @@ package clinic;
 
 public class Technician extends Provider{
     private int ratePerVisit;
+    private String fname;
+    private String lname;
+    private Location location;
 
     public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
         this.ratePerVisit = ratePerVisit;
+        this.fname = profile.getFname();
+        this.lname = profile.getLname();
+        this.location = location;
     }
 
     public void setRatePerVisit(int ratePerVisit){
@@ -29,5 +35,9 @@ public class Technician extends Provider{
 
     @Override
     public String toString(){return super.toString() + "[rate: $" + ratePerVisit + ".00]";
+    }
+
+    public String rotationFormat(){
+        return fname + " " + lname + " (" + location.getName() + ") -->";
     }
 }

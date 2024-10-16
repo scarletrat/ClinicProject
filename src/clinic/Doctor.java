@@ -33,4 +33,5 @@ public class Doctor extends Provider{
     public String toString(){
         return super.toString() + "[" + this.specialty + ", #" + this.npi +"]";
     }
+
 }

@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Scanner;
 import java.text.DecimalFormat;
 import java.io.FileNotFoundException;
-
 import static util.Sort.provider;
+import static util.Sort.technician;
 
 
 /**
@@ -16,6 +16,7 @@ import static util.Sort.provider;
 public class ClinicManager {
     private List<Appointment> appointments;
     private List<Provider> providers;
+    private List<Technician> technicians;
 
     /**
      * Checks if the appointment date is valid.
@@ -45,12 +46,12 @@ public class ClinicManager {
      * @return return a string of whether it's valid or why it's not valid.
      */
     public String isValidDob(Appointment appointment){
-        boolean validDate = appointment.getProfile().getDob_inDate().isValid();
+        boolean validDate = appointment.getPatient().getProfile().getDob_inDate().isValid();
         if(!validDate){
-            return ("Patient dob: " + appointment.getProfile().getDob_inString() + " is not a valid calendar date.");
+            return ("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is not a valid calendar date.");
         }
-        if(appointment.getProfile().getDob_inDate().isFuture() || appointment.getProfile().getDob_inDate().isToday()){
-            return("Patient dob: " + appointment.getProfile().getDob_inString() + " is today or a date after today.");
+        if(appointment.getPatient().getProfile().getDob_inDate().isFuture() || appointment.getPatient().getProfile().getDob_inDate().isToday()){
+            return("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is today or a date after today.");
         }
         return "valid";
     }
@@ -63,14 +64,15 @@ public class ClinicManager {
      */
     public String cCommand(String[] inputPart, List clinic){
         Date date = new Date(inputPart[1]);
-        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
+        Timeslot tempSlot = new Timeslot(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
-        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
+        Appointment target = new Appointment()
+        Appointment appointment = appointments.find(date,tempSlot,profile);
         if(appointment ==null){
             return(date + " " + tempSlot+ " "
                     + profile + " does not exist.");
         }
-        clinic.remove(appointment);
+        appointments.remove(appointment);
         return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
                 + appointment.getProfile() + " has been canceled.");
     }
@@ -207,25 +209,40 @@ public class ClinicManager {
         }
     }
 
+    public void createRotation(){
+        for(Provider provider : providers){
+            if(provider instanceof Technician){
+                technicians.add((Technician) provider);
+            }
+        }
+        technician(technicians);
+        CircularLinkedList rotation = new CircularLinkedList();
+        for(Technician technician : technicians){
+            rotation.insert(technician);
+            System.out.println(technician.rotationFormat());
+        }
+    }
+
     /**
      * This method runs the user interface.
      */
     public void run() {
         loadProviderList();
         displayProviderList();
+        createRotation();
         Scanner commandLine = new Scanner(System.in);
         System.out.println("Clinic Manager is running.");
-//        String input;
-//        while (true) {
-//            input = commandLine.nextLine();
-//            If the user enters an empty line, continue the while loop
-//            if (input.isEmpty()) { n5
-//                continue;
-//            }
-//            input commandm
-//            boolean terminate = command(input,clinic,medicalRecord);
-//            if(!terminate){
-//                return;
+        String input;
+        while (true) {
+            input = commandLine.nextLine();
+            //If the user enters an empty line, continue the while loop
+            if (input.isEmpty()) { n5
+                continue;
+            }
+            //input commandm
+            boolean terminate = command(input,clinic,medicalRecord);
+            if(!terminate){
+                return;
             }
         }
     }

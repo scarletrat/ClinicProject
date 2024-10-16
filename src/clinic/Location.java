@@ -55,6 +55,9 @@ public enum Location {
         return zip;
     }
 
+    public String getName(){
+        return name();
+    }
     /**
      * Return a textual representation of the location.
      * @return return "name, county zip"

@@ -3,6 +3,7 @@ package clinic;
 public class Person {
     protected Profile profile;
 
+
     public Person(){
         profile = new Profile();
     }
