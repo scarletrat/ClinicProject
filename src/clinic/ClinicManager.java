@@ -18,22 +18,22 @@ public class ClinicManager {
 
     /**
      * Checks if the appointment date is valid.
-     * @param appointment the appointment to be checked.
+     * @param date the appointment date to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
-    public String isValidAppointmentDate(Appointment appointment){
-        boolean validDate = appointment.getDate().isValid();
+    public String isValidAppointmentDate(Date date){
+        boolean validDate = date.isValid();
         if(!validDate){
-            return ("Appointment date: " + appointment.getDate() + " is not a valid calendar date");
+            return ("Appointment date: " + date + " is not a valid calendar date");
         }
-        if(appointment.getDate().isPast() || appointment.getDate().isToday()){
-            return ("Appointment date: " + appointment.getDate() + " is today or a date before today.");
+        if(date.isPast() || date.isToday()){
+            return ("Appointment date: " + date + " is today or a date before today.");
         }
-        if(!appointment.getDate().isWeekDay()){
-            return("Appointment date: " + appointment.getDate() + " is Saturday or Sunday.");
+        if(!date.isWeekDay()){
+            return("Appointment date: " + date + " is Saturday or Sunday.");
         }
-        if(!appointment.getDate().within6MonthFromToday()){
-            return("Appointment date: " + appointment.getDate() + " is not within six months.");
+        if(!date.within6MonthFromToday()){
+            return("Appointment date: " + date + " is not within six months.");
         }
         return "valid";
     }
@@ -55,6 +55,16 @@ public class ClinicManager {
     }
 
     public String dCommand(String[] inputPart){
+        Date date = new Date(inputPart[1]);
+        String validAppointmentDate = isValidAppointmentDate(date);
+        if(!validAppointmentDate.equalsIgnoreCase("valid")){
+            return validAppointmentDate;
+        }
+        Timeslot timeslot = new Timeslot(inputPart[2]);
+        if(timeslot.getMinute() == 0 && timeslot.getHour() ==0){
+            return(inputPart[2] + " is not a valid time slot.");
+        }
+        Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
         return null;
     }
 
