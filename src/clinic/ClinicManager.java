@@ -18,42 +18,96 @@ public class ClinicManager {
     private CircularLinkedList rotation;
     /**
      * Checks if the appointment date is valid.
+     *
      * @param date the appointment date to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
-    public String isValidAppointmentDate(Date date){
+    private String isValidAppointmentDate(Date date) {
         boolean validDate = date.isValid();
-        if(!validDate){
+        if (!validDate) {
             return ("Appointment date: " + date + " is not a valid calendar date");
         }
-        if(date.isPast() || date.isToday()){
+        if (date.isPast() || date.isToday()) {
             return ("Appointment date: " + date + " is today or a date before today.");
         }
-        if(!date.isWeekDay()){
-            return("Appointment date: " + date + " is Saturday or Sunday.");
+        if (!date.isWeekDay()) {
+            return ("Appointment date: " + date + " is Saturday or Sunday.");
         }
-        if(!date.within6MonthFromToday()){
-            return("Appointment date: " + date + " is not within six months.");
+        if (!date.within6MonthFromToday()) {
+            return ("Appointment date: " + date + " is not within six months.");
         }
         return "valid";
     }
 
     /**
      * Check if the date of birth is valid.
+     *
      * @param date the date of birth of patient to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
-    public String isValidDob(Date date){
+    private String isValidDob(Date date) {
         boolean validDate = date.isValid();
-        if(!validDate){
+        if (!validDate) {
             return ("Patient dob: " + date + " is not a valid calendar date");
         }
-        if(date.isFuture() || date.isToday()){
-            return("Patient dob: " + date + " is today or a date after today.");
+        if (date.isFuture() || date.isToday()) {
+            return ("Patient dob: " + date + " is today or a date after today.");
         }
         return "valid";
     }
 
+    private boolean isValidAppointment(Profile profile, Date date, Timeslot timeslot) {
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            if (appointment.getPatient().getProfile().equals(profile) && appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isNumeric(String npi) {
+        if (npi == null || npi.isEmpty()) {
+            return false; // Return false for null or empty strings
+        }
+
+        try {
+            Integer.parseInt(npi);
+            return true;              // If successful, return true
+        } catch (NumberFormatException e) {
+            return false;             // If parsing fails, return false
+        }
+    }
+
+    private boolean isValidNpi(String npi){
+        for(int i = 0; i<providers.size(); i++){
+            if(providers.get(i) instanceof Doctor){
+                if(((Doctor) providers.get(i)).getnpi().equals(npi)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private Doctor findDoctor(String npi){
+        for(int i = 0; i<providers.size(); i++){
+            if(providers.get(i) instanceof Doctor){
+                if(((Doctor) providers.get(i)).getnpi().equals(npi)){
+                    return (Doctor)providers.get(i);
+                }
+            }
+        }
+        return null;
+    }
+    private boolean isDoctorFree(Date date, Timeslot timeslot,Doctor doc){
+        for(int i = 0; i<appointments.size();i++){
+            Appointment appointment = appointments.get(i);
+            if (appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot) && appointment.getProvider().equals(doc)) {
+                return false;
+            }
+        }
+        return true;
+    }
     public String dCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
         String validAppointmentDate = isValidAppointmentDate(date);
@@ -64,9 +118,29 @@ public class ClinicManager {
         if(timeslot.getMinute() == 0 && timeslot.getHour() ==0){
             return(inputPart[2] + " is not a valid time slot.");
         }
+        Date dateOfBirth = new Date(inputPart[5]);
+        String validDob = isValidDob(dateOfBirth);
+        if(!validDob.equalsIgnoreCase("valid")){
+            return validDob;
+        }
+        if(inputPart.length<7){
+            return ("Missing data tokens.");
+        }
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
-
-        return null;
+        if(!isValidAppointment(patient.getProfile(),date,timeslot)){
+            return patient.getProfile() + (" has an existing appointment at the same time slot.");
+        }
+        String npi = inputPart[6];
+        if(!isNumeric(npi) || !isValidNpi(npi)){
+            return npi + (" - provider doesn't exist.");
+        }
+        Doctor doc = findDoctor(npi);
+        if(isDoctorFree(date,timeslot,doc)){
+            Appointment appointment = new Appointment(date,timeslot,patient,doc);
+            appointments.add(appointment);
+            return( appointment + " booked.");
+        }
+        return doc + (" is not available at slot " + inputPart[2]+ ".");
     }
 
     public Boolean isFree(Technician technician, Timeslot timeslot){
@@ -279,6 +353,7 @@ public class ClinicManager {
     public void run() {
         providers = new List<>();
         technicians = new List<>();
+        appointments = new List<>();
         loadProviderList();
         displayProviderList();
         System.out.println("Rotation list for technicians.");
