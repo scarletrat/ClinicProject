@@ -14,6 +14,7 @@ public class Patient extends Person implements Comparable<Patient> {
      */
     public Patient() {
         super();
+        this.visits = null;
     }
 
     /**
