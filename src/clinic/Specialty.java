@@ -10,6 +10,12 @@ public enum Specialty {
     PEDIATRICIAN(300),
     ALLERGIST(350);
 
+    private final int charge;
+
+    Specialty(int charge){
+        this.charge = charge;
+    }
+
     public static Specialty getSpecialty(String specialty){
         if(specialty.equalsIgnoreCase("FAMILY")){
             return FAMILY;
@@ -21,11 +27,7 @@ public enum Specialty {
             return null;
         }
     }
-    private final int charge;
 
-    Specialty(int charge){
-        this.charge = charge;
-    }
 
     public int getCharge(){
         return charge;
