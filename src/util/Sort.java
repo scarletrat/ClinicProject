@@ -97,7 +97,7 @@ public class Sort {
      * @param list the appointment list
      * @param key the type of appointment in front "half" of the list
      * @return return the size of the "front half" of the list
-     * return -1 if there's no that type of appointment
+     * return -1 if there's no that type of appointment/key
      */
     private static int sortAppointment_type(List<Appointment> list, int key) {
         int left = 0;
