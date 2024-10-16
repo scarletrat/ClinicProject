@@ -9,9 +9,6 @@ public class Technician extends Provider{
     public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
         this.ratePerVisit = ratePerVisit;
-        this.fname = profile.getFname();
-        this.lname = profile.getLname();
-        this.location = location;
     }
 
     public void setRatePerVisit(int ratePerVisit){
@@ -37,7 +34,4 @@ public class Technician extends Provider{
     public String toString(){return super.toString() + "[rate: $" + ratePerVisit + ".00]";
     }
 
-    public String rotationFormat(){
-        return fname + " " + lname + " (" + location.getName() + ") -->";
-    }
 }

@@ -56,6 +56,8 @@ public class ClinicManager {
         return "valid";
     }
 
+
+    public
     /**
      * This method does the C command. Cancel an existing appointment.
      * @param inputPart the input of the command line.
@@ -219,7 +221,8 @@ public class ClinicManager {
         CircularLinkedList rotation = new CircularLinkedList();
         for(Technician technician : technicians){
             rotation.insert(technician);
-            System.out.println(technician.rotationFormat());
+            System.out.println(technician.getProfile().getFname() + " " +
+                    technician.getProfile().getLname() + " (" + technician.getLocation().getName() + ") -->");
         }
     }
 
@@ -229,6 +232,7 @@ public class ClinicManager {
     public void run() {
         loadProviderList();
         displayProviderList();
+        System.out.println("Rotation list for technicians.");
         createRotation();
         Scanner commandLine = new Scanner(System.in);
         System.out.println("Clinic Manager is running.");
