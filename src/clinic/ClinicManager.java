@@ -1,10 +1,12 @@
 package clinic;
-import util.Date;
-import util.List;
+import util.*;
 import java.io.File;
 import java.util.Scanner;
 import java.text.DecimalFormat;
 import java.io.FileNotFoundException;
+
+import static util.Sort.provider;
+
 
 /**
  * This class is the user interface of the clinic project.
@@ -172,7 +174,6 @@ public class ClinicManager {
         try {
             File file = new File("providers.txt");
             Scanner fileRead = new Scanner(file);
-            List<Provider> providerList = new List<>();
             while (fileRead.hasNextLine()) {
                 String provider = fileRead.nextLine();
                 String[] providerData = provider.split(" ");
@@ -189,7 +190,8 @@ public class ClinicManager {
                     int rate = Integer.parseInt(providerData[5]);
                     temp = new Technician(profile, location, rate);
                 }
-                providerList.add(temp);
+                providers.add(temp);
+                provider(providers);
             }
             fileRead.close();
         }
@@ -199,25 +201,31 @@ public class ClinicManager {
         }
     }
 
+    public void displayProviderList(){
+        for (int i = 0; i<providers.size(); i++){
+            System.out.println(providers.get(i).toString());
+        }
+    }
+
     /**
      * This method runs the user interface.
      */
     public void run() {
         loadProviderList();
+        displayProviderList();
         Scanner commandLine = new Scanner(System.in);
         System.out.println("Clinic Manager is running.");
-        String input;
-        List clinic = new List();
-        while (true) {
-            input = commandLine.nextLine();
-            //If the user enters an empty line, continue the while loop
-            if (input.isEmpty()) { n5
-                continue;
-            }
-            //input commandm
-            boolean terminate = command(input,clinic,medicalRecord);
-            if(!terminate){
-                return;
+//        String input;
+//        while (true) {
+//            input = commandLine.nextLine();
+//            If the user enters an empty line, continue the while loop
+//            if (input.isEmpty()) { n5
+//                continue;
+//            }
+//            input commandm
+//            boolean terminate = command(input,clinic,medicalRecord);
+//            if(!terminate){
+//                return;
             }
         }
     }

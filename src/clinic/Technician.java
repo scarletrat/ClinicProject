@@ -26,4 +26,8 @@ public class Technician extends Provider{
         }
         return false;
     }
+
+    @Override
+    public String toString(){return super.toString() + "[rate: $" + ratePerVisit + ".00]";
+    }
 }
