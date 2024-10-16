@@ -40,16 +40,16 @@ public class ClinicManager {
 
     /**
      * Check if the date of birth is valid.
-     * @param appointment the appointment to be checked.
+     * @param date the date of birth of patient to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
-    public String isValidDob(Appointment appointment){
-        boolean validDate = appointment.getPatient().getProfile().getDob_inDate().isValid();
+    public String isValidDob(Date date){
+        boolean validDate = date.isValid();
         if(!validDate){
-            return ("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is not a valid calendar date");
+            return ("Patient dob: " + date + " is not a valid calendar date");
         }
-        if(appointment.getPatient().getProfile().getDob_inDate().isFuture() || appointment.getPatient().getProfile().getDob_inDate().isToday()){
-            return("Patient dob: " + appointment.getPatient().getProfile().getDob_inString() + " is today or a date after today.");
+        if(date.isFuture() || date.isToday()){
+            return("Patient dob: " + date + " is today or a date after today.");
         }
         return "valid";
     }
@@ -65,6 +65,7 @@ public class ClinicManager {
             return(inputPart[2] + " is not a valid time slot.");
         }
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
+
         return null;
     }
 
