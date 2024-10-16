@@ -12,7 +12,7 @@ public class Radiology {
         if (service.equalsIgnoreCase("xray")) {
             this.service = Service.XRAY;
         } else if (service.equalsIgnoreCase("ultrasound")) {
-            this.service = Service.ULTRASOUND
+            this.service = Service.ULTRASOUND;
         } else if (service.equalsIgnoreCase("catscan")) {
             this.service = Service.CATSCAN;
         }
