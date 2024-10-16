@@ -18,11 +18,12 @@ public class Sort {
         list.get(j) = list.get(i);
         list.get(i) = temp;
         */
-        Appointment temp = list.get(j);
-        Appointment mininum = list.get(j);
-        mininum = list.get(i);
-        Appointment ii = list.get(i);
-        ii = temp;
+        Appointment iAppointment = list.get(i);
+        Appointment jAppointment = list.get(j);
+        int indexOfi = list.indexOf(iAppointment);
+        int indexOfj = list.indexOf(jAppointment);
+        list.set(indexOfi,jAppointment);
+        list.set(indexOfj,iAppointment);
     }
 
     /**
@@ -260,11 +261,12 @@ public class Sort {
                     min = j;
                 }
             }
-            Provider temp = list.get(min);
-            Provider mininum = list.get(min);
-            mininum = list.get(i);
-            Provider ii = list.get(i);
-            ii = temp;
+            Provider iProvder = list.get(i);
+            Provider jProvider = list.get(min);
+            int indexOfi = list.indexOf(iProvder);
+            int indexOfj = list.indexOf(jProvider);
+            list.set(indexOfi,jProvider);
+            list.set(indexOfj,iProvder);
         }
 
     }

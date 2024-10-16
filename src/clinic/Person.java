@@ -20,6 +20,10 @@ public class Person {
         return profile;
     }
 
+    public void setProfile(Profile profile){
+        this.profile = profile;
+    }
+
     public int compareTo(Person person) {
         return profile.compareTo(person.getProfile());
     }

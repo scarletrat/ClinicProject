@@ -27,7 +27,6 @@ public class ListTest {
     assertTrue(providerList.contains(technician));
     providerList.add(doctor);
     assertTrue(providerList.contains(doctor));
-
     }
 
     @Test
