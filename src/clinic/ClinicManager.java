@@ -15,10 +15,10 @@ public class ClinicManager {
     private List<Appointment> appointments;
     private List<Provider> providers;
     private List<Technician> technicians;
-    private CircularLinkedList<Technician> rotation;
+    private CircularLinkedList rotation;
+
     /**
      * Checks if the appointment date is valid.
-     *
      * @param date the appointment date to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
@@ -41,7 +41,6 @@ public class ClinicManager {
 
     /**
      * Check if the date of birth is valid.
-     *
      * @param date the date of birth of patient to be checked.
      * @return return a string of whether it's valid or why it's not valid.
      */
@@ -56,6 +55,14 @@ public class ClinicManager {
         return "valid";
     }
 
+    /**
+     * Check if appointment with the same patient profile, date, and timeslot already exists.
+     * @param profile the patient's profile.
+     * @param date the appointment date.
+     * @param timeslot the appointment timeslot.
+     * @return return true if it doesn't exist
+     * return false if the appointment does exist and not a valid appointment.
+     */
     private boolean isValidAppointment(Profile profile, Date date, Timeslot timeslot) {
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
@@ -66,6 +73,12 @@ public class ClinicManager {
         return true;
     }
 
+    /**
+     * Check if the String can be numeric.
+     * @param npi the input String.
+     * @return return true if it can be numeric,
+     * return false otherwise.
+     */
     private boolean isNumeric(String npi) {
         if (npi == null || npi.isEmpty()) {
             return false; // Return false for null or empty strings
@@ -79,6 +92,12 @@ public class ClinicManager {
         }
     }
 
+    /**
+     * Check if the npi is valid from the providers list.
+     * @param npi the given npi.
+     * @return return true if it's valid,
+     * return false otherwise.
+     */
     private boolean isValidNpi(String npi){
         for(int i = 0; i<providers.size(); i++){
             if(providers.get(i) instanceof Doctor){
@@ -89,6 +108,12 @@ public class ClinicManager {
         }
         return false;
     }
+
+    /**
+     * Find the doctor given their npi.
+     * @param npi the given npi.
+     * @return return the Doctor with the given npi.
+     */
     private Doctor findDoctor(String npi){
         for(int i = 0; i<providers.size(); i++){
             if(providers.get(i) instanceof Doctor){
@@ -99,6 +124,15 @@ public class ClinicManager {
         }
         return null;
     }
+
+    /**
+     * Check if the doctor is free during an appointment time.
+     * @param date the appointment date.
+     * @param timeslot the appointment timeslot.
+     * @param doc the doctor.
+     * @return return true if the doctor is free at that time,
+     * return false otherwise.
+     */
     private boolean isDoctorFree(Date date, Timeslot timeslot,Doctor doc){
         for(int i = 0; i<appointments.size();i++){
             Appointment appointment = appointments.get(i);
@@ -108,7 +142,13 @@ public class ClinicManager {
         }
         return true;
     }
-    public String dCommand(String[] inputPart){
+
+    /**
+     * This method does the D command. Schedule an appointment with a Doctor.
+     * @param inputPart the input of the command line.
+     * @return return a string representation of whether the appointment have been scheduled.
+     */
+    private String dCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
         String validAppointmentDate = isValidAppointmentDate(date);
         if(!validAppointmentDate.equalsIgnoreCase("valid")){
@@ -143,29 +183,10 @@ public class ClinicManager {
         return doc + (" is not available at slot " + inputPart[2]+ ".");
     }
 
-    private boolean serviceExists(String service){
-        if(service.equalsIgnoreCase("xray")||
-                service.equalsIgnoreCase("ultrasound")||
-                service.equalsIgnoreCase("catscan")){
-            return true;
-        }
-        return false;
+    public Boolean isFree(Technician technician, Timeslot timeslot){
+        Technician nextTechnician = rotation.shiftByOne().getData();
     }
-
-    private Technician findTechnician(Imaging imaging){
-        for(int i = 0; i < rotation.getSize(); i++){
-            for (int j = 0; j< appointments.size(); j++){
-                if (rotation.getCurrent().getData().equals(appointments.get(j).getProvider())){
-                    if(imaging.getTimeslot().equals(appointments.get(j).getTimeslot())){
-                        return null;
-                    }
-                }
-            }
-
-        }
-    }
-
-    private String tCommand(String[] inputPart){
+    public String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
         if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
             return isValidAppointmentDate(date);
@@ -174,73 +195,144 @@ public class ClinicManager {
         if(time.getHour()==0&&time.getMinute()==0){
             return inputPart[2] + "is not a valid time slot.";
         }
-        Date dob = new Date(inputPart[5]);
+        Date dob = new Date(inputPart[4]);
         if (!isValidDob(dob).equals("valid")) {
             return isValidDob(dob);
         }
         if(inputPart.length<7){
             return "Missing data tokens.";
         }
-        Person profile = new Person(inputPart[3], inputPart[4], inputPart[5]);
-        if(!isValidAppointment(profile.getProfile(), date, time)){
-            return profile.toString() + " has an existing appointment at the same time slot";
+
+    }
+
+    /**
+     * Remove the appointment from the list.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment,
+     * @param profile the patient's profile.
+     */
+    private void removeAppointment(Date date, Timeslot timeslot, Profile profile){
+        for(int i =0; i< appointments.size(); i++){
+            Appointment appointment = appointments.get(i);
+            if(appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot) && appointment.getPatient().getProfile().equals((profile))){
+                appointments.remove(appointment);
+            }
         }
-        if(!serviceExists(inputPart[6])){
-            return inputPart[6] + " - imaging service not provided.";
-        }
-        Imaging imaging = new Imaging(date, time, profile, inputPart[6]);
-        Technician technician = findTechnician(imaging);
     }
 
     /**
      * This method does the C command. Cancel an existing appointment.
      * @param inputPart the input of the command line.
-     * @param clinic the clinic.
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
-  /**  public String cCommand(String[] inputPart, List clinic){
+    private String cCommand(String[] inputPart){
+        if(inputPart.length<6) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
-        Timeslot tempSlot = new Timeslot(inputPart[2]);
+        Timeslot timeslot = new Timeslot(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
-        Appointment target = new Appointment()
-        Appointment appointment = appointments.find(date,tempSlot,profile);
-        if(appointment ==null){
-            return(date + " " + tempSlot+ " "
-                    + profile + " does not exist.");
+        if(isValidAppointment(profile,date,timeslot)){
+            return date +" " + timeslot + " " + profile + " - appointment does not exist.";
         }
-        appointments.remove(appointment);
-        return(appointment.getDate() + " " + appointment.getTimeslot().toString() + " "
-                + appointment.getProfile() + " has been canceled.");
+        removeAppointment(date,timeslot,profile);
+        return date +" " + timeslot + " " + profile + " - appointment has been cancelled.";
+    }
+
+    /**
+     * Find if the patient has the appointment at the time specified.
+     * @param date the appointment date.
+     * @param timeslot the appointment timeslot.
+     * @param profile the patient's profile.
+     * @return return true if the patient has the appointment at that time,
+     * return false otherwise.
+     */
+    private boolean hasAppointmentAtTimeslot(Date date, Timeslot timeslot,Profile profile){
+        for(int i =0; i< appointments.size(); i++){
+            Appointment appointment = appointments.get(i);
+            if(appointment.getTimeslot().equals(timeslot) && appointment.getPatient().getProfile().equals(profile) && appointment.getDate().equals(date)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find the Doctor given the patient profile, appointment date and timeslot.
+     * @param profile the patient's profile.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment.
+     * @return return the doctor at the appointment with the same timeslot, date, and patient.
+     */
+    private Doctor findDoctor(Profile profile, Date date, Timeslot timeslot) {
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            if (appointment.getPatient().getProfile().equals(profile) && appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot)) {
+                if(appointment.getProvider() instanceof Doctor) return (Doctor) appointment.getProvider();
+            }
+        }
+        return null;
     }
 
     /**
      * This method does the R command. Reschedule an existing appointment.
      * @param inputPart the input of the command line.
-     * @param clinic the clinic.
      * @return return a string representation of the result.
      */
-  /**  public String rCommand(String[] inputPart, List clinic){
+    private String rCommand(String[] inputPart){
+        if(inputPart.length<7) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
-        Timeslot tempSlot = Timeslot.getTime(inputPart[2]);
-        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
-        Appointment appointment = clinic.getAppointment(date,tempSlot,profile);
-        Timeslot newTimeSlot = Timeslot.getTime(inputPart[6]);
-        if(appointment ==null){
-            return(date + " " + tempSlot+ " "
-                    + profile + " does not exist.");
+        Timeslot timeslot = new Timeslot(inputPart[2]);
+        Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
+        if(isValidAppointment(patient.getProfile(),date,timeslot)){
+            return date +" " + timeslot + " " + patient + " does not exist.";
         }
-        if(newTimeSlot == null){
+        Timeslot newTimeslot = new Timeslot(inputPart[6]);
+        if(newTimeslot.getMinute() == 0 && newTimeslot.getHour() ==0){
             return(inputPart[6] + " is not a valid time slot.");
         }
-        String provider = appointment.getProvider().name();
-        Appointment newAppointment = new Appointment(inputPart[1],inputPart[6],inputPart[3],
-                inputPart[4],inputPart[5],provider);
-        if(!clinic.isProviderFree(newAppointment)){
-            return(appointment.getProvider() + " is not available at slot " + inputPart[6] + ".");
+        //does they have the appointment at the newTimeslot?
+        if(hasAppointmentAtTimeslot(date,newTimeslot,patient.getProfile())){
+            return patient + " has an existing appointment at " + date + " " + newTimeslot;
         }
-        clinic.remove(appointment);
-        clinic.add(newAppointment);
-        return("Rescheduled to " + newAppointment);
+        //is the provider free at that timeslot?
+        Doctor doc = findDoctor(patient.getProfile(),date,timeslot);
+        if(isDoctorFree(date, newTimeslot, doc)){
+            Appointment old = new Appointment(date,timeslot,patient,doc);
+            appointments.remove(old);
+            Appointment newApp = new Appointment(date, newTimeslot, patient,doc);
+            appointments.add(newApp);
+            return "Rescheduled to " + date + " " + newTimeslot + " " + doc;
+        }
+        return doc + " is not avaiable at slot " + inputPart[6];
+
+    }
+
+
+    private void PA_Command(){
+        Sort.appointment(appointments,'A');
+        System.out.println("\n** List of appointments, ordered by date/time/provider.");
+        for(int i = 0; i<appointments.size(); i++){
+            System.out.println(appointments.get(i).toString());
+        }
+        System.out.println("** end of list **");
+    }
+
+
+    private void PP_Command(){
+        Sort.appointment(appointments,'P');
+        System.out.println("\n** List of appointments, ordered by patient/date/time.");
+        for(int i = 0; i<appointments.size(); i++){
+            System.out.println(appointments.get(i).toString());
+        }
+        System.out.println("** end of list **");
+    }
+
+    private void PL_Command(){
+        Sort.appointment(appointments,'L');
+        System.out.println("\n** List of appointments, ordered by county/date/time.");
+        for(int i = 0; i<appointments.size(); i++){
+            System.out.println(appointments.get(i).toString());
+        }
+        System.out.println("** end of list **");
     }
 
     /**
@@ -272,7 +364,7 @@ public class ClinicManager {
      * @return return true if the command to keep running.
      * return false if terminated.
      */
-   private boolean command(String input) {
+   public boolean command(String input) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
         switch (command) {
@@ -284,19 +376,19 @@ public class ClinicManager {
                 System.out.println(tCommand(inputPart));
                 return true;
             case "C":
-                //System.out.println(rCommand(inputPart));
+                System.out.println(cCommand(inputPart));
                 return true;
             case "R":
-                //clinic.printByAppointment();
+                System.out.println(rCommand(inputPart));
                 return true;
             case "PA":
-                //clinic.printByPatient();
+                PA_Command();
                 return true;
             case "PP":
-                //clinic.printByLocation();
+                PP_Command();
                 return true;
             case "PL":
-                //PS_Command(clinic,medicalRecord);
+                PL_Command();
                 return true;
             case "PS":
                 return true;
@@ -315,7 +407,7 @@ public class ClinicManager {
         }
     }
 
-    private void loadProviderList(){
+    public void loadProviderList(){
         try {
             File file = new File("src/clinic/providers.txt");
             Scanner fileRead = new Scanner(file);
@@ -346,7 +438,7 @@ public class ClinicManager {
         }
     }
 
-    private void displayProviderList(){
+    public void displayProviderList(){
         Sort.provider(providers);
         for (int i = 0; i<providers.size(); i++){
             System.out.println(providers.get(i).toString());
@@ -357,7 +449,7 @@ public class ClinicManager {
     /**
      * This method creates a circular linked list in order by location and prints out the rotation list.
      */
-    private void createRotation(){
+    public void createRotation(){
         rotation = new CircularLinkedList();
         int size = technicians.size();
         for(int i = size-1; i >= 1; i--){
