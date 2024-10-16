@@ -50,6 +50,13 @@ public class Appointment implements Comparable<Appointment>{
         this.patient = new Patient(firstName, lastName, dob);
         this.provider = technician;
     }
+    public Appointment(Date date, Timeslot timeslot, Person profile){
+        this.date = date;
+        this.timeslot = timeslot;
+        this.patient = profile;
+    }
+
+
 
     /**
      * Compares obj to this appointment. returns true if equal, false otherwise.

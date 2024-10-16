@@ -2,16 +2,16 @@ package util;
 
 import clinic.Technician;
 
-public class CircularLinkedList {
-    private Node last;  // Points to the last node in the list
+public class CircularLinkedList<E> {
+    private Node<E> last;  // Points to the last node in the list
     private int size;
     public CircularLinkedList() {
         this.last = null;
     }
-
+    private Node<E> current;
     // Insert a node at the end of the list
-    public void insert(Technician technician) {
-        Node newNode = new Node(technician);
+    public void insert(E e) {
+        Node<E> newNode = new Node<E>(e);
 
         if (last == null) {
             last = newNode;
@@ -24,15 +24,15 @@ public class CircularLinkedList {
         size++;
     }
 
-    public Node shiftByOne() {
+    public void shiftByOne() {
         if (last == null) {
-            return null;
+            last = null;
+            current = null;
         }
 
-        Node current = last.getNext();
+        current = last.getNext();
+        last = current;
         current = current.getNext();
-
-        return current;
     }
 
     // Check if the list is empty
@@ -42,5 +42,8 @@ public class CircularLinkedList {
 
     public int getSize(){
         return size;
+    }
+    public Node<E> getCurrent(){
+        return current;
     }
 }

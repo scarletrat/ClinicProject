@@ -8,10 +8,15 @@ public class Radiology {
 
     private Service service;
 
-    public Radiology(Service service){
-        this.service = service;
+    public Radiology(String service) {
+        if (service.equalsIgnoreCase("xray")) {
+            this.service = Service.XRAY;
+        } else if (service.equalsIgnoreCase("ultrasound")) {
+            this.service = Service.ULTRASOUND
+        } else if (service.equalsIgnoreCase("catscan")) {
+            this.service = Service.CATSCAN;
+        }
     }
-
     @Override
     public boolean equals(Object obj){
         if (obj instanceof Radiology) {

@@ -1,8 +1,13 @@
 package clinic;
 
+import util.Date;
+
 public class Imaging extends Appointment{
     private Radiology room;
-
+    public Imaging(Date date, Timeslot timeslot, Person profile, String room){
+        super(date, timeslot, profile);
+        this.room = new Radiology(room);
+    }
     @Override
     public boolean equals(Object obj){
         if (!super.equals(obj)) return false;
@@ -12,4 +17,5 @@ public class Imaging extends Appointment{
         }
         return false;
     }
+
 }

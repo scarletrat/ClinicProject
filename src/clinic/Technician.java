@@ -25,7 +25,7 @@ public class Technician extends Provider{
         if(!super.equals(obj)) return false;
         if(obj instanceof Technician){
             Technician technician = (Technician) obj;
-            return this.ratePerVisit == technician.ratePerVisit;
+            return this.ratePerVisit == technician.ratePerVisit && this.getProfile() == technician.getProfile();
         }
         return false;
     }
