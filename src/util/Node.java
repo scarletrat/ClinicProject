@@ -16,4 +16,7 @@ public class Node {
     public Node getNext(){
         return next;
     }
+    public Technician getData(){
+        return data;
+    }
 }

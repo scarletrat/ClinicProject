@@ -15,7 +15,7 @@ public class ClinicManager {
     private List<Appointment> appointments;
     private List<Provider> providers;
     private List<Technician> technicians;
-
+    private CircularLinkedList rotation;
     /**
      * Checks if the appointment date is valid.
      * @param date the appointment date to be checked.
@@ -69,8 +69,26 @@ public class ClinicManager {
         return null;
     }
 
+    public Boolean isFree(Technician technician, Timeslot timeslot){
+        Technician nextTechnician = rotation.shiftByOne().getData();
+    }
     public String tCommand(String[] inputPart){
-        return null;
+        Date date = new Date(inputPart[1]);
+        if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
+            return isValidAppointmentDate(date);
+        }
+        Timeslot time = new Timeslot(inputPart[2]);
+        if(time.getHour()==0&&time.getMinute()==0){
+            return inputPart[2] + "is not a valid time slot.";
+        }
+        Date dob = new Date(inputPart[4]);
+        if (!isValidDob(dob).equals("valid")) {
+            return isValidDob(dob);
+        }
+        if(inputPart.length<7){
+            return "Missing data tokens.";
+        }
+
     }
 
     /**
@@ -196,6 +214,7 @@ public class ClinicManager {
         }
     }
 
+    public String dCommand()
 
     public void loadProviderList(){
         try {
@@ -240,7 +259,7 @@ public class ClinicManager {
      * This method creates a circular linked list in order by location and prints out the rotation list.
      */
     public void createRotation(){
-        CircularLinkedList rotation = new CircularLinkedList();
+        rotation = new CircularLinkedList();
         int size = technicians.size();
         for(int i = size-1; i >= 1; i--){
             rotation.insert(technicians.get(i));
