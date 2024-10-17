@@ -27,7 +27,7 @@ public class ClinicManager {
     private String isValidAppointmentDate(Date date) {
         boolean validDate = date.isValid();
         if (!validDate) {
-            return ("Appointment date: " + date + " is not a valid calendar date");
+            return ("Appointment date: " + date + " is not a valid calendar date ");
         }
         if (date.isPast() || date.isToday()) {
             return ("Appointment date: " + date + " is today or a date before today.");
@@ -49,7 +49,7 @@ public class ClinicManager {
     private String isValidDob(Date date) {
         boolean validDate = date.isValid();
         if (!validDate) {
-            return ("Patient dob: " + date + " is not a valid calendar date");
+            return ("Patient dob: " + date + " is not a valid calendar date ");
         }
         if (date.isFuture() || date.isToday()) {
             return ("Patient dob: " + date + " is today or a date after today.");
@@ -286,7 +286,7 @@ public class ClinicManager {
         }
         Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
         appointments.add(imaging);
-        return imaging.toString() + ((Imaging) imaging).getRadiology().getService() + " booked.";
+        return imaging.toString() + "["+((Imaging) imaging).getRadiology().getService()+"]" + " booked.";
     }
 
     /**
@@ -310,7 +310,7 @@ public class ClinicManager {
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
     private String cCommand(String[] inputPart){
-        if(inputPart.length<REQUIRED_INPUTS) return "Missing data tokens.";
+        if(inputPart.length<REQUIRED_INPUTS-1) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
         Timeslot timeslot = new Timeslot(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
@@ -386,7 +386,7 @@ public class ClinicManager {
             appointments.add(newApp);
             return "Rescheduled to " + date + " " + newTimeslot + " " + doc;
         }
-        return doc + " is not available at slot " + inputPart[6];
+        return doc + " is not available at slot " + inputPart[6] +"." ;
 
     }
 
@@ -403,7 +403,7 @@ public class ClinicManager {
             }
             System.out.println("** end of list **");
         }else{
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
         }
     }
 
@@ -420,7 +420,7 @@ public class ClinicManager {
             }
             System.out.println("** end of list **");
         }else{
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
         }
     }
 
@@ -437,7 +437,7 @@ public class ClinicManager {
             }
             System.out.println("** end of list **");
         }else{
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
         }
     }
 
@@ -463,7 +463,7 @@ public class ClinicManager {
      */
     private void PS_Command(){
         if(appointments.isEmpty()) {
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
             return;
         }
         Sort.appointment(appointments,'P');
@@ -502,7 +502,7 @@ public class ClinicManager {
            }
            System.out.println("** end of list **");
        }else{
-           System.out.println("The schedule calendar is empty.");
+           System.out.println("Schedule calendar is empty.");
        }
     }
 
@@ -521,40 +521,42 @@ public class ClinicManager {
             }
             System.out.println("** end of list **");
         }else{
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
         }
     }
 
+    private int[] calc(){
+        Profile[] pro = new Profile[providers.size()];
+        for(int i = 0; i< providers.size(); i++){
+            pro[i] = providers.get(i).getProfile();
+        }
+        int[] money = new int[pro.length];
+        for(int i = 0; i< pro.length; i++){
+            Profile temp = pro[i];
+            Provider temp1 = (Provider) providers.get(i);
+            for(int j= 0; j< appointments.size(); j++){
+                if(appointments.get(j).getProvider().getProfile().equals(temp)){
+                    money[i] = money[i] +  temp1.rate();
+                }
+            }
+        }
+        return money;
+    }
     /**
      * This method does the PC command. Print the list of expected credit amounts;
      * for providers for seeing patients, sorted by provider profile.
      */
     private void PC_Command(){
         if(appointments.isEmpty()){
-            System.out.println("The schedule calendar is empty.");
+            System.out.println("Schedule calendar is empty.");
             return;
         }
-        int[] providerCharge = new int[providers.size()];
-        for(int i =0; i< providers.size(); i++){
-            int charge = 0;
-            Person provider = providers.get(i);
-            for(int j = 0; j< appointments.size(); j++){
-                Appointment appointment = appointments.get(i);
-                Person currentProvider = appointment.getProvider();
-                if(currentProvider.equals(provider)){
-                    if(provider instanceof Doctor){
-                        charge += ((Doctor) provider).rate();
-                    } else if (provider instanceof Technician) {
-                        charge +=((Technician) provider).rate();
-                    }
-                }
-            }
-            providerCharge[i] = charge;
-        }
+        int charge[] = calc();
+
         System.out.println("\n** Credit amount ordered by provider. **");
         for(int i = 0; i< providers.size(); i++){
             DecimalFormat format = new DecimalFormat("#,###.00");
-            String formatCharge = format.format(providerCharge[i]);
+            String formatCharge = format.format(charge[i]);
             System.out.println("(" + (i+1) +") " + providers.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
         }
         System.out.println("** end of list **");
