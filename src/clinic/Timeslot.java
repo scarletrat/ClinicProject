@@ -82,6 +82,15 @@ public class Timeslot implements Comparable<Timeslot> {
         return minute;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Timeslot){
+            Timeslot timeslot = (Timeslot) obj;
+            return this.minute == timeslot.minute
+                    &&this.hour == timeslot.hour;
+        }
+        return false;
+    }
     /**
      * Return a textual representation of the timeslot.
      * @return return a string containing the hour:minute.

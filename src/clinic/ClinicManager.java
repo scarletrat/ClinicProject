@@ -63,7 +63,7 @@ public class ClinicManager {
      * @param date the appointment date.
      * @param timeslot the appointment timeslot.
      * @return return true if it doesn't exist
-     * return false if the appointment does exist and not a valid appointment.
+     * return false if the appointment already exist.
      */
     private boolean isValidAppointment(Profile profile, Date date, Timeslot timeslot) {
         for (int i = 0; i < appointments.size(); i++) {
@@ -151,35 +151,29 @@ public class ClinicManager {
      * @return return a string representation of whether the appointment have been scheduled.
      */
     private String dCommand(String[] inputPart){
-        Date date = new Date(inputPart[1]);
         if(inputPart.length<REQUIRED_INPUTS){
             return ("Missing data tokens.");
-        }
-        String validAppointmentDate = isValidAppointmentDate(date);
-        if(!validAppointmentDate.equalsIgnoreCase("valid")){
-            return validAppointmentDate;
-        }
-        Timeslot timeslot = new Timeslot(inputPart[2]);
-        if(timeslot.getMinute() == 0 && timeslot.getHour() ==0){
-            return(inputPart[2] + " is not a valid time slot.");
-        }
-        Date dateOfBirth = new Date(inputPart[5]);
-        String validDob = isValidDob(dateOfBirth);
-        if(!validDob.equalsIgnoreCase("valid")){
-            return validDob;
-        }
-
-        Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
-        if(!isValidAppointment(patient.getProfile(),date,timeslot)){
-            return patient.getProfile() + (" has an existing appointment at the same time slot.");
         }
         String npi = inputPart[6];
         if(!isNumeric(npi) || !isValidNpi(npi)){
             return npi + (" - provider doesn't exist.");
         }
         Doctor doc = findDoctor(npi);
-        if(isDoctorFree(date,timeslot,doc)){
-            Appointment appointment = new Appointment(date,timeslot,patient,doc);
+        Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
+                inputPart[4],inputPart[5],doc);
+        if(!isValidAppointmentDate(appointment.getDate()).equalsIgnoreCase("valid")){
+            return isValidAppointmentDate(appointment.getDate());
+        }
+        if(appointment.getTimeslot().getMinute() == 0 && appointment.getTimeslot().getHour() ==0){
+            return(inputPart[2] + " is not a valid time slot.");
+        }
+        if(!isValidDob(appointment.getPatient().getProfile().getDob_inDate()).equalsIgnoreCase("valid")){
+            return isValidDob(appointment.getPatient().getProfile().getDob_inDate());
+        }
+
+        if(appointments.contains(appointment)){
+            return appointment.getPatient().getProfile() + (" has an existing appointment at the same time slot.");
+        }else if(isDoctorFree(appointment.getDate(),appointment.getTimeslot(),doc)){
             appointments.add(appointment);
             return( appointment + " booked.");
         }
@@ -486,9 +480,7 @@ public class ClinicManager {
         System.out.println(("** Billing statement ordered by patient **"));
         printChargePerPatient(patients);
         System.out.println("** end of list **");
-        for(int i =0; i< appointments.size(); i++){
-            appointments.remove(appointments.get(appointments.size()-1));
-        }
+        appointments = new List<>();
     }
 
     /**

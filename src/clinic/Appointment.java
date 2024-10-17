@@ -69,10 +69,10 @@ public class Appointment implements Comparable<Appointment>{
     public boolean equals(Object obj){
         if(obj instanceof Appointment){
             Appointment appointment = (Appointment) obj;
-            return this.date.equals(appointment.date)
-                    &&this.timeslot == appointment.timeslot
-                    &&this.patient.equals(appointment.patient)
-                    &&this.provider == appointment.provider;
+            return this.date.equals(appointment.getDate())
+                    &&this.timeslot == appointment.getTimeslot()
+                    &&this.patient.equals(appointment.getPatient())
+                    &&this.provider == appointment.getProvider();
         }
         return false;
     }
