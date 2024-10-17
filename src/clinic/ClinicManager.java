@@ -330,7 +330,7 @@ public class ClinicManager {
         int currentServices = isServiceAvailable(time, date, radiology);
         if(currentServices>=2) {
             return "Cannot find an available technician at all locations for "
-                    + radiology.getService() + " at slot " + inputPart[2];
+                    + radiology.getService() + " at slot " + inputPart[2] + ".";
         }
         Technician technician = null;
         if(currentServices == 1) {
@@ -488,10 +488,6 @@ public class ClinicManager {
             Sort.appointment(appointments, 'L');
             System.out.println("\n** List of appointments, ordered by county/date/time.");
             for (int i = 0; i < appointments.size(); i++) {
-                if(appointments.get(i) instanceof  Imaging){
-                    String rad = String.valueOf(((Imaging) appointments.get(i)).getRadiology().getService());
-                    System.out.println(appointments.get(i) +rad);
-                }
                 System.out.println((appointments.get(i)).toString());
             }
             System.out.println("** end of list **");
@@ -671,7 +667,7 @@ public class ClinicManager {
                 PC_Command();
                 return true;
             case "Q":
-                System.out.println("\nClinic Manager terminated.");
+                System.out.println("Clinic Manager terminated.");
                 return false;
             default:
                 System.out.println("Invalid command!");
@@ -758,7 +754,7 @@ public class ClinicManager {
         displayProviderList();
         System.out.println("Rotation list for the technicians.");
         createRotation();
-        System.out.println("Clinic Manager is running...");
+        System.out.println("\nClinic Manager is running...");
         Scanner commandLine = new Scanner(System.in);
         String input;
         while (true) {
