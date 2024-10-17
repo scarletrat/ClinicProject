@@ -17,7 +17,7 @@ public class ClinicManager {
     private List<Appointment> appointments;
     private List<Provider> providers;
     private List<Technician> technicians;
-    private CircularLinkedList<Technician> rotation;
+    private CircularLinkedList rotation;
 
     /**
      * Checks if the appointment date is valid.
@@ -154,6 +154,17 @@ public class ClinicManager {
         if(inputPart.length<REQUIRED_INPUTS){
             return ("Missing data tokens.");
         }
+
+        if(!isValidAppointmentDate(new Date(inputPart[1])).equalsIgnoreCase("valid")){
+            return isValidAppointmentDate(new Date(inputPart[1]));
+        }
+        Timeslot timeslot = new Timeslot(inputPart[2]);
+        if(timeslot.getMinute() == 0 && timeslot.getHour() ==0){
+            return(inputPart[2] + " is not a valid time slot.");
+        }
+        if(!isValidDob(new Date(inputPart[5])).equalsIgnoreCase("valid")){
+            return isValidDob(new Date(inputPart[5]));
+        }
         String npi = inputPart[6];
         if(!isNumeric(npi) || !isValidNpi(npi)){
             return npi + (" - provider doesn't exist.");
@@ -161,19 +172,10 @@ public class ClinicManager {
         Doctor doc = findDoctor(npi);
         Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
                 inputPart[4],inputPart[5],doc);
-        if(!isValidAppointmentDate(appointment.getDate()).equalsIgnoreCase("valid")){
-            return isValidAppointmentDate(appointment.getDate());
-        }
-        if(appointment.getTimeslot().getMinute() == 0 && appointment.getTimeslot().getHour() ==0){
-            return(inputPart[2] + " is not a valid time slot.");
-        }
-        if(!isValidDob(appointment.getPatient().getProfile().getDob_inDate()).equalsIgnoreCase("valid")){
-            return isValidDob(appointment.getPatient().getProfile().getDob_inDate());
-        }
-
         if(appointments.contains(appointment)){
             return appointment.getPatient().getProfile() + (" has an existing appointment at the same time slot.");
-        }else if(isDoctorFree(appointment.getDate(),appointment.getTimeslot(),doc)){
+        }
+        if(isDoctorFree(appointment.getDate(),appointment.getTimeslot(),doc)){
             appointments.add(appointment);
             return( appointment + " booked.");
         }
@@ -201,19 +203,19 @@ public class ClinicManager {
         }
         return (count);
     }
-    private Location findLocation(Date date, Timeslot timeslot, Radiology service){
-            for(int i = 0; i < appointments.size(); i++){
-                if(appointments.get(i) instanceof Imaging){
-                    if(appointments.get(i).getDate().equals(date)
-                            &&appointments.get(i).getTimeslot().equals(timeslot)
-                            &&service.getService().equals(((Imaging)appointments.get(i)).getRadiology().getService())){
-                        Provider curProvider = (Provider) appointments.get(i).getProvider();
-                        return curProvider.getLocation();
-                    }
+    private Location findLocation(Date date, Timeslot timeslot, Radiology service) {
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            if (appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot)) {
+                if(appointment instanceof Imaging){
+                    Provider provider = (Provider) appointment.getProvider();
+                    return provider.getLocation();
                 }
             }
-            return null;
         }
+        return null;
+    }
+
     private boolean isTechnicianFree(Date date, Timeslot timeslot, Technician technician)  {
         for(int i = 0; i < appointments.size(); i++){
             if(appointments.get(i).getDate().equals(date)&&appointments.get(i).getDate().equals(timeslot)
@@ -225,9 +227,10 @@ public class ClinicManager {
     }
     private Technician findTechnician(Location location, Date date, Timeslot timeslot){
         for(int i = 0; i < rotation.getSize(); i++){
-            if(!rotation.getCurrent().getData().getLocation().equals(location)
-                    &&isTechnicianFree(date, timeslot, rotation.getCurrent().getData())){
-                return rotation.getCurrent().getData();
+            if(!rotation.getLast().getNext().getData().getLocation().equals(location)
+                    &&isTechnicianFree(date, timeslot, rotation.getLast().getNext().getData())){
+                rotation.setLast(rotation.getLast().getNext());
+                return rotation.getLast().getData();
             }
             rotation.shiftByOne();
         }
@@ -235,19 +238,20 @@ public class ClinicManager {
     }
     private Technician findTechnician(Date date, Timeslot timeslot){
         for(int i = 0; i < rotation.getSize(); i++){
-            if(isTechnicianFree(date, timeslot, rotation.getCurrent().getData())){
-                return rotation.getCurrent().getData();
+            if(isTechnicianFree(date, timeslot, rotation.getLast().getNext().getData())){
+                rotation.setLast(rotation.getLast().getNext());
+                return rotation.getLast().getData();
             }
             rotation.shiftByOne();
         }
         return null;
     }
+
     public String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
         if(inputPart.length<REQUIRED_INPUTS){
             return "Missing data tokens.";
         }
-        Technician technician = null;
         if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
             return isValidAppointmentDate(date);
         }
@@ -273,6 +277,7 @@ public class ClinicManager {
             return "Cannot find an available technician at all locations for "
                     + radiology.getService() + " at slot " + inputPart[2];
         }
+        Technician technician = null;
         if(currentServices == 1) {
             technician = findTechnician(findLocation(date, time, radiology), date, time);
         }
@@ -281,7 +286,7 @@ public class ClinicManager {
         }
         Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
         appointments.add(imaging);
-        return imaging.toString() + " booked.";
+        return imaging.toString() + ((Imaging) imaging).getRadiology().getService() + " booked.";
     }
 
     /**
@@ -641,7 +646,7 @@ public class ClinicManager {
     }
 
     public void displayProviderList(){
-        Sort.provider(providers);
+        provider(providers);
         for (int i = 0; i<providers.size(); i++){
             System.out.println(providers.get(i).toString());
         }
@@ -655,7 +660,8 @@ public class ClinicManager {
         rotation = new CircularLinkedList();
         int size = technicians.size();
         for(int i = size-1; i >= 1; i--){
-            rotation.insert(technicians.get(i));
+            Node node = new Node(technicians.get(i));
+            rotation.insert(node);
             System.out.print(technicians.get(i).getProfile().getFname() + " " +
                     technicians.get(i).getProfile().getLname() + " (" +
                     technicians.get(i).getLocation().getName() + ") --> ");

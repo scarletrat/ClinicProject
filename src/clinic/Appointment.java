@@ -96,9 +96,9 @@ public class Appointment implements Comparable<Appointment>{
         if(obj instanceof Appointment){
             Appointment appointment = (Appointment) obj;
             return this.date.equals(appointment.getDate())
-                    &&this.timeslot == appointment.getTimeslot()
+                    &&this.timeslot.equals(appointment.getTimeslot())
                     &&this.patient.equals(appointment.getPatient())
-                    &&this.provider == appointment.getProvider();
+                    &&this.provider.equals(appointment.getProvider());
         }
         return false;
     }

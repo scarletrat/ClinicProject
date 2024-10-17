@@ -2,12 +2,16 @@ package util;
 
 import clinic.Technician;
 
-public class Node<E> {
-    private E data;
-    private Node<E> next;
+public class Node {
+    private Technician data;
+    private Node next;
 
-    public Node(E e) {
-        this.data = e;
+    public Node(){
+        this.data = null;
+        this.next = null;
+    }
+    public Node(Technician technician) {
+        this.data = technician;
         this.next = null;
     }
     public void setNext(Node next){
@@ -16,7 +20,7 @@ public class Node<E> {
     public Node getNext(){
         return next;
     }
-    public E getData(){
+    public Technician getData(){
         return data;
     }
 }
