@@ -24,9 +24,9 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
-     * Constructor setting instance variables to parameter objects
+     * Constructor setting instance variables to parameters
      * @param date date object
-     * @param timeslot timeslot object
+     * @param timeslot time of appointment object
      * @param profile profile object
      * @param doc provider object
      */
@@ -37,6 +37,15 @@ public class Appointment implements Comparable<Appointment>{
         this.provider = doc;
     }
 
+    /**
+     * Constructor setting instance variables to parameters
+     * @param date date of appointment object
+     * @param timeslot time of appointment variable
+     * @param firstName first name variable
+     * @param lastName last name variable
+     * @param dob date of birth variable
+     * @param doc provider object
+     */
     public Appointment(String date, String timeslot, String firstName, String lastName, String dob, Doctor doc){
         this.date = new Date(date);
         this.timeslot = new Timeslot(timeslot);
@@ -44,12 +53,29 @@ public class Appointment implements Comparable<Appointment>{
         this.provider = doc;
     }
 
+    /**
+     * Constructor setting instance variables to parameters
+     * @param date date of appointment variable
+     * @param timeslot time of appointment variable
+     * @param firstName first name variable
+     * @param lastName last name variable
+     * @param dob date of birth variable
+     * @param technician provider object
+     */
     public Appointment(String date, String timeslot, String firstName, String lastName, String dob, Technician technician){
         this.date = new Date(date);
         this.timeslot = new Timeslot(timeslot);
         this.patient = new Patient(firstName, lastName, dob);
         this.provider = technician;
     }
+
+    /**
+     * Constructor setting instance variables to parameters
+     * @param date date of appointment object
+     * @param timeslot time of appointment object
+     * @param profile profile object
+     * @param technician provider object
+     */
     public Appointment(Date date, Timeslot timeslot, Person profile, Technician technician){
         this.date = date;
         this.timeslot = timeslot;

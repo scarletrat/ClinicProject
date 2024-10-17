@@ -1,5 +1,8 @@
 package clinic;
-
+/**
+ * This class represents a Radiology object, containing enum constants.
+ * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024
+ */
 public class Radiology {
 
     public enum Service{

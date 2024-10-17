@@ -26,6 +26,13 @@ public class Patient extends Person implements Comparable<Patient> {
         super(profile);
         this.visits = new Visit(appointment);
     }
+
+    /**
+     * Constructor sets instance variables to parameters
+     * @param fname first name variable
+     * @param lname last name variable
+     * @param dob date of birth variable
+     */
     public Patient(String fname, String lname, String dob){
         super(fname, lname, dob);
         this.visits = null;

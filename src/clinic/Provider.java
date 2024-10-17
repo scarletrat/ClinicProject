@@ -10,15 +10,32 @@ public abstract class Provider extends Person {
     private Location location;
     public abstract int rate();
 
+    /**
+     * Constructor setting instance variables to parameters
+     * @param fname first name variable
+     * @param lname last name variable
+     * @param dob date of birth variable
+     * @param location location object
+     */
     public Provider(String fname, String lname, String dob, Location location){
         super(fname,lname,dob);
         this.location = location;
     }
+
+    /**
+     * Constructor setting instance variables to parameters
+     * @param profile profile object
+     * @param location location object
+     */
     public Provider(Profile profile,Location location){
         super(profile);
         this.location = location;
     }
 
+    /**
+     * Gives location object
+     * @return location object
+     */
     public Location getLocation(){
         return this.location;
     }

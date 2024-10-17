@@ -1,13 +1,31 @@
 package clinic;
 
 import util.Date;
-
+/**
+ * This class represents an Imaging object, containing the appointment instance variables and a radiology object.
+ * @author Christopher Lee, Gordon Lin, modified Oct. 16, 2024
+ */
 public class Imaging extends Appointment{
     private Radiology room;
+
+    /**
+     * Constructor that sets instance variables to parameters
+     * @param date date object
+     * @param timeslot timeslot object
+     * @param profile profile object
+     * @param room room variable
+     * @param technician technician object
+     */
     public Imaging(Date date, Timeslot timeslot, Person profile, String room, Technician technician){
         super(date, timeslot, profile, technician);
         this.room = new Radiology(room);
     }
+
+    /**
+     * Overrides equals method to compare the rooms of Imaging objects
+     * @param obj object to be compared to
+     * @return true if rooms are equal and false otherwise
+     */
     @Override
     public boolean equals(Object obj){
         if (!super.equals(obj)) return false;
@@ -17,6 +35,11 @@ public class Imaging extends Appointment{
         }
         return false;
     }
+
+    /**
+     * gives the room of the Imaging object
+     * @return room object
+     */
     public Radiology getRadiology(){
         return room;
     }
