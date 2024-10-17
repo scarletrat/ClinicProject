@@ -13,10 +13,11 @@ import static util.Sort.provider;
  * @author Gordon Lin, modified 9/30/2024.
  */
 public class ClinicManager {
+    final static int REQUIRED_INPUTS = 7;
     private List<Appointment> appointments;
     private List<Provider> providers;
     private List<Technician> technicians;
-    private CircularLinkedList rotation;
+    private CircularLinkedList<Technician> rotation;
 
     /**
      * Checks if the appointment date is valid.
@@ -164,7 +165,7 @@ public class ClinicManager {
         if(!validDob.equalsIgnoreCase("valid")){
             return validDob;
         }
-        if(inputPart.length<7){
+        if(inputPart.length<REQUIRED_INPUTS){
             return ("Missing data tokens.");
         }
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
@@ -184,11 +185,71 @@ public class ClinicManager {
         return doc + (" is not available at slot " + inputPart[2]+ ".");
     }
 
-    public Boolean isFree(Technician technician, Timeslot timeslot){
-        Technician nextTechnician = rotation.shiftByOne().getData();
+    public Boolean serviceExists(String service){
+        if(service.equalsIgnoreCase("xray")
+                ||service.equalsIgnoreCase("catscan")
+                ||service.equalsIgnoreCase("ultrasound")) {
+            return true;
+        }
+            return false;
+    }
+    private int isServiceAvailable(Timeslot timeslot, Date date, Radiology service){
+        int count = 0;
+        for (int i = 0; i < appointments.size(); i++){
+            if(appointments.get(i) instanceof Imaging){
+                if(appointments.get(i).getDate().equals(date)
+                        &&appointments.get(i).getTimeslot().equals(timeslot)
+                        &&service.getService().equals(((Imaging)appointments.get(i)).getRadiology().getService())){
+                    count++;
+                }
+            }
+        }
+        return (count);
+    }
+    private Location findLocation(Date date, Timeslot timeslot, Radiology service){
+            for(int i = 0; i < appointments.size(); i++){
+                if(appointments.get(i) instanceof Imaging){
+                    if(appointments.get(i).getDate().equals(date)
+                            &&appointments.get(i).getTimeslot().equals(timeslot)
+                            &&service.getService().equals(((Imaging)appointments.get(i)).getRadiology().getService())){
+                        Provider curProvider = (Provider) appointments.get(i).getProvider();
+                        return curProvider.getLocation();
+                    }
+                }
+            }
+            return null;
+        }
+    private boolean isTechnicianFree(Date date, Timeslot timeslot, Technician technician)  {
+        for(int i = 0; i < appointments.size(); i++){
+            if(appointments.get(i).getDate().equals(date)&&appointments.get(i).getDate().equals(timeslot)
+            &&appointments.get(i).getProvider().equals(technician)){
+                return false;
+            }
+        }
+        return true;
+    }
+    private Technician findTechnician(Location location, Date date, Timeslot timeslot){
+        for(int i = 0; i < rotation.getSize(); i++){
+            if(!rotation.getCurrent().getData().getLocation().equals(location)
+                    &&isTechnicianFree(date, timeslot, rotation.getCurrent().getData())){
+                return rotation.getCurrent().getData();
+            }
+            rotation.shiftByOne();
+        }
+        return null;
+    }
+    private Technician findTechnician(Date date, Timeslot timeslot){
+        for(int i = 0; i < rotation.getSize(); i++){
+            if(isTechnicianFree(date, timeslot, rotation.getCurrent().getData())){
+                return rotation.getCurrent().getData();
+            }
+            rotation.shiftByOne();
+        }
+        return null;
     }
     public String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
+        Technician technician = null;
         if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
             return isValidAppointmentDate(date);
         }
@@ -196,14 +257,35 @@ public class ClinicManager {
         if(time.getHour()==0&&time.getMinute()==0){
             return inputPart[2] + "is not a valid time slot.";
         }
-        Date dob = new Date(inputPart[4]);
+        Date dob = new Date(inputPart[5]);
         if (!isValidDob(dob).equals("valid")) {
             return isValidDob(dob);
         }
-        if(inputPart.length<7){
+        if(inputPart.length<REQUIRED_INPUTS){
             return "Missing data tokens.";
         }
-
+        Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
+        if(!isValidAppointment(patient.getProfile(),date,time)){
+            return patient.getProfile() + (" has an existing appointment at the same time slot.");
+        }
+        if(!serviceExists(inputPart[6])){
+            return inputPart[6] + " - imaging service not provided.";
+        }
+        Radiology radiology = new Radiology(inputPart[6]);
+        int currentServices = isServiceAvailable(time, date, radiology);
+        if(currentServices>=2) {
+            return "Cannot find an available technician at all locations for "
+                    + radiology.getService() + " at slot " + inputPart[2];
+        }
+        if(currentServices == 1) {
+            technician = findTechnician(findLocation(date, time, radiology), date, time);
+        }
+        if(currentServices == 0) {
+            technician = findTechnician(date, time);
+        }
+        Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
+        appointments.add(imaging);
+        return imaging.toString() + " booked.";
     }
 
     /**
@@ -279,7 +361,7 @@ public class ClinicManager {
      * @return return a string representation of the result.
      */
     private String rCommand(String[] inputPart){
-        if(inputPart.length<7) return "Missing data tokens.";
+        if(inputPart.length<REQUIRED_INPUTS) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
         Timeslot timeslot = new Timeslot(inputPart[2]);
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);

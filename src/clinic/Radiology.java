@@ -26,4 +26,6 @@ public class Radiology {
         }
         return false;
     }
+
+    public Service getService(){return service;}
 }

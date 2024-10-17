@@ -2,10 +2,6 @@ package clinic;
 
 public class Technician extends Provider{
     private int ratePerVisit;
-    private String fname;
-    private String lname;
-    private Location location;
-
     public Technician(Profile profile, Location location, int ratePerVisit) {
         super(profile, location);
         this.ratePerVisit = ratePerVisit;

@@ -5,11 +5,13 @@ import clinic.Technician;
 public class CircularLinkedList<E> {
     private Node<E> last;  // Points to the last node in the list
     private int size;
+    private Node<E> current;
+
     public CircularLinkedList() {
         this.last = null;
+        this.current = null;
     }
-    private Node<E> current;
-    // Insert a node at the end of the list
+
     public void insert(E e) {
         Node<E> newNode = new Node<E>(e);
 
@@ -20,6 +22,7 @@ public class CircularLinkedList<E> {
             newNode.setNext(last.getNext());
             last.setNext(newNode);
             last = newNode;
+            current = last.getNext();
         }
         size++;
     }
@@ -30,8 +33,6 @@ public class CircularLinkedList<E> {
             current = null;
         }
 
-        current = last.getNext();
-        last = current;
         current = current.getNext();
     }
 

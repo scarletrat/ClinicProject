@@ -67,3 +67,4 @@ public enum Location {
         return name() + ", " + county + " " + zip;
     }
 }
+

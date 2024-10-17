@@ -4,8 +4,8 @@ import util.Date;
 
 public class Imaging extends Appointment{
     private Radiology room;
-    public Imaging(Date date, Timeslot timeslot, Person profile, String room){
-        super(date, timeslot, profile);
+    public Imaging(Date date, Timeslot timeslot, Person profile, String room, Technician technician){
+        super(date, timeslot, profile, technician);
         this.room = new Radiology(room);
     }
     @Override
@@ -16,6 +16,9 @@ public class Imaging extends Appointment{
             return this.room.equals(imaging.room);
         }
         return false;
+    }
+    public Radiology getRadiology(){
+        return room;
     }
 
 }

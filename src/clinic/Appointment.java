@@ -50,10 +50,11 @@ public class Appointment implements Comparable<Appointment>{
         this.patient = new Patient(firstName, lastName, dob);
         this.provider = technician;
     }
-    public Appointment(Date date, Timeslot timeslot, Person profile){
+    public Appointment(Date date, Timeslot timeslot, Person profile, Technician technician){
         this.date = date;
         this.timeslot = timeslot;
         this.patient = profile;
+        this.provider = technician;
     }
 
 
