@@ -3,7 +3,7 @@ package clinic;
 /**
  * This class contains the patient's information.
  * It includes the profile object and visits.
- * @author Gordon Lin, modified 9/30/2024
+ * @author Gordon Lin, modified Oct. 17, 2024
  */
 
 public class Patient extends Person implements Comparable<Patient> {
@@ -37,6 +37,7 @@ public class Patient extends Person implements Comparable<Patient> {
         super(fname, lname, dob);
         this.visits = null;
     }
+
     /**
      * Four argument constructor
      * @param fname       the first name of the patient.
@@ -47,41 +48,6 @@ public class Patient extends Person implements Comparable<Patient> {
     public Patient(String fname, String lname, String dob, Appointment appointment) {
         super(fname,lname,dob);
         this.visits = new Visit(appointment);
-    }
-
-    /**
-     * Compare two Patient objects
-     *
-     * @param patient the object to be compared.
-     * @return return 1 if the profile is "bigger" than the input "profile".
-     * return -1 is the profile is "smaller" than the input "profile".
-     * return 0 if equal.
-     */
-    @Override
-    public int compareTo(Patient patient) {
-        return this.profile.compareTo(patient.profile);
-    }
-
-    /**
-     * Compare to see if two patient are equal.
-     *
-     * @param obj the obj being compared to.
-     * @return true if two patients' profiles are equal.
-     * return false if two patients' profiles are not equal.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    /**
-     * A textual representation of teh Patient object.
-     *
-     * @return return the Profile object textual representation.
-     */
-    @Override
-    public String toString() {
-        return this.profile.toString();
     }
 
     /**
@@ -167,4 +133,40 @@ public class Patient extends Person implements Comparable<Patient> {
         }
         return charge;
     }
+
+    /**
+     * Compare two Patient objects
+     *
+     * @param patient the object to be compared.
+     * @return return 1 if the profile is "bigger" than the input "profile".
+     * return -1 is the profile is "smaller" than the input "profile".
+     * return 0 if equal.
+     */
+    @Override
+    public int compareTo(Patient patient) {
+        return this.profile.compareTo(patient.profile);
+    }
+
+    /**
+     * Compare to see if two patient are equal.
+     *
+     * @param obj the obj being compared to.
+     * @return true if two patients' profiles are equal.
+     * return false if two patients' profiles are not equal.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * A textual representation of teh Patient object.
+     *
+     * @return return the Profile object textual representation.
+     */
+    @Override
+    public String toString() {
+        return this.profile.toString();
+    }
+
 }

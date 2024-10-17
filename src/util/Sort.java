@@ -199,11 +199,18 @@ public class Sort {
         for (int i = 0; i < size-1; i++) {
             int min = i;
             for(int j = i+1; j<size; j++) {
-                if (((Provider)list.get(j).getProvider()).getLocation().getCounty().compareTo(((Provider)list.get(min).getProvider()).getLocation().getCounty()) < 0) {
+                Provider provj = (Provider) list.get(j).getProvider();
+                Provider provmin = (Provider) list.get(min).getProvider();
+                if (provj.getLocation().getCounty().compareTo(provmin.getLocation().getCounty()) < 0) {
                     min = j;
-                } else if (list.get(j).compareTo(list.get(min)) < 0 &&
-                        ((Provider)list.get(j).getProvider()).getLocation().getCounty().compareTo(((Provider)list.get(min).getProvider()).getLocation().getCounty()) == 0) {
-                    min = j;
+                } else if (provj.getLocation().getCounty().compareTo(provmin.getLocation().getCounty()) == 0){
+                    if(list.get(j).compareTo(list.get(min)) < 0) {
+                        min = j;
+                    }else if(list.get(j).compareTo(list.get(min)) == 0){
+                        if(provj.getProfile().getDob_inDate().compareTo(provmin.getProfile().getDob_inDate()) < 0){
+                            min = j;
+                        }
+                    }
                 }
             }
             swap(list,i,min);

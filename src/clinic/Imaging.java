@@ -3,7 +3,7 @@ package clinic;
 import util.Date;
 /**
  * This class represents an Imaging object, containing the appointment instance variables and a radiology object.
- * @author Christopher Lee, Gordon Lin, modified Oct. 16, 2024
+ * @author Christopher Lee, Gordon Lin, modified Oct. 17, 2024
  */
 public class Imaging extends Appointment{
     private Radiology room;
@@ -22,6 +22,24 @@ public class Imaging extends Appointment{
     }
 
     /**
+     * Gives the room of the Imaging object
+     * @return room object
+     */
+    public Radiology getRadiology(){
+        return room;
+    }
+
+    /**
+     * The method returns a String representation of the Imaging object.
+     * @return return a string representation of the object.
+     */
+    @Override
+    public String toString(){
+        return this.date + " " + this.timeslot + " " +
+                this.patient + " " + this.provider +"[" + this.getRadiology().getService() + "]";
+    }
+
+    /**
      * Overrides equals method to compare the rooms of Imaging objects
      * @param obj object to be compared to
      * @return 1 if this room is greater than input room
@@ -36,14 +54,6 @@ public class Imaging extends Appointment{
             return this.room.equals(imaging.room);
         }
         return false;
-    }
-
-    /**
-     * gives the room of the Imaging object
-     * @return room object
-     */
-    public Radiology getRadiology(){
-        return room;
     }
 
 }

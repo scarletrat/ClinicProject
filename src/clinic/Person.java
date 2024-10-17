@@ -1,7 +1,7 @@
 package clinic;
 /**
  * This class represents a Person object and contains a profile.
- * @author Gordon Lin, modified Sept. 30, 2024
+ * @author Gordon Lin, Christopher Lee modified Oct. 17, 2024
  */
 public class Person {
     protected Profile profile;
@@ -80,4 +80,5 @@ public class Person {
     public String toString(){
         return this.profile.toString();
     }
+
 }

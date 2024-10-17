@@ -10,7 +10,7 @@ import static util.Sort.provider;
 /**
  * This class is the user interface of the clinic project.
  * The user inputs the commands to create, cancel, reschedule, and print appointments.
- * @author Gordon Lin, modified 9/30/2024.
+ * @author Gordon Lin, Christopher Lee modified 10/17/2024.
  */
 public class ClinicManager {
     final static int REQUIRED_INPUTS = 7;
@@ -190,6 +190,16 @@ public class ClinicManager {
         }
             return false;
     }
+
+    /**
+     * This method check if the imaging service is available.
+     * @param timeslot the timeslot of the appointment.
+     * @param date the date of the appointment.
+     * @param service the imaging service.
+     * @return return 0 if the service is available in all locations,
+     * return 1 if the service is available in only 1 location.
+     * return 2 if all locations are booked.
+     */
     private int isServiceAvailable(Timeslot timeslot, Date date, Radiology service){
         int count = 0;
         for (int i = 0; i < appointments.size(); i++){
@@ -201,53 +211,99 @@ public class ClinicManager {
                 }
             }
         }
-        return (count);
+        return count;
     }
+
+    /**
+     * This method find the location give the date, timeslot, and imaging service appointment.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment.
+     * @param service the service.
+     * @return return the location of the imaging appointment.
+     */
     private Location findLocation(Date date, Timeslot timeslot, Radiology service) {
         for (int i = 0; i < appointments.size(); i++) {
+            Sort.appointment(appointments,'I');
             Appointment appointment = appointments.get(i);
-            if (appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot)) {
-                if(appointment instanceof Imaging){
-                    Provider provider = (Provider) appointment.getProvider();
-                    return provider.getLocation();
+            if(appointment instanceof Imaging){
+                if(appointment.getDate().equals(date) && appointment.getTimeslot().equals(timeslot) && ((Imaging) appointment).getRadiology().equals(service)){
+                    Technician technician = (Technician) appointment.getProvider();
+                    return technician.getLocation();
                 }
+            }else{
+                break;
             }
         }
         return null;
     }
 
+    /**
+     * This method check if the technician is available at the time and date.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment.
+     * @param technician the technician that we're checking.
+     * @return return true if the technician is available,
+     * return false otherwise.
+     */
     private boolean isTechnicianFree(Date date, Timeslot timeslot, Technician technician)  {
         for(int i = 0; i < appointments.size(); i++){
-            if(appointments.get(i).getDate().equals(date)&&appointments.get(i).getDate().equals(timeslot)
-            &&appointments.get(i).getProvider().equals(technician)){
-                return false;
+            Sort.appointment(appointments,'I');
+            Appointment appointment = appointments.get(i);
+            if(appointment instanceof Imaging){
+                if(appointment.getDate( ).equals(date) && appointment.getTimeslot().equals(timeslot) && appointment.getProvider().getProfile().equals(technician.getProfile()))
+                    return false;
+            }else{
+                break;
             }
         }
         return true;
     }
+
+    /**
+     * This method find the available technician in the date and timeslot and one that's not on the location listed.
+     * @param location the location that's not available.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment.
+     * @return return technician that's available at the specified constraints.
+     */
     private Technician findTechnician(Location location, Date date, Timeslot timeslot){
         for(int i = 0; i < rotation.getSize(); i++){
-            if(!rotation.getLast().getNext().getData().getLocation().equals(location)
-                    &&isTechnicianFree(date, timeslot, rotation.getLast().getNext().getData())){
-                rotation.setLast(rotation.getLast().getNext());
-                return rotation.getLast().getData();
-            }
             rotation.setLast(rotation.getLast().getNext());
-        }
-        return null;
-    }
-    private Technician findTechnician(Date date, Timeslot timeslot){
-        for(int i = 0; i < rotation.getSize(); i++){
-            if(isTechnicianFree(date, timeslot, rotation.getLast().getNext().getData())){
-                rotation.setLast(rotation.getLast().getNext());
-                return rotation.getLast().getData();
+            Technician technician = rotation.getLast().getData();
+            if(!technician.getLocation().equals(location) && isTechnicianFree(date,timeslot,technician)){
+                return technician;
             }
-            rotation.setLast(rotation.getLast().getNext());
         }
         return null;
     }
 
-    public String tCommand(String[] inputPart){
+    /**
+     * This method find the available technician in the date and timeslot,
+     * given that all locations are available.
+     * @param date the date of the appointment.
+     * @param timeslot the timeslot of the appointment.
+     * @return return technician.
+     */
+    private Technician findTechnician(Date date, Timeslot timeslot) {
+        for (int i = 0; i < rotation.getSize(); i++) {
+            // Move to the next technician
+            rotation.setLast(rotation.getLast().getNext());
+            Technician technician = rotation.getLast().getData();
+            // Check if the current technician is free
+            if (isTechnicianFree(date, timeslot, technician)) {
+                return technician;
+            }
+        }
+        // Return null if no technician is found
+        return null;
+    }
+
+    /**
+     * This method does the t Command. Schedule an Imaging appointment with a technician.
+     * @param inputPart the input command line.
+     * @return return a string representation of the outcome.
+     */
+    private String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
         if(inputPart.length<REQUIRED_INPUTS){
             return "Missing data tokens.";
@@ -285,7 +341,7 @@ public class ClinicManager {
         }
         Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
         appointments.add(imaging);
-        return imaging.toString() + "["+((Imaging) imaging).getRadiology().getService()+"]" + " booked.";
+        return imaging.toString() + " booked.";
     }
 
     /**
@@ -308,16 +364,16 @@ public class ClinicManager {
      * @param inputPart the input of the command line.
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
-    private String cCommand(String[] inputPart){
-        if(inputPart.length<REQUIRED_INPUTS-1) return "Missing data tokens.";
+    private String cCommand(String[] inputPart) {
+        if (inputPart.length < REQUIRED_INPUTS - 1) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
         Timeslot timeslot = new Timeslot(inputPart[2]);
-        Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
-        if(isValidAppointment(profile,date,timeslot)){
-            return date +" " + timeslot + " " + profile + " - appointment does not exist.";
+        Profile profile = new Profile(inputPart[3], inputPart[4], inputPart[5]);
+        if (!isValidAppointment(profile, date, timeslot)) {
+            removeAppointment(date, timeslot, profile);
+            return date + " " + timeslot + " " + profile + " - appointment has been canceled.";
         }
-        removeAppointment(date,timeslot,profile);
-        return date +" " + timeslot + " " + profile + " - appointment has been cancelled.";
+        return date + " " + timeslot + " " + profile + " - appointment does not exist.";
     }
 
     /**
@@ -383,7 +439,7 @@ public class ClinicManager {
             appointments.remove(old);
             Appointment newApp = new Appointment(date, newTimeslot, patient,doc);
             appointments.add(newApp);
-            return "Rescheduled to " + date + " " + patient.getProfile() +  newTimeslot + " " + doc;
+            return "Rescheduled to " + date + " " + newTimeslot+ " " + patient.getProfile() + " " + doc;
         }
         return doc + " is not available at slot " + inputPart[6];
 
@@ -436,7 +492,7 @@ public class ClinicManager {
                     String rad = String.valueOf(((Imaging) appointments.get(i)).getRadiology().getService());
                     System.out.println(appointments.get(i) +rad);
                 }
-                System.out.println(appointments.get(i).toString() + appointments.get(i).get);
+                System.out.println((appointments.get(i)).toString());
             }
             System.out.println("** end of list **");
         }else{
@@ -457,7 +513,7 @@ public class ClinicManager {
         for (int i = 0;i<charge.length; i++){
             DecimalFormat format = new DecimalFormat("#,###.00");
             String formatCharge = format.format(charge[i]);
-            System.out.println("(" + (i+1) +") " + patients.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
+            System.out.println("(" + (i+1) +") " + patients.get(i).getProfile() +" [due: $" + formatCharge + "]");
         }
     }
 
@@ -485,7 +541,7 @@ public class ClinicManager {
                 }
             }
         }
-        System.out.println(("** Billing statement ordered by patient **"));
+        System.out.println(("** Billing statement ordered by patient. **"));
         printChargePerPatient(patients);
         System.out.println("** end of list **");
         appointments = new List<>();
@@ -528,6 +584,10 @@ public class ClinicManager {
         }
     }
 
+    /**
+     * This method calculates the charge amount of providers.
+     * @return return an int array with the charge for each provider in the order of the provider list.
+     */
     private int[] calc(){
         Profile[] pro = new Profile[providers.size()];
         for(int i = 0; i< providers.size(); i++){
@@ -545,6 +605,7 @@ public class ClinicManager {
         }
         return money;
     }
+
     /**
      * This method does the PC command. Print the list of expected credit amounts;
      * for providers for seeing patients, sorted by provider profile.
@@ -554,13 +615,13 @@ public class ClinicManager {
             System.out.println("Schedule calendar is empty.");
             return;
         }
-        int charge[] = calc();
+        int[] charge = calc();
 
         System.out.println("\n** Credit amount ordered by provider. **");
         for(int i = 0; i< providers.size(); i++){
             DecimalFormat format = new DecimalFormat("#,###.00");
             String formatCharge = format.format(charge[i]);
-            System.out.println("(" + (i+1) +") " + providers.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
+            System.out.println("(" + (i+1) +") " + providers.get(i).getProfile() +" [credit amount: $" + formatCharge + "]");
         }
         System.out.println("** end of list **\n");
     }
@@ -571,7 +632,7 @@ public class ClinicManager {
      * @return return true if the command to keep running.
      * return false if terminated.
      */
-   public boolean command(String input) {
+    private boolean command(String input) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
         switch (command) {
@@ -610,7 +671,7 @@ public class ClinicManager {
                 PC_Command();
                 return true;
             case "Q":
-                System.out.println("Scheduler is terminated.");
+                System.out.println("Clinic Manager terminated.");
                 return false;
             default:
                 System.out.println("Invalid command!");
@@ -618,7 +679,10 @@ public class ClinicManager {
         }
     }
 
-    public void loadProviderList(){
+    /**
+     * This method load the provider list from the providers text file
+     */
+    private void loadProviderList(){
         try {
             File file = new File("src/clinic/providers.txt");
             Scanner fileRead = new Scanner(file);
@@ -650,7 +714,10 @@ public class ClinicManager {
         }
     }
 
-    public void displayProviderList(){
+    /**
+     * This method display the provider's list.
+     */
+    private void displayProviderList(){
         provider(providers);
         for (int i = 0; i<providers.size(); i++){
             System.out.println(providers.get(i).toString());
@@ -661,19 +728,22 @@ public class ClinicManager {
     /**
      * This method creates a circular linked list in order by location and prints out the rotation list.
      */
-    public void createRotation(){
+    private void createRotation(){
         rotation = new CircularLinkedList();
         int size = technicians.size();
-        for(int i = size-1; i >= 1; i--){
+        for(int i = size-1; i >= 0; i--){
             Node node = new Node(technicians.get(i));
             rotation.insert(node);
+            if(i == 0){
+                System.out.print(technicians.get(0).getProfile().getFname() + " " +
+                        technicians.get(0).getProfile().getLname() + " (" +
+                        technicians.get(0).getLocation().getName() + ")");
+                break;
+            }
             System.out.print(technicians.get(i).getProfile().getFname() + " " +
                     technicians.get(i).getProfile().getLname() + " (" +
                     technicians.get(i).getLocation().getName() + ") --> ");
         }
-        System.out.print(technicians.get(0).getProfile().getFname() + " " +
-                        technicians.get(0).getProfile().getLname() + " (" +
-                        technicians.get(0).getLocation().getName() + ")");
         System.out.println();
     }
 

@@ -5,7 +5,7 @@ import util.Date;
 /**
  * This class represents an appointment object, containing the date of the appointment,
  * the user's profile, the user's provider, and the time of the appointment.
- * @author Christopher Lee, modified Sept. 24, 2024
+ * @author Christopher Lee, Gordon Lin modified Oct. 17, 2024
  */
 public class Appointment implements Comparable<Appointment>{
         protected Date date;
@@ -83,62 +83,6 @@ public class Appointment implements Comparable<Appointment>{
         this.provider = technician;
     }
 
-
-
-    /**
-     * Compares obj to this appointment. returns true if equal, false otherwise.
-     * @param obj object to be compared to
-     * @return return true if the appointment is equal;
-     * return false otherwise.
-     */
-    @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Appointment){
-            Appointment appointment = (Appointment) obj;
-            return this.date.equals(appointment.getDate())
-                    &&this.timeslot.equals(appointment.getTimeslot())
-                    &&this.patient.equals(appointment.getPatient())
-                    &&this.provider.equals(appointment.getProvider());
-        }
-        return false;
-    }
-
-    /**
-     * Compares this appointment to another appointment object.
-     * @param appointment object to be compared to
-     * @return return 1 ff this appointment is after input "appointment;
-     * return -1 if this appointment is before input "appointment";
-     * return 0 if equal.
-     */
-    @Override
-    public int compareTo(Appointment appointment){
-        if(this.date.compareTo(appointment.date)>0){
-            return 1;
-        }
-        else if(this.date.compareTo(appointment.date)<0){
-          return -1;
-        }
-        else{
-            if(this.timeslot.compareTo(appointment.timeslot)>0){
-                return 1;
-            }
-            else if(this.timeslot.compareTo(appointment.timeslot)<0){
-                return -1;
-            }
-            else return 0;
-        }
-    }
-
-    /**
-     * Creates a textual representation of the appointment object
-     * @return this appointment's textual representation
-     */
-    @Override
-    public String toString(){
-        return this.date + " " + this.timeslot + " " +
-                this.patient + " " + this.provider;
-    }
-
     /**
      * Returns date object
      * @return return date object
@@ -201,6 +145,50 @@ public class Appointment implements Comparable<Appointment>{
      */
     public void setProvider(Person provider) {
         this.provider = provider;
+    }
+
+    /**
+     * Compares obj to this appointment. returns true if equal, false otherwise.
+     * @param obj object to be compared to
+     * @return return true if the appointment is equal;
+     * return false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Appointment){
+            Appointment appointment = (Appointment) obj;
+            return this.date.equals(appointment.getDate())
+                    &&this.timeslot.equals(appointment.getTimeslot())
+                    &&this.patient.equals(appointment.getPatient())
+                    &&this.provider.equals(appointment.getProvider());
+        }
+        return false;
+    }
+
+    /**
+     * Compares this appointment to another appointment object.
+     * @param appointment object to be compared to
+     * @return return 1 ff this appointment is after input "appointment;
+     * return -1 if this appointment is before input "appointment";
+     * return 0 if equal.
+     */
+    @Override
+    public int compareTo(Appointment appointment){
+        int dateComparison = this.date.compareTo(appointment.date);
+        if (dateComparison != 0) {
+            return dateComparison;
+        }
+        return this.timeslot.compareTo(appointment.timeslot);
+    }
+
+    /**
+     * Creates a textual representation of the appointment object
+     * @return this appointment's textual representation
+     */
+    @Override
+    public String toString(){
+        return this.date + " " + this.timeslot + " " +
+                this.patient + " " + this.provider;
     }
 
 }

@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * This class test the implementation of the List class.
+ */
 public class ListTest {
     Doctor doctor;
     Technician technician;

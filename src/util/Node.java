@@ -3,19 +3,11 @@ package util;
 import clinic.Technician;
 /**
  * This class represents a node. The node has a pointer to the next node and Technician data
- * @author Gordon Lin, Christopher Lee modified Oct. 16, 2024
+ * @author Gordon Lin, Christopher Lee modified Oct. 17, 2024
  */
 public class Node {
     private Technician data;
     private Node next;
-
-    /**
-     * constructor sets instance variables to null
-     */
-    public Node(){
-        this.data = null;
-        this.next = null;
-    }
 
     /**
      * Constructor sets instance variables to parameters
@@ -27,7 +19,15 @@ public class Node {
     }
 
     /**
-     * sets node pointer to parameter
+     * Set the data of the node to the parameter.
+     * @param technician the technician to be set to.
+     */
+    public void setData(Technician technician){
+        this.data = technician;
+    }
+
+    /**
+     * Sets node pointer to parameter
      * @param next parameter to set node next pointer to
      */
     public void setNext(Node next){
@@ -35,7 +35,7 @@ public class Node {
     }
 
     /**
-     * returns the node that this node is pointing to
+     * Returns the node that this node is pointing to
      * @return next instance variable
      */
     public Node getNext(){
@@ -43,10 +43,11 @@ public class Node {
     }
 
     /**
-     * returns data in this node
+     * Returns data in this node
      * @return data instance variable
      */
     public Technician getData(){
         return data;
     }
+
 }

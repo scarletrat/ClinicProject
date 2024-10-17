@@ -20,7 +20,7 @@ public class Technician extends Provider{
     }
 
     /**
-     * sets the ratePerVisit instance variable to the parameter
+     * Sets the ratePerVisit instance variable to the parameter
      * @param ratePerVisit parameter to set the instance variable to.
      */
     public void setRatePerVisit(int ratePerVisit){
@@ -52,7 +52,7 @@ public class Technician extends Provider{
     }
 
     /**
-     * gives the output string to print the technician output
+     * Gives the output string to print the technician output
      * @return all the technician's information
      */
     @Override

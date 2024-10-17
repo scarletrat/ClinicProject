@@ -3,6 +3,10 @@ package clinic;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
+/**
+ * This class test the implementation of the Profile class.
+ */
 public class ProfileTest {
 
     @Test

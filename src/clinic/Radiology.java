@@ -1,7 +1,7 @@
 package clinic;
 /**
  * This class represents a Radiology object, containing enum constants.
- * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024
+ * @author Christopher Lee, Gordon Lin Oct. 17 2024
  */
 public class Radiology {
 
@@ -26,6 +26,12 @@ public class Radiology {
     }
 
     /**
+     * Returns service enum constant
+     * @return service
+     */
+    public Service getService(){return service;}
+
+    /**
      * Overrides equals method to compare two services
      * @param obj Radiology object passed as parameter
      * @return true if both services are equal, false otherwise.
@@ -39,10 +45,4 @@ public class Radiology {
         }
         return false;
     }
-
-    /**
-     * returns service enum constant
-     * @return service
-     */
-    public Service getService(){return service;}
 }

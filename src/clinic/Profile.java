@@ -6,7 +6,7 @@ import util.Date;
  * This class models a patient's profile.
  * It will include their first and last name and date of birth.
  * It implements Java Comparable Interface.
- * @author Gordon Lin modified Sept. 28, 2024.
+ * @author Gordon Lin modified Oct. 17, 2024.
  */
 public class Profile implements Comparable<Profile>{
     private String fname;
@@ -45,60 +45,6 @@ public class Profile implements Comparable<Profile>{
         this.fname = fname;
         this.lname = lname;
         this.dob = new Date(dob);
-    }
-
-    /**
-     * Compare to see if two profile are equal.
-     * @param obj the object to be compared to.
-     * @return return true if two profile objects are equal; return false otherwise.
-     */
-    @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Profile){
-            Profile profile = (Profile) obj;
-            return this.fname.equals(profile.fname)
-                    &&this.lname.equals(profile.lname)
-                    &&this.dob.equals(profile.dob);
-        }
-        return false;
-    }
-
-    /**
-     * A textual representation of the Profile object.
-     * @return return a string containing first nam, last name, and date of birth.
-     */
-    @Override
-    public String toString(){
-        return(fname + " " + lname + " " + dob);
-    }
-
-    /**
-     * Compare two Profile objects.
-     * @param profile the object to be compared.
-     * @return return 1 if either lname, fname, dob in this order of this profile is after input "profile" dob;
-     * return -1 if either lname, fname, dob in this order of this profile is before input "profile" dob;
-     * return 0 if equal.
-     */
-    @Override
-    public int compareTo(Profile profile){
-        if(this.lname.compareTo(profile.lname) != 0){
-            if(this.lname.compareTo(profile.lname)<0)
-                return -1;
-            else{
-                return 1;
-            }
-        }
-        if(this.fname.compareTo(profile.fname) != 0){
-            if(this.fname.compareTo(profile.fname)<0)
-                return -1;
-            else{
-                return 1;
-            }
-        }
-        if(this.dob.compareTo(profile.dob) != 0){
-            return this.dob.compareTo(profile.dob);
-        }
-        return 0;
     }
 
     /**
@@ -149,6 +95,60 @@ public class Profile implements Comparable<Profile>{
      */
     public void setDob_inString(String dob){
         this.dob = new Date(dob);
+    }
+
+    /**
+     * Compare to see if two profile are equal.
+     * @param obj the object to be compared to.
+     * @return return true if two profile objects are equal; return false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Profile){
+            Profile profile = (Profile) obj;
+            return this.fname.equalsIgnoreCase(profile.fname)
+                    && this.lname.equalsIgnoreCase(profile.lname)
+                    &&this.dob.equals(profile.dob);
+        }
+        return false;
+    }
+
+    /**
+     * A textual representation of the Profile object.
+     * @return return a string containing first nam, last name, and date of birth.
+     */
+    @Override
+    public String toString(){
+        return(fname + " " + lname + " " + dob);
+    }
+
+    /**
+     * Compare two Profile objects.
+     * @param profile the object to be compared.
+     * @return return 1 if either lname, fname, dob in this order of this profile is after input "profile" dob;
+     * return -1 if either lname, fname, dob in this order of this profile is before input "profile" dob;
+     * return 0 if equal.
+     */
+    @Override
+    public int compareTo(Profile profile){
+        if(this.lname.toLowerCase().compareTo(profile.lname.toLowerCase()) != 0){
+            if(this.lname.toLowerCase().compareTo(profile.lname.toLowerCase())<0)
+                return -1;
+            else{
+                return 1;
+            }
+        }
+        if(this.fname.toLowerCase().compareTo(profile.fname.toLowerCase()) != 0){
+            if(this.fname.toLowerCase().compareTo(profile.fname.toLowerCase())<0)
+                return -1;
+            else{
+                return 1;
+            }
+        }
+        if(this.dob.compareTo(profile.dob) != 0){
+            return this.dob.compareTo(profile.dob);
+        }
+        return 0;
     }
 
 }

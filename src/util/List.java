@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Manages array of appointments by sorting, adding elements, removing elements,
  * and adjusting the size of the array.
- * @author Christopher Lee, Gordon Lin modified Sept. 30, 2024.
+ * @author Christopher Lee, Gordon Lin modified Oct. 17, 2024.
  */
 public class List<E> implements Iterable<E> {
     private E[] objects;
@@ -36,7 +36,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * increases list size by 4
+     * Increases list size by 4
      */
     private void grow(){
         E[] newArray = (E[]) new Object[size+4];
@@ -56,7 +56,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * adds generic to list
+     * Adds generic to list
      * @param e generic to be added
      */
     public void add(E e){
@@ -68,7 +68,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * removes generic from list
+     * Removes generic from list
      * @param e generic to be removed if it exists
      */
     public void remove(E e){
@@ -84,7 +84,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * checks to see if list is empty
+     * Checks to see if list is empty
      * @return true if size is 0, false otherwise.
      */
     public boolean isEmpty(){
@@ -92,7 +92,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * returns size of list
+     * Returns size of list
      * @return size variable
      */
     public int size(){
@@ -113,7 +113,6 @@ public class List<E> implements Iterable<E> {
      * @param index parameter used for the index of the object
      * @return gives the generic at the index
      */
-    //return the object at the index
     public E get(int index){
         if(index <size) {
             return objects[index];
@@ -126,7 +125,6 @@ public class List<E> implements Iterable<E> {
      * @param index parameter of index to set generic to
      * @param e generic to be placed at the index
      */
-    //put object e on the index
     public void set(int index, E e){
         if (index >= 0 && index < size) {
             objects[index] = e; // Set the element at the specified index
@@ -136,7 +134,7 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * returns the index of an item in the list
+     * Returns the index of an item in the list
      * @param e the item to find in the list
      * @return index of the item
      */
@@ -152,7 +150,7 @@ public class List<E> implements Iterable<E> {
         private int currentIndex = 0;
 
         /**
-         * checks to see if there is another element next
+         * Checks to see if there is another element next
          * @return true if there are still more elements in the list, false otherwise
          */
         public boolean hasNext(){
@@ -160,7 +158,7 @@ public class List<E> implements Iterable<E> {
         }
 
         /**
-         * returns next element in the list
+         * Returns next element in the list
          * @return next element
          */
         public E next(){

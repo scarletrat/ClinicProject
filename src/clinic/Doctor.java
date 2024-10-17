@@ -2,7 +2,7 @@ package clinic;
 /**
  * This class represents a Doctor object, containing the profile of the doctor, the location they work at,
  * their specialty, and their npi. Provider subclass.
- * @author Gordon Lin, modified Oct. 16, 2024
+ * @author Gordon Lin, Christopher Lee modified Oct. 16, 2024
  */
 public class Doctor extends Provider{
     private Specialty specialty;

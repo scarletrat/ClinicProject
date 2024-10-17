@@ -4,7 +4,7 @@ package clinic;
  * This class defines locations of the clinic with
  * the county name and zip code.
  * It is an enum class and so far have 6 locations offered.
- * @author Gordon Lin, Christopher Lee, modified 9/28/2024
+ * @author Gordon Lin, Christopher Lee, Oct. 17, 2024
  */
 public enum Location {
     BRIDGEWATER("Somerset", "08807"),
@@ -49,6 +49,7 @@ public enum Location {
             return null;
         }
     }
+
     /**
      * Get the county of the location.
      * @return return the county.
@@ -66,6 +67,13 @@ public enum Location {
     }
 
     /**
+     * Gives the name of the location
+     * @return enum constant
+     */
+    public String getName() {return this.name();
+    }
+
+    /**
      * Return a textual representation of the location.
      * @return return "name, county zip"
      */
@@ -74,11 +82,5 @@ public enum Location {
         return name() + ", " + county + " " + zip;
     }
 
-    /**
-     * Gives the name of the location
-     * @return enum constant
-     */
-    public String getName() {return this.name();
-    }
 }
 

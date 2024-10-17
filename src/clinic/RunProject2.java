@@ -4,7 +4,7 @@ package clinic;
  * Use Scheduler().run();
  * @author Gordon Lin, modified 9/30/2024.
  */
-public class RunProject1 {
+public class RunProject2 {
     public static void main(String[] args){
         new ClinicManager().run();
     }

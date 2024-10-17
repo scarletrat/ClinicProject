@@ -4,7 +4,7 @@ package clinic;
  * This class includes the last name of the providers of the clinic
  * with the location and specialty of those providers.
  * It is an enum class and so far have 8 providers.
- * @author Gordon Lin,Christopher Lee modified 9/30/2024
+ * @author Gordon Lin, Christopher Lee modified Oct. 17, 2024
  */
 public abstract class Provider extends Person {
     private Location location;
@@ -49,6 +49,5 @@ public abstract class Provider extends Person {
         return "[" + super.getProfile() + ", " + location + "]";
 
     }
-
 
 }

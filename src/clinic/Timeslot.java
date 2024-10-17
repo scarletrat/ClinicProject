@@ -3,7 +3,7 @@ package clinic;
 /**
  * This class defines the time slots of a day in the format HH:MM.
  * It is an enum class and have only 6 slots specified by the clinic.
- * @author Gordon Lin, modified 9/28/2024.
+ * @author Gordon Lin, modified Oct. 17, 2024.
  */
 public class Timeslot implements Comparable<Timeslot> {
     public static final int NOON = 12;
@@ -53,24 +53,6 @@ public class Timeslot implements Comparable<Timeslot> {
     }
 
     /**
-     * Comparing two timeslot object.
-     * @param o the object to be compared.
-     * @return 1 if the timeslot is later than Timeslot o,
-     * return -1 if the timeslot is earlier than Timeslot o,
-     * return 0 if the same.
-     */
-    @Override
-    public int compareTo(Timeslot o) {
-        if(this.getHour() > o.getHour()){
-            return 1;
-        }else if(this.getHour()<o.getHour()){
-            return -1;
-        }else{
-            return Integer.compare(this.getMinute(), o.getMinute());
-        }
-    }
-
-    /**
      * Get the hour of the timeslot.
      * @return return the hour of the timeslot.
      */
@@ -87,6 +69,22 @@ public class Timeslot implements Comparable<Timeslot> {
     }
 
     /**
+     * Comparing two timeslot object.
+     * @param o the object to be compared.
+     * @return 1 if the timeslot is later than Timeslot o,
+     * return -1 if the timeslot is earlier than Timeslot o,
+     * return 0 if the same.
+     */
+    @Override
+    public int compareTo(Timeslot o) {
+        int hourComparison = Integer.compare(this.getHour(), o.getHour());
+        if (hourComparison != 0) {
+            return hourComparison;
+        }
+        return Integer.compare(this.getMinute(), o.getMinute());
+    }
+
+    /**
      * Overrides equals method to compare the minute and hour instance variables
      * @param obj object to be compared to
      * @return true if this minute and hour are equal to obj minute and hour, false otherwise
@@ -100,6 +98,7 @@ public class Timeslot implements Comparable<Timeslot> {
         }
         return false;
     }
+
     /**
      * Return a textual representation of the timeslot.
      * @return return a string containing the hour:minute.

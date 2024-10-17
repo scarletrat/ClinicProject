@@ -61,4 +61,5 @@ public class Visit {
     public void setNext(Visit next){
         this.next = next;
     }
+
 }

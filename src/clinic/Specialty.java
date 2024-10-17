@@ -21,7 +21,7 @@ public enum Specialty {
     }
 
     /**
-     * returns enum constant based on parameter
+     * Returns enum constant based on parameter
      * @param specialty specialty parameter
      * @return enum constant based on specialty parameter
      */
@@ -38,7 +38,7 @@ public enum Specialty {
     }
 
     /**
-     * returns charge instance variable
+     * Returns charge instance variable
      * @return charge variable
      */
     public int getCharge(){
@@ -53,4 +53,5 @@ public enum Specialty {
     public String toString(){
         return name();
     }
+
 }

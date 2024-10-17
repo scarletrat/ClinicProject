@@ -2,6 +2,9 @@ package util;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * This class test the implementation of the Date class.
+ */
 public class DateTest {
 
     @Test

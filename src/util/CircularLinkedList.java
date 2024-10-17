@@ -4,7 +4,7 @@ import clinic.Profile;
 import clinic.Technician;
 /**
  * This class represents a circular linked list. uses nodes and pointers from the Node class
- * @author Gordon Lin, Christopher Lee modified Oct. 16, 2024
+ * @author Gordon Lin, Christopher Lee modified Oct. 17, 2024
  */
 public class CircularLinkedList {
     private Node last;  // Points to the last node in the list
@@ -15,10 +15,11 @@ public class CircularLinkedList {
      */
     public CircularLinkedList() {
         this.last = null;
+        this.size = 0;
     }
 
     /**
-     * inserts node last spot of the list
+     * Inserts node last spot of the list
       * @param e node to be inserted
      */
     public void insert(Node e) {
@@ -35,16 +36,7 @@ public class CircularLinkedList {
     }
 
     /**
-     * shifts the pointer to the next node in the list
-     */
-    public void shiftByOne() {
-        if (last != null) {
-            last = last.getNext();
-        }
-    }
-
-    /**
-     * checks if the linked list has no nodes
+     * Checks if the linked list has no nodes
       * @return true if last is null, false otherwise
      */
     public boolean isEmpty() {
@@ -52,7 +44,7 @@ public class CircularLinkedList {
     }
 
     /**
-     * returns size of linked list
+     * Returns size of linked list
      * @return size instance variable
      */
     public int getSize() {
@@ -60,7 +52,7 @@ public class CircularLinkedList {
     }
 
     /**
-     * returns the last node in the linked list
+     * Returns the last node in the linked list
      * @return last instance variable
      */
     public Node getLast() {
@@ -68,7 +60,7 @@ public class CircularLinkedList {
     }
 
     /**
-     * sets the last node in the list to parameter
+     * Sets the last node in the list to parameter
      * @param e parameter to be set to last node
      */
     public void setLast(Node e){
