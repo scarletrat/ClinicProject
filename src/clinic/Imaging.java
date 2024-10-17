@@ -24,7 +24,9 @@ public class Imaging extends Appointment{
     /**
      * Overrides equals method to compare the rooms of Imaging objects
      * @param obj object to be compared to
-     * @return true if rooms are equal and false otherwise
+     * @return 1 if this room is greater than input room
+     * return 0 if this room is equal to input room
+     * return -1 if this room is less than input room
      */
     @Override
     public boolean equals(Object obj){

@@ -1,7 +1,7 @@
 package clinic;
 /**
  * This class represents a Doctor object, containing the profile of the doctor, the location they work at,
- * their specialty, and their npi.
+ * their specialty, and their npi. Provider subclass.
  * @author Gordon Lin, modified Oct. 16, 2024
  */
 public class Doctor extends Provider{
@@ -55,7 +55,7 @@ public class Doctor extends Provider{
 
     /**
      * Overrides toString method to print doctor output
-     * @return all of the doctor's information
+     * @return all the doctor's information
      */
     @Override
     public String toString(){

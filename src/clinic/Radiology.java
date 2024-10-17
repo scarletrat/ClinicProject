@@ -11,6 +11,10 @@ public class Radiology {
 
     private Service service;
 
+    /**
+     * Constructor setting instance variable to enum constant
+     * @param service parameter to decide what to set instance variable to
+     */
     public Radiology(String service) {
         if (service.equalsIgnoreCase("xray")) {
             this.service = Service.XRAY;
@@ -20,6 +24,12 @@ public class Radiology {
             this.service = Service.CATSCAN;
         }
     }
+
+    /**
+     * Overrides equals method to compare two services
+     * @param obj Radiology object passed as parameter
+     * @return true if both services are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj){
         if (obj instanceof Radiology) {
@@ -30,5 +40,9 @@ public class Radiology {
         return false;
     }
 
+    /**
+     * returns service enum constant
+     * @return service
+     */
     public Service getService(){return service;}
 }

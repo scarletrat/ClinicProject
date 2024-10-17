@@ -50,7 +50,9 @@ public class Person {
     /**
      * Overrides compareTo method to compare two Person object's profiles
      * @param person Person object to be compared to
-     * @return 1 if .
+     * @return 1 if this Person's profile is greater than input Person's profile.
+     * return 0 if this Person's profile is equal to input Person's profile
+     * return -1 if this Person's profile is less than input Person's profile
      */
     public int compareTo(Person person) {
         return profile.compareTo(person.getProfile());

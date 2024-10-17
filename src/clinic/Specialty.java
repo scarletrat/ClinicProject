@@ -12,10 +12,19 @@ public enum Specialty {
 
     private final int charge;
 
+    /**
+     * Constructor setting instance variable to parameter
+     * @param charge charge variable
+     */
     Specialty(int charge){
         this.charge = charge;
     }
 
+    /**
+     * returns enum constant based on parameter
+     * @param specialty specialty parameter
+     * @return enum constant based on specialty parameter
+     */
     public static Specialty getSpecialty(String specialty){
         if(specialty.equalsIgnoreCase("FAMILY")){
             return FAMILY;
@@ -28,7 +37,10 @@ public enum Specialty {
         }
     }
 
-
+    /**
+     * returns charge instance variable
+     * @return charge variable
+     */
     public int getCharge(){
         return charge;
     }

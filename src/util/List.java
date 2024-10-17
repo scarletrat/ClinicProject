@@ -13,11 +13,19 @@ public class List<E> implements Iterable<E> {
     private int size;
     private static final int NOT_FOUND = -1;
 
+    /**
+     *Constructor creates new array of objects
+     */
     public List() {
         objects = (E[]) new Object[4];
         size=0;
     }
 
+    /**
+     * Finds generic e in list
+     * @param e generic to find in list
+     * @return returns index of generic or NOT_FOUND if not in list
+     */
     private int find(E e){
         for(int i = 0; i<size; i++){
             if(objects[i].equals(e)){
@@ -27,6 +35,9 @@ public class List<E> implements Iterable<E> {
         return NOT_FOUND;
     }
 
+    /**
+     * increases list size by 4
+     */
     private void grow(){
         E[] newArray = (E[]) new Object[size+4];
         for(int i = 0; i<size; i++){
@@ -35,10 +46,19 @@ public class List<E> implements Iterable<E> {
         objects = newArray;
     }
 
+    /**
+     * Checks to see if list has generic e
+     * @param e generic to search for in list
+     * @return true if parameter is in list, false otherwise
+     */
     public boolean contains(E e){
         return find(e) != NOT_FOUND;
     }
 
+    /**
+     * adds generic to list
+     * @param e generic to be added
+     */
     public void add(E e){
         if(size == objects.length){
             grow();
@@ -47,6 +67,10 @@ public class List<E> implements Iterable<E> {
         size++;
     }
 
+    /**
+     * removes generic from list
+     * @param e generic to be removed if it exists
+     */
     public void remove(E e){
         int index = indexOf(e);
         if(index != NOT_FOUND){
@@ -59,19 +83,36 @@ public class List<E> implements Iterable<E> {
         }
     }
 
+    /**
+     * checks to see if list is empty
+     * @return true if size is 0, false otherwise.
+     */
     public boolean isEmpty(){
         return size ==0;
     }
 
+    /**
+     * returns size of list
+     * @return size variable
+     */
     public int size(){
         return size;
     }
 
+    /**
+     * Gives new iterator object
+     * @return iterator object
+     */
     @Override
     public Iterator<E> iterator() {
         return new ListIterator<E>();
     }
 
+    /**
+     * Returns the generic at the index
+     * @param index parameter used for the index of the object
+     * @return gives the generic at the index
+     */
     //return the object at the index
     public E get(int index){
         if(index <size) {
@@ -80,6 +121,11 @@ public class List<E> implements Iterable<E> {
         return null;
     }
 
+    /**
+     * Sets the generic to the index in the list
+     * @param index parameter of index to set generic to
+     * @param e generic to be placed at the index
+     */
     //put object e on the index
     public void set(int index, E e){
         if (index >= 0 && index < size) {
@@ -89,17 +135,34 @@ public class List<E> implements Iterable<E> {
         }
     }
 
+    /**
+     * returns the index of an item in the list
+     * @param e the item to find in the list
+     * @return index of the item
+     */
     public int indexOf(E e){
         return find(e);
     }
 
+    /**
+     * Implements Iterator<E> to access elements of the list sequentially
+     * @param <E> generic
+     */
     private class ListIterator<E> implements Iterator<E>{
         private int currentIndex = 0;
-        //return false if its empty or end of list
+
+        /**
+         * checks to see if there is another element next
+         * @return true if there are still more elements in the list, false otherwise
+         */
         public boolean hasNext(){
             return currentIndex < size;
         }
-        //return next object in the list
+
+        /**
+         * returns next element in the list
+         * @return next element
+         */
         public E next(){
             if (!hasNext()){
                 throw new java.util.NoSuchElementException("No more elements");

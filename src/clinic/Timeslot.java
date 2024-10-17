@@ -11,6 +11,10 @@ public class Timeslot implements Comparable<Timeslot> {
     private int hour;
     private int minute;
 
+    /**
+     * Constructor setting instance variables based on parameter
+     * @param timeslot timeslot variable to set instance variables to
+     */
     public Timeslot(String timeslot){
         hour = 0;
         minute = 0;
@@ -82,6 +86,11 @@ public class Timeslot implements Comparable<Timeslot> {
         return minute;
     }
 
+    /**
+     * Overrides equals method to compare the minute and hour instance variables
+     * @param obj object to be compared to
+     * @return true if this minute and hour are equal to obj minute and hour, false otherwise
+     */
     @Override
     public boolean equals(Object obj){
         if(obj instanceof Timeslot){
