@@ -671,7 +671,7 @@ public class ClinicManager {
                 PC_Command();
                 return true;
             case "Q":
-                System.out.println("Clinic Manager terminated.");
+                System.out.println("\nClinic Manager terminated.");
                 return false;
             default:
                 System.out.println("Invalid command!");
