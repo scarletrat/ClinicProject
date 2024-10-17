@@ -179,7 +179,7 @@ public class ClinicManager {
             appointments.add(appointment);
             return( appointment + " booked.");
         }
-        return doc + (" is not available at slot " + inputPart[2]+ ".");
+        return doc + (" is not available at slot " + inputPart[2]);
     }
 
     public Boolean serviceExists(String service){
@@ -232,7 +232,7 @@ public class ClinicManager {
                 rotation.setLast(rotation.getLast().getNext());
                 return rotation.getLast().getData();
             }
-            rotation.shiftByOne();
+            rotation.setLast(rotation.getLast().getNext());
         }
         return null;
     }
@@ -242,7 +242,7 @@ public class ClinicManager {
                 rotation.setLast(rotation.getLast().getNext());
                 return rotation.getLast().getData();
             }
-            rotation.shiftByOne();
+            rotation.setLast(rotation.getLast().getNext());
         }
         return null;
     }
@@ -263,7 +263,6 @@ public class ClinicManager {
         if (!isValidDob(dob).equals("valid")) {
             return isValidDob(dob);
         }
-
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
         if(!isValidAppointment(patient.getProfile(),date,time)){
             return patient.getProfile() + (" has an existing appointment at the same time slot.");
@@ -384,9 +383,9 @@ public class ClinicManager {
             appointments.remove(old);
             Appointment newApp = new Appointment(date, newTimeslot, patient,doc);
             appointments.add(newApp);
-            return "Rescheduled to " + date + " " + newTimeslot + " " + doc;
+            return "Rescheduled to " + date + " " + patient.getProfile() +  newTimeslot + " " + doc;
         }
-        return doc + " is not available at slot " + inputPart[6] +"." ;
+        return doc + " is not available at slot " + inputPart[6];
 
     }
 
@@ -433,7 +432,11 @@ public class ClinicManager {
             Sort.appointment(appointments, 'L');
             System.out.println("\n** List of appointments, ordered by county/date/time.");
             for (int i = 0; i < appointments.size(); i++) {
-                System.out.println(appointments.get(i).toString());
+                if(appointments.get(i) instanceof  Imaging){
+                    String rad = String.valueOf(((Imaging) appointments.get(i)).getRadiology().getService());
+                    System.out.println(appointments.get(i) +rad);
+                }
+                System.out.println(appointments.get(i).toString() + appointments.get(i).get);
             }
             System.out.println("** end of list **");
         }else{
@@ -559,7 +562,7 @@ public class ClinicManager {
             String formatCharge = format.format(charge[i]);
             System.out.println("(" + (i+1) +") " + providers.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
         }
-        System.out.println("** end of list **");
+        System.out.println("** end of list **\n");
     }
 
     /**
