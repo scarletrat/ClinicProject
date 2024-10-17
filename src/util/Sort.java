@@ -166,7 +166,7 @@ public class Sort {
      * Use selection sort to sort the Office type appointment by county, date, then timeslot.
      * @param list the appointment list to be sorted.
      */
-    private int static void sortOffice(List<Appointment> list){
+    private static void sortOffice(List<Appointment> list){
         if (list.isEmpty()) {
             return;
         }

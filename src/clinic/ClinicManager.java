@@ -152,6 +152,9 @@ public class ClinicManager {
      */
     private String dCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
+        if(inputPart.length<REQUIRED_INPUTS){
+            return ("Missing data tokens.");
+        }
         String validAppointmentDate = isValidAppointmentDate(date);
         if(!validAppointmentDate.equalsIgnoreCase("valid")){
             return validAppointmentDate;
@@ -165,9 +168,7 @@ public class ClinicManager {
         if(!validDob.equalsIgnoreCase("valid")){
             return validDob;
         }
-        if(inputPart.length<REQUIRED_INPUTS){
-            return ("Missing data tokens.");
-        }
+
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
         if(!isValidAppointment(patient.getProfile(),date,timeslot)){
             return patient.getProfile() + (" has an existing appointment at the same time slot.");
@@ -309,7 +310,7 @@ public class ClinicManager {
      * @return return a string representation of whether the appointment have or haven't been cancelled.
      */
     private String cCommand(String[] inputPart){
-        if(inputPart.length<6) return "Missing data tokens.";
+        if(inputPart.length<REQUIRED_INPUTS) return "Missing data tokens.";
         Date date = new Date(inputPart[1]);
         Timeslot timeslot = new Timeslot(inputPart[2]);
         Profile profile = new Profile(inputPart[3],inputPart[4],inputPart[5]);
@@ -461,6 +462,10 @@ public class ClinicManager {
      * This method does the PS command. Print the bill of the patients.
      */
     private void PS_Command(){
+        if(appointments.isEmpty()) {
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         Sort.appointment(appointments,'P');
         List<Patient> patients = new List<>();
         for(int i =0; i< appointments.size(); i++){
@@ -522,10 +527,41 @@ public class ClinicManager {
         }
     }
 
+    /**
+     * This method does the PC command. Print the list of expected credit amounts;
+     * for providers for seeing patients, sorted by provider profile.
+     */
     private void PC_Command(){
+        if(appointments.isEmpty()){
+            System.out.println("The schedule calendar is empty.");
+            return;
+        }
         int[] providerCharge = new int[providers.size()];
-
+        for(int i =0; i< providers.size(); i++){
+            int charge = 0;
+            Person provider = providers.get(i);
+            for(int j = 0; j< appointments.size(); j++){
+                Appointment appointment = appointments.get(i);
+                Person currentProvider = appointment.getProvider();
+                if(currentProvider.equals(provider)){
+                    if(provider instanceof Doctor){
+                        charge += ((Doctor) provider).rate();
+                    } else if (provider instanceof Technician) {
+                        charge +=((Technician) provider).rate();
+                    }
+                }
+            }
+            providerCharge[i] = charge;
+        }
+        System.out.println("\n** Credit amount ordered by provider. **");
+        for(int i = 0; i< providers.size(); i++){
+            DecimalFormat format = new DecimalFormat("#,###.00");
+            String formatCharge = format.format(providerCharge[i]);
+            System.out.println("(" + (i+1) +") " + providers.get(i).getProfile() +" [amount due: $" + formatCharge + "]");
+        }
+        System.out.println("** end of list **");
     }
+
     /**
      * This method does the command of the command line input.
      * @param input the input command line.
@@ -568,6 +604,7 @@ public class ClinicManager {
                 PI_Command();
                 return true;
             case "PC":
+                PC_Command();
                 return true;
             case "Q":
                 System.out.println("Scheduler is terminated.");
