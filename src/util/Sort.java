@@ -33,11 +33,11 @@ public class Sort {
         for (int i = 0; i < size-1; i++) {
             int min = i;
             for(int j = i+1; j<size; j++) {
-                if(((Patient)list.get(j).getPatient()).compareTo(((Patient)list.get(min).getPatient())) < 0) {
+                if(list.get(j).getPatient().compareTo(list.get(min).getPatient()) < 0) {
                     min = j;
                 }
                 else if(list.get(j).compareTo(list.get(min))<0 &&
-                        ((Patient)list.get(j).getPatient()).compareTo(((Patient)list.get(min).getPatient())) == 0){
+                        list.get(j).getPatient().compareTo(list.get(min).getPatient())== 0){
                     min =j;
                 }
             }
