@@ -5,6 +5,9 @@ package clinic;
  */
 public class Radiology {
 
+    /**
+     * Current service provided: catscan, ultrasound, and xray
+     */
     public enum Service{
         CATSCAN, ULTRASOUND, XRAY
     }

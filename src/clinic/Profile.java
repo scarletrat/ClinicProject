@@ -9,9 +9,9 @@ import util.Date;
  * @author Gordon Lin modified Oct. 17, 2024.
  */
 public class Profile implements Comparable<Profile>{
-    private String fname;
-    private String lname;
-    private Date dob;
+    protected String fname;
+    protected String lname;
+    protected Date dob;
 
     /**
      * A default/no-argument constructor

@@ -143,8 +143,8 @@ public class List<E> implements Iterable<E> {
     }
 
     /**
-     * Implements Iterator<E> to access elements of the list sequentially
-     * @param <E> generic
+     * Implements Iterator to access elements of the list sequentially.
+     * @param <E> E generic object.
      */
     private class ListIterator<E> implements Iterator<E>{
         private int currentIndex = 0;
@@ -161,7 +161,7 @@ public class List<E> implements Iterable<E> {
          * Returns next element in the list
          * @return next element
          */
-        public E next(){
+        public  E next(){
             if (!hasNext()){
                 throw new java.util.NoSuchElementException("No more elements");
             }
