@@ -250,6 +250,9 @@ public class ClinicManager {
     }
     public String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
+        if(inputPart.length<REQUIRED_INPUTS){
+            return "Missing data tokens.";
+        }
         Technician technician = null;
         if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
             return isValidAppointmentDate(date);
@@ -262,9 +265,7 @@ public class ClinicManager {
         if (!isValidDob(dob).equals("valid")) {
             return isValidDob(dob);
         }
-        if(inputPart.length<REQUIRED_INPUTS){
-            return "Missing data tokens.";
-        }
+
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
         if(!isValidAppointment(patient.getProfile(),date,time)){
             return patient.getProfile() + (" has an existing appointment at the same time slot.");
@@ -403,7 +404,7 @@ public class ClinicManager {
             }
             System.out.println("** end of list **");
         }else{
-            Sort.appointment(appointments, 'L');
+            System.out.println("The schedule calendar is empty.");
         }
     }
 
@@ -639,6 +640,7 @@ public class ClinicManager {
                 providers.add(temp);
                 provider(providers);
             }
+            System.out.println("Providers loaded to the list.");
             fileRead.close();
         }
         catch (FileNotFoundException e) {
@@ -681,7 +683,7 @@ public class ClinicManager {
         appointments = new List<>();
         loadProviderList();
         displayProviderList();
-        System.out.println("Rotation list for technicians.");
+        System.out.println("Rotation list for the technicians.");
         createRotation();
         System.out.println("Clinic Manager is running...");
         Scanner commandLine = new Scanner(System.in);
@@ -692,7 +694,7 @@ public class ClinicManager {
             if (input.isEmpty()) {
                 continue;
             }
-            //input commandm
+            //input command
             boolean terminate = command(input);
             if(!terminate){
                 return;
