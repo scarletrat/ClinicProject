@@ -1,7 +1,5 @@
 package util;
 
-import clinic.Profile;
-import clinic.Technician;
 /**
  * This class represents a circular linked list. uses nodes and pointers from the Node class
  * @author Gordon Lin, Christopher Lee modified Oct. 17, 2024

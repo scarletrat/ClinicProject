@@ -1,5 +1,4 @@
 package clinic;
-
 import util.Date;
 
 /**

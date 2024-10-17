@@ -1,4 +1,5 @@
 package clinic;
+
 /**
  * This class represents a Radiology object, containing enum constants.
  * @author Christopher Lee, Gordon Lin Oct. 17 2024

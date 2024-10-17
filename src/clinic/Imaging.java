@@ -1,6 +1,6 @@
 package clinic;
-
 import util.Date;
+
 /**
  * This class represents an Imaging object, containing the appointment instance variables and a radiology object.
  * @author Christopher Lee, Gordon Lin, modified Oct. 17, 2024

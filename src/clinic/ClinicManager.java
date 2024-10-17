@@ -1,11 +1,13 @@
 package clinic;
-import util.*;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
-import static util.Sort.provider;
-
+import util.List;
+import util.CircularLinkedList;
+import util.Date;
+import util.Sort;
+import util.Node;
 
 /**
  * This class is the user interface of the clinic project.
@@ -151,24 +153,20 @@ public class ClinicManager {
      * @return return a string representation of whether the appointment have been scheduled.
      */
     private String dCommand(String[] inputPart){
-        if(inputPart.length<REQUIRED_INPUTS){
-            return ("Missing data tokens.");
-        }
+        if(inputPart.length<REQUIRED_INPUTS) return ("Missing data tokens.");
 
-        if(!isValidAppointmentDate(new Date(inputPart[1])).equalsIgnoreCase("valid")){
+        if(!isValidAppointmentDate(new Date(inputPart[1])).equalsIgnoreCase("valid"))
             return isValidAppointmentDate(new Date(inputPart[1]));
-        }
+
         Timeslot timeslot = new Timeslot(inputPart[2]);
-        if(timeslot.getMinute() == 0 && timeslot.getHour() ==0){
-            return(inputPart[2] + " is not a valid time slot.");
-        }
-        if(!isValidDob(new Date(inputPart[5])).equalsIgnoreCase("valid")){
+        if(timeslot.getMinute() == 0 && timeslot.getHour() ==0)return(inputPart[2] + " is not a valid time slot.");
+
+        if(!isValidDob(new Date(inputPart[5])).equalsIgnoreCase("valid"))
             return isValidDob(new Date(inputPart[5]));
-        }
+
         String npi = inputPart[6];
-        if(!isNumeric(npi) || !isValidNpi(npi)){
-            return npi + (" - provider doesn't exist.");
-        }
+        if(!isNumeric(npi) || !isValidNpi(npi))return npi + (" - provider doesn't exist.");
+
         Doctor doc = findDoctor(npi);
         Appointment appointment = new Appointment(inputPart[1],inputPart[2],inputPart[3],
                 inputPart[4],inputPart[5],doc);
@@ -307,38 +305,31 @@ public class ClinicManager {
      */
     private String tCommand(String[] inputPart){
         Date date = new Date(inputPart[1]);
-        if(inputPart.length<REQUIRED_INPUTS){
-            return "Missing data tokens.";
-        }
-        if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")){
-            return isValidAppointmentDate(date);
-        }
+        if(inputPart.length<REQUIRED_INPUTS) return "Missing data tokens.";
+
+        if(!isValidAppointmentDate(date).equalsIgnoreCase("valid")) return isValidAppointmentDate(date);
+
         Timeslot time = new Timeslot(inputPart[2]);
-        if(time.getHour()==0&&time.getMinute()==0){
-            return inputPart[2] + " is not a valid time slot.";
-        }
-        Date dob = new Date(inputPart[5]);
-        if (!isValidDob(dob).equals("valid")) {
-            return isValidDob(dob);
-        }
+        if(time.getHour()==0&&time.getMinute()==0) return inputPart[2] + " is not a valid time slot.";
+
+        if (!isValidDob(new Date(inputPart[5])).equals("valid")) return isValidDob(new Date(inputPart[5]));
+
         Person patient = new Person(inputPart[3],inputPart[4],inputPart[5]);
-        if(!isValidAppointment(patient.getProfile(),date,time)){
+        if(!isValidAppointment(patient.getProfile(),date,time))
             return patient.getProfile() + (" has an existing appointment at the same time slot.");
-        }
-        if(!serviceExists(inputPart[6])){
-            return inputPart[6] + " - imaging service not provided.";
-        }
+
+        if(!serviceExists(inputPart[6])) return inputPart[6] + " - imaging service not provided.";
+
         Radiology radiology = new Radiology(inputPart[6]);
         int currentServices = isServiceAvailable(time, date, radiology);
         if(currentServices>=2) {
-            return "Cannot find an available technician at all locations for "
-                    + radiology.getService() + " at slot " + inputPart[2] + ".";
+            return "Cannot find an available technician at all locations for " + radiology.getService()
+                    + " at slot " + inputPart[2] + ".";
         }
         Technician technician = null;
         if(currentServices == 1) {
             technician = findTechnician(findLocation(date, time, radiology), date, time);
-        }
-        if(currentServices == 0) {
+        } else if (currentServices ==0) {
             technician = findTechnician(date, time);
         }
         Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
@@ -633,61 +624,25 @@ public class ClinicManager {
     private boolean command(String input) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
-        return switch (command) {
-            case "D" -> {
-                //Create a schedule
-                System.out.println(dCommand(inputPart));
-                yield true;
-            }
-            case "T" -> {
-                System.out.println(tCommand(inputPart));
-                yield true;
-            }
-            case "C" -> {
-                System.out.println(cCommand(inputPart));
-                yield true;
-            }
-            case "R" -> {
-                System.out.println(rCommand(inputPart));
-                yield true;
-            }
-            case "PA" -> {
-                PA_Command();
-                yield true;
-            }
-            case "PP" -> {
-                PP_Command();
-                yield true;
-            }
-            case "PL" -> {
-                PL_Command();
-                yield true;
-            }
-            case "PS" -> {
-                PS_Command();
-                yield true;
-            }
-            case "PO" -> {
-                PO_Command();
-                yield true;
-            }
-            case "PI" -> {
-                PI_Command();
-                yield true;
-            }
-            case "PC" -> {
-                PC_Command();
-                yield true;
-            }
+         switch (command) {
+            case "D" -> System.out.println(dCommand(inputPart));
+            case "T" -> System.out.println(tCommand(inputPart));
+            case "C" -> System.out.println(cCommand(inputPart));
+            case "R" -> System.out.println(rCommand(inputPart));
+            case "PA" -> PA_Command();
+            case "PP" -> PP_Command();
+            case "PL" -> PL_Command();
+            case "PS" -> PS_Command();
+            case "PO" -> PO_Command();
+            case "PI" -> PI_Command();
+            case "PC" -> PC_Command();
             case "Q" -> {
                 System.out.println("Clinic Manager terminated.");
-                yield false;
+                return false;
             }
-            default -> {
-                System.out.println("Invalid command!");
-                yield true;
-            }
-        };
+            default -> System.out.println("Invalid command!");
+        }
+         return true;
     }
 
     /**
@@ -715,7 +670,7 @@ public class ClinicManager {
                     technicians.add((Technician) temp);
                 }
                 providers.add(temp);
-                provider(providers);
+                Sort.provider(providers);
             }
             System.out.println("Providers loaded to the list.");
             fileRead.close();
@@ -729,7 +684,7 @@ public class ClinicManager {
      * This method display the provider's list.
      */
     private void displayProviderList(){
-        provider(providers);
+        Sort.provider(providers);
         for (int i = 0; i<providers.size(); i++){
             System.out.println(providers.get(i).toString());
         }

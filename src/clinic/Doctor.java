@@ -1,4 +1,5 @@
 package clinic;
+
 /**
  * This class represents a Doctor object, containing the profile of the doctor, the location they work at,
  * their specialty, and their npi. Provider subclass.

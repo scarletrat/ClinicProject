@@ -1,7 +1,5 @@
 package clinic;
 
-import util.List;
-
 /**
  * This class defines a node in a singly linked list that maintains the list of visits.
  * Each visit stores an appointment, and a pointer to the next appointment.
