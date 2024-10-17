@@ -182,13 +182,15 @@ public class ClinicManager {
         return doc + (" is not available at slot " + inputPart[2]);
     }
 
-    public Boolean serviceExists(String service){
-        if(service.equalsIgnoreCase("xray")
-                ||service.equalsIgnoreCase("catscan")
-                ||service.equalsIgnoreCase("ultrasound")) {
-            return true;
-        }
-            return false;
+    /**
+     * Check if the service exist.
+     * @param service the service.
+     * @return return true if it exist, return false otherwise.
+     */
+    private Boolean serviceExists(String service){
+        return service.equalsIgnoreCase("xray")
+                || service.equalsIgnoreCase("catscan")
+                || service.equalsIgnoreCase("ultrasound");
     }
 
     /**
@@ -341,7 +343,7 @@ public class ClinicManager {
         }
         Appointment imaging = new Imaging(date, time, patient, inputPart[6], technician);
         appointments.add(imaging);
-        return imaging.toString() + " booked.";
+        return imaging + " booked.";
     }
 
     /**
@@ -592,7 +594,7 @@ public class ClinicManager {
         int[] money = new int[pro.length];
         for(int i = 0; i< pro.length; i++){
             Profile temp = pro[i];
-            Provider temp1 = (Provider) providers.get(i);
+            Provider temp1 = providers.get(i);
             for(int j= 0; j< appointments.size(); j++){
                 if(appointments.get(j).getProvider().getProfile().equals(temp)){
                     money[i] = money[i] +  temp1.rate();
@@ -631,48 +633,61 @@ public class ClinicManager {
     private boolean command(String input) {
         String[] inputPart = input.split(",");
         String command = inputPart[0];
-        switch (command) {
-            case "D":
+        return switch (command) {
+            case "D" -> {
                 //Create a schedule
                 System.out.println(dCommand(inputPart));
-                return true;
-            case "T":
+                yield true;
+            }
+            case "T" -> {
                 System.out.println(tCommand(inputPart));
-                return true;
-            case "C":
+                yield true;
+            }
+            case "C" -> {
                 System.out.println(cCommand(inputPart));
-                return true;
-            case "R":
+                yield true;
+            }
+            case "R" -> {
                 System.out.println(rCommand(inputPart));
-                return true;
-            case "PA":
+                yield true;
+            }
+            case "PA" -> {
                 PA_Command();
-                return true;
-            case "PP":
+                yield true;
+            }
+            case "PP" -> {
                 PP_Command();
-                return true;
-            case "PL":
+                yield true;
+            }
+            case "PL" -> {
                 PL_Command();
-                return true;
-            case "PS":
+                yield true;
+            }
+            case "PS" -> {
                 PS_Command();
-                return true;
-            case "PO":
+                yield true;
+            }
+            case "PO" -> {
                 PO_Command();
-                return true;
-            case "PI":
+                yield true;
+            }
+            case "PI" -> {
                 PI_Command();
-                return true;
-            case "PC":
+                yield true;
+            }
+            case "PC" -> {
                 PC_Command();
-                return true;
-            case "Q":
+                yield true;
+            }
+            case "Q" -> {
                 System.out.println("Clinic Manager terminated.");
-                return false;
-            default:
+                yield false;
+            }
+            default -> {
                 System.out.println("Invalid command!");
-                return true;
-        }
+                yield true;
+            }
+        };
     }
 
     /**

@@ -98,31 +98,6 @@ public class Profile implements Comparable<Profile>{
     }
 
     /**
-     * Compare to see if two profile are equal.
-     * @param obj the object to be compared to.
-     * @return return true if two profile objects are equal; return false otherwise.
-     */
-    @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Profile){
-            Profile profile = (Profile) obj;
-            return this.fname.equalsIgnoreCase(profile.fname)
-                    && this.lname.equalsIgnoreCase(profile.lname)
-                    &&this.dob.equals(profile.dob);
-        }
-        return false;
-    }
-
-    /**
-     * A textual representation of the Profile object.
-     * @return return a string containing first nam, last name, and date of birth.
-     */
-    @Override
-    public String toString(){
-        return(fname + " " + lname + " " + dob);
-    }
-
-    /**
      * Compare two Profile objects.
      * @param profile the object to be compared.
      * @return return 1 if either lname, fname, dob in this order of this profile is after input "profile" dob;
@@ -149,6 +124,31 @@ public class Profile implements Comparable<Profile>{
             return this.dob.compareTo(profile.dob);
         }
         return 0;
+    }
+
+    /**
+     * Compare to see if two profile are equal.
+     * @param obj the object to be compared to.
+     * @return return true if two profile objects are equal; return false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Profile){
+            Profile profile = (Profile) obj;
+            return this.fname.equalsIgnoreCase(profile.fname)
+                    && this.lname.equalsIgnoreCase(profile.lname)
+                    &&this.dob.equals(profile.dob);
+        }
+        return false;
+    }
+
+    /**
+     * A textual representation of the Profile object.
+     * @return return a string containing first nam, last name, and date of birth.
+     */
+    @Override
+    public String toString(){
+        return(fname + " " + lname + " " + dob);
     }
 
 }

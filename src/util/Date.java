@@ -56,57 +56,48 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Compare to see if two dates are equal.
-     * @param obj the object to be compared to.
-     * @return return true if two date objects are equal; return false otherwise.
+     * Private helper method, to see how many days the month have.
+     * @param month the month which you are checking
+     * @return 2 if the month have 31 days;
+     * return 1 if the month have 30 days
+     * return 0 if the month is February
+     * return -1 if invalid month.
      */
-    @Override
-    public boolean equals(Object obj){
-        if(obj instanceof Date){
-            Date date = (Date) obj;
-            return this.year == date.year
-                    &&this.month == date.month
-                    &&this.day == date.day;
+    private int isWhatMonth(int month){
+        int[] month_31Days = {1,3,5,7,8,10,12};
+        int[] month_30Days = {4,6,9,11};
+        if(month == 2){
+            return MONTH_FEBRUARY;
         }
-        return false;
-    }
-
-    /**
-     * Returns a textual representation of the Date object.
-     * @return a string containing the month/day/year.
-     */
-    @Override
-    public String toString(){
-        return month + "/" + day + "/" + year;
-    }
-
-    /**
-     * Compare two Date objects.
-     * @param date the Date object being compared to.
-     * @return return 1 if this date object is greater than "date" or after "date";
-     * return -1 if smaller or before "date";
-     * return 0 if they are equal.
-     */
-    @Override
-    public int compareTo(Date date){
-        if(this.year > date.year){
-            return 1;
-        } else if (this.year < date.year){
-            return -1;
-        }else{
-            if(this.month > date.month){
-                return 1;
-            }else if(this.month < date.month){
-                return -1;
-            }else{
-                if(this.day > date.day){
-                    return 1;
-                }else if(this.day < date.day){
-                    return -1;
-                }
+        for (int month30Day : month_30Days) {
+            if (month == month30Day) {
+                return MONTH_30DAY;
             }
         }
-        return 0;
+        for (int month31Day : month_31Days){
+            if (month == month31Day){
+                return MONTH_31DAY;
+            }
+        }
+        return INVALID_MONTH;
+    }
+
+    /**
+     * Private helper method, checking if the year is a leap year.
+     * @param year the year which you are checking
+     * @return true if it is a leap year;
+     * return false if it is not a leap year.
+     */
+    private boolean isLeapYear(int year){
+        if(year % QUADRENNIAL == 0){
+            if(year % CENTENNIAL == 0){
+                return year % QUATERCENTENNIAL == 0;
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -260,51 +251,58 @@ public class Date implements Comparable<Date> {
     }
 
     /**
-     * Private helper method, to see how many days the month have.
-     * @param month the month which you are checking
-     * @return 2 if the month have 31 days;
-     * return 1 if the month have 30 days
-     * return 0 if the month is February
-     * return -1 if invalid month.
+     * Compare two Date objects.
+     * @param date the Date object being compared to.
+     * @return return 1 if this date object is greater than "date" or after "date";
+     * return -1 if smaller or before "date";
+     * return 0 if they are equal.
      */
-    private int isWhatMonth(int month){
-        int[] month_31Days = {1,3,5,7,8,10,12};
-        int[] month_30Days = {4,6,9,11};
-        if(month == 2){
-            return MONTH_FEBRUARY;
-        }
-        for (int month30Day : month_30Days) {
-            if (month == month30Day) {
-                return MONTH_30DAY;
+    @Override
+    public int compareTo(Date date){
+        if(this.year > date.year){
+            return 1;
+        } else if (this.year < date.year){
+            return -1;
+        }else{
+            if(this.month > date.month){
+                return 1;
+            }else if(this.month < date.month){
+                return -1;
+            }else{
+                if(this.day > date.day){
+                    return 1;
+                }else if(this.day < date.day){
+                    return -1;
+                }
             }
         }
-        for (int month31Day : month_31Days){
-            if (month == month31Day){
-                return MONTH_31DAY;
-            }
-        }
-        return INVALID_MONTH;
+        return 0;
     }
 
     /**
-     * Private helper method, checking if the year is a leap year.
-     * @param year the year which you are checking
-     * @return true if it is a leap year;
-     * return false if it is not a leap year.
+     * Compare to see if two dates are equal.
+     * @param obj the object to be compared to.
+     * @return return true if two date objects are equal; return false otherwise.
      */
-    private boolean isLeapYear(int year){
-        if(year % QUADRENNIAL == 0){
-            if(year % CENTENNIAL == 0){
-                return year % QUATERCENTENNIAL == 0;
-            }else{
-                return true;
-            }
-        }else{
-            return false;
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Date){
+            Date date = (Date) obj;
+            return this.year == date.year
+                    &&this.month == date.month
+                    &&this.day == date.day;
         }
+        return false;
     }
 
-
+    /**
+     * Returns a textual representation of the Date object.
+     * @return a string containing the month/day/year.
+     */
+    @Override
+    public String toString(){
+        return month + "/" + day + "/" + year;
+    }
 
 }
 

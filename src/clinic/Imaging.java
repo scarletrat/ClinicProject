@@ -30,16 +30,6 @@ public class Imaging extends Appointment{
     }
 
     /**
-     * The method returns a String representation of the Imaging object.
-     * @return return a string representation of the object.
-     */
-    @Override
-    public String toString(){
-        return this.date + " " + this.timeslot + " " +
-                this.patient + " " + this.provider +"[" + this.getRadiology().getService() + "]";
-    }
-
-    /**
      * Overrides equals method to compare the rooms of Imaging objects
      * @param obj object to be compared to
      * @return 1 if this room is greater than input room
@@ -54,6 +44,16 @@ public class Imaging extends Appointment{
             return this.room.equals(imaging.room);
         }
         return false;
+    }
+
+    /**
+     * The method returns a String representation of the Imaging object.
+     * @return return a string representation of the object.
+     */
+    @Override
+    public String toString(){
+        return this.date + " " + this.timeslot + " " +
+                this.patient + " " + this.provider +"[" + this.getRadiology().getService() + "]";
     }
 
 }

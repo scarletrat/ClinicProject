@@ -148,6 +148,22 @@ public class Appointment implements Comparable<Appointment>{
     }
 
     /**
+     * Compares this appointment to another appointment object.
+     * @param appointment object to be compared to
+     * @return return 1 ff this appointment is after input "appointment;
+     * return -1 if this appointment is before input "appointment";
+     * return 0 if equal.
+     */
+    @Override
+    public int compareTo(Appointment appointment){
+        int dateComparison = this.date.compareTo(appointment.date);
+        if (dateComparison != 0) {
+            return dateComparison;
+        }
+        return this.timeslot.compareTo(appointment.timeslot);
+    }
+
+    /**
      * Compares obj to this appointment. returns true if equal, false otherwise.
      * @param obj object to be compared to
      * @return return true if the appointment is equal;
@@ -163,22 +179,6 @@ public class Appointment implements Comparable<Appointment>{
                     &&this.provider.equals(appointment.getProvider());
         }
         return false;
-    }
-
-    /**
-     * Compares this appointment to another appointment object.
-     * @param appointment object to be compared to
-     * @return return 1 ff this appointment is after input "appointment;
-     * return -1 if this appointment is before input "appointment";
-     * return 0 if equal.
-     */
-    @Override
-    public int compareTo(Appointment appointment){
-        int dateComparison = this.date.compareTo(appointment.date);
-        if (dateComparison != 0) {
-            return dateComparison;
-        }
-        return this.timeslot.compareTo(appointment.timeslot);
     }
 
     /**

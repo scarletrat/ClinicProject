@@ -6,7 +6,7 @@ package clinic;
 public class Radiology {
 
     public enum Service{
-        CATSCAN, ULTRASOUND, XRAY;
+        CATSCAN, ULTRASOUND, XRAY
     }
 
     private Service service;
@@ -45,4 +45,5 @@ public class Radiology {
         }
         return false;
     }
+
 }

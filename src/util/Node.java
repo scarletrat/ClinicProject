@@ -19,22 +19,6 @@ public class Node {
     }
 
     /**
-     * Set the data of the node to the parameter.
-     * @param technician the technician to be set to.
-     */
-    public void setData(Technician technician){
-        this.data = technician;
-    }
-
-    /**
-     * Sets node pointer to parameter
-     * @param next parameter to set node next pointer to
-     */
-    public void setNext(Node next){
-        this.next = next;
-    }
-
-    /**
      * Returns the node that this node is pointing to
      * @return next instance variable
      */
@@ -48,6 +32,22 @@ public class Node {
      */
     public Technician getData(){
         return data;
+    }
+
+    /**
+     * Set the data of the node to the parameter.
+     * @param technician the technician to be set to.
+     */
+    public void setData(Technician technician){
+        this.data = technician;
+    }
+
+    /**
+     * Sets node pointer to parameter
+     * @param next parameter to set node next pointer to
+     */
+    public void setNext(Node next){
+        this.next = next;
     }
 
 }
