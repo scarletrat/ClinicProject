@@ -255,7 +255,7 @@ public class ClinicManager {
         }
         Timeslot time = new Timeslot(inputPart[2]);
         if(time.getHour()==0&&time.getMinute()==0){
-            return inputPart[2] + "is not a valid time slot.";
+            return inputPart[2] + " is not a valid time slot.";
         }
         Date dob = new Date(inputPart[5]);
         if (!isValidDob(dob).equals("valid")) {
